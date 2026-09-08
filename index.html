@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAJRA Drone Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <section id="loginPage" class="page active">
+
+        <div class="login-card">
+
+            <div class="logo">⚡</div>
+
+            <h1>VAJRA</h1>
+            <h2>Drone Control System</h2>
+
+            <p class="subtitle">
+                Ansh's Innovation Lab
+            </p>
+
+            <label for="username">Username</label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                autocomplete="off"
+            >
+
+            <button id="loginBtn" class="primary-btn">
+                LOGIN
+            </button>
+
+            <p id="loginMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTROL PAGE -->
+    <section id="controlPage" class="page">
+
+        <header>
+
+            <div>
+                <h1>⚡ VAJRA</h1>
+                <p>Drone Motor Control System</p>
+            </div>
+
+            <div class="header-right">
+
+                <span id="connectionStatus" class="status disconnected">
+                    ● DISCONNECTED
+                </span>
+
+                <button id="connectBtn" class="connect-btn">
+                    CONNECT BLUETOOTH
+                </button>
+
+                <button id="logoutBtn" class="logout-btn">
+                    LOGOUT
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main>
+
+            <!-- SYSTEM STATUS -->
+            <section class="panel">
+
+                <h2>System Status</h2>
+
+                <div class="status-grid">
+
+                    <div class="status-box">
+                        <span>Bluetooth</span>
+                        <strong id="bluetoothStatus">
+                            Disconnected
+                        </strong>
+                    </div>
+
+                    <div class="status-box">
+                        <span>Flight Controller</span>
+                        <strong id="fcStatus">
+                            Not Connected
+                        </strong>
+                    </div>
+
+                    <div class="status-box">
+                        <span>Drone Status</span>
+                        <strong id="droneStatus">
+                            DISARMED
+                        </strong>
+                    </div>
+
+                    <div class="status-box">
+                        <span>Master Speed</span>
+                        <strong>
+                            <span id="masterSpeedValue">0</span>%
+                        </strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SAFETY -->
+            <section class="panel safety-panel">
+
+                <h2>Safety</h2>
+
+                <button id="armBtn" class="arm-btn">
+                    ARM
+                </button>
+
+                <button id="disarmBtn" class="disarm-btn">
+                    DISARM
+                </button>
+
+                <button id="stopBtn" class="stop-btn">
+                    EMERGENCY STOP
+                </button>
+
+            </section>
+
+
+            <!-- MASTER CONTROL -->
+            <section class="panel">
+
+                <h2>Master Motor Control</h2>
+
+                <div class="master-control">
+
+                    <input
+                        type="range"
+                        id="masterSlider"
+                        min="0"
+                        max="100"
+                        value="0"
+                    >
+
+                    <div class="speed-display">
+                        <span id="masterSpeedText">0%</span>
+                    </div>
+
+                </div>
+
+                <button id="allMotorsBtn" class="all-motors-btn">
+                    RUN ALL 4 MOTORS
+                </button>
+
+                <button id="stopAllBtn" class="stop-all-btn">
+                    STOP ALL MOTORS
+                </button>
+
+            </section>
+
+
+            <!-- MOTOR CONTROL -->
+            <section class="panel">
+
+                <h2>Individual Motor Control</h2>
+
+                <div class="motor-grid">
+
+
+                    <!-- MOTOR 1 -->
+                    <div class="motor-card">
+
+                        <div class="motor-number">
+                            M1
+                        </div>
+
+                        <h3>Motor 1</h3>
+
+                        <div class="motor-status">
+                            Speed:
+                            <span id="m1Value">0</span>%
+                        </div>
+
+                        <input
+                            type="range"
+                            id="m1Slider"
+                            min="0"
+                            max="100"
+                            value="0"
+                        >
+
+                        <button
+                            class="motor-run"
+                            data-motor="1"
+                        >
+                            RUN M1
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="1"
+                        >
+                            STOP M1
+                        </button>
+
+                    </div>
+
+
+                    <!-- MOTOR 2 -->
+                    <div class="motor-card">
+
+                        <div class="motor-number">
+                            M2
+                        </div>
+
+                        <h3>Motor 2</h3>
+
+                        <div class="motor-status">
+                            Speed:
+                            <span id="m2Value">0</span>%
+                        </div>
+
+                        <input
+                            type="range"
+                            id="m2Slider"
+                            min="0"
+                            max="100"
+                            value="0"
+                        >
+
+                        <button
+                            class="motor-run"
+                            data-motor="2"
+                        >
+                            RUN M2
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="2"
+                        >
+                            STOP M2
+                        </button>
+
+                    </div>
+
+
+                    <!-- MOTOR 3 -->
+                    <div class="motor-card">
+
+                        <div class="motor-number">
+                            M3
+                        </div>
+
+                        <h3>Motor 3</h3>
+
+                        <div class="motor-status">
+                            Speed:
+                            <span id="m3Value">0</span>%
+                        </div>
+
+                        <input
+                            type="range"
+                            id="m3Slider"
+                            min="0"
+                            max="100"
+                            value="0"
+                        >
+
+                        <button
+                            class="motor-run"
+                            data-motor="3"
+                        >
+                            RUN M3
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="3"
+                        >
+                            STOP M3
+                        </button>
+
+                    </div>
+
+
+                    <!-- MOTOR 4 -->
+                    <div class="motor-card">
+
+                        <div class="motor-number">
+                            M4
+                        </div>
+
+                        <h3>Motor 4</h3>
+
+                        <div class="motor-status">
+                            Speed:
+                            <span id="m4Value">0</span>%
+                        </div>
+
+                        <input
+                            type="range"
+                            id="m4Slider"
+                            min="0"
+                            max="100"
+                            value="0"
+                        >
+
+                        <button
+                            class="motor-run"
+                            data-motor="4"
+                        >
+                            RUN M4
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="4"
+                        >
+                            STOP M4
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CALIBRATION -->
+            <section class="panel calibration-panel">
+
+                <h2>Motor Calibration</h2>
+
+                <p>
+                    Use calibration only with the propellers removed.
+                </p>
+
+                <button id="calibrateBtn" class="calibrate-btn">
+                    CALIBRATE ALL MOTORS
+                </button>
+
+                <button id="calibrateM1" class="calibrate-small">
+                    CALIBRATE M1
+                </button>
+
+                <button id="calibrateM2" class="calibrate-small">
+                    CALIBRATE M2
+                </button>
+
+                <button id="calibrateM3" class="calibrate-small">
+                    CALIBRATE M3
+                </button>
+
+                <button id="calibrateM4" class="calibrate-small">
+                    CALIBRATE M4
+                </button>
+
+            </section>
+
+
+            <!-- COMMAND MONITOR -->
+            <section class="panel">
+
+                <h2>Command Monitor</h2>
+
+                <div id="console" class="console">
+                    <div>VAJRA CONTROL SYSTEM READY</div>
+                    <div>Waiting for Bluetooth connection...</div>
+                </div>
+
+                <button id="clearConsoleBtn" class="clear-btn">
+                    CLEAR CONSOLE
+                </button>
+
+            </section>
+
+        </main>
+
+
+        <footer>
+            <p>
+                ANSH'S DRONE VAJRA ⚡ | Motor Control Interface
+            </p>
+        </footer>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
