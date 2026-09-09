@@ -1,225 +1,106 @@
 /* =========================================================
-   VAJRA DRONE CONTROL SYSTEM
-   Web Bluetooth + Motor Control Interface
-========================================================= */
+   VAJRA WEB CONTROLLER
+   ESP32-C3 BLE
+   ========================================================= */
 
 
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-const CORRECT_USERNAME = "VAJRA";
-
-/*
-   These UUIDs will be changed to exactly match
-   the ESP32-C3 BLE firmware.
-*/
+/* BLE UUIDs */
 
 const SERVICE_UUID =
-    "0000ffe0-0000-1000-8000-00805f9b34fb";
+    "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
 
 const CHARACTERISTIC_UUID =
-    "0000ffe1-0000-1000-8000-00805f9b34fb";
+    "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 
 
-/* =========================================================
-   BLUETOOTH VARIABLES
-========================================================= */
+let device = null;
+let characteristic = null;
 
-let bluetoothDevice = null;
-let bluetoothCharacteristic = null;
-
-
-/* =========================================================
-   MOTOR DATA
-========================================================= */
-
-let motorSpeeds = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0
-};
-
-let droneArmed = false;
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const loginPage =
-    document.getElementById("loginPage");
-
-const controlPage =
-    document.getElementById("controlPage");
-
-const usernameInput =
-    document.getElementById("username");
-
-const loginBtn =
-    document.getElementById("loginBtn");
-
-const loginMessage =
-    document.getElementById("loginMessage");
-
-const connectBtn =
-    document.getElementById("connectBtn");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
-const connectionStatus =
-    document.getElementById("connectionStatus");
-
-const bluetoothStatus =
-    document.getElementById("bluetoothStatus");
-
-const fcStatus =
-    document.getElementById("fcStatus");
-
-const droneStatus =
-    document.getElementById("droneStatus");
-
-const masterSlider =
-    document.getElementById("masterSlider");
-
-const masterSpeedValue =
-    document.getElementById("masterSpeedValue");
-
-const masterSpeedText =
-    document.getElementById("masterSpeedText");
-
-const consoleBox =
-    document.getElementById("console");
+let armed = false;
 
 
 /* =========================================================
    LOGIN
-========================================================= */
-
-loginBtn.addEventListener("click", login);
-
-usernameInput.addEventListener("keydown", function(event) {
-
-    if (event.key === "Enter") {
-        login();
-    }
-
-});
-
+   ========================================================= */
 
 function login() {
 
     const username =
-        usernameInput.value.trim();
+        document.getElementById("username").value;
 
-    if (username === CORRECT_USERNAME) {
+    const password =
+        document.getElementById("password").value;
 
-        loginMessage.textContent =
-            "LOGIN SUCCESSFUL";
+    const message =
+        document.getElementById("loginMessage");
 
-        loginMessage.style.color =
-            "#70df83";
 
-        setTimeout(function() {
+    if (username === "VAJRA" &&
+        password === "VAJRA") {
 
-            loginPage.classList.remove("active");
-            controlPage.classList.add("active");
+        document
+            .getElementById("loginPage")
+            .classList.add("hidden");
 
-        }, 500);
+        document
+            .getElementById("controlPage")
+            .classList.remove("hidden");
 
+    } else {
+
+        message.textContent =
+            "INVALID VAJRA LOGIN";
     }
-
-    else {
-
-        loginMessage.textContent =
-            "INCORRECT USERNAME";
-
-        loginMessage.style.color =
-            "#ff7676";
-
-    }
-
 }
 
 
 /* =========================================================
-   LOGOUT
-========================================================= */
+   BLE CONNECT
+   ========================================================= */
 
-logoutBtn.addEventListener("click", function() {
-
-    disconnectBluetooth();
-
-    controlPage.classList.remove("active");
-    loginPage.classList.add("active");
-
-    usernameInput.value = "";
-    loginMessage.textContent = "";
-
-});
-
-
-/* =========================================================
-   BLUETOOTH CONNECT
-========================================================= */
-
-connectBtn.addEventListener(
-    "click",
-    connectBluetooth
-);
-
-
-async function connectBluetooth() {
-
-    if (!navigator.bluetooth) {
-
-        addConsole(
-            "ERROR: Web Bluetooth is not supported by this browser."
-        );
-
-        return;
-    }
-
+async function connectBLE() {
 
     try {
 
-        addConsole(
-            "Searching for VAJRA Bluetooth device..."
+        if (!navigator.bluetooth) {
+
+            alert(
+                "Web Bluetooth is not supported in this browser."
+            );
+
+            return;
+        }
+
+
+        setConnection(
+            "CONNECTING...",
+            false
         );
 
 
-        bluetoothDevice =
-            await navigator.bluetooth.requestDevice({
+        device = await navigator.bluetooth.requestDevice({
 
-                filters: [
-                    {
-                        namePrefix: "VAJRA"
-                    }
-                ],
+            filters: [
+                {
+                    name: "VAJRA-C3"
+                }
+            ],
 
-                optionalServices: [
-                    SERVICE_UUID
-                ]
+            optionalServices: [
+                SERVICE_UUID
+            ]
 
-            });
-
-
-        addConsole(
-            "Device selected: " +
-            bluetoothDevice.name
-        );
+        });
 
 
-        bluetoothDevice.addEventListener(
+        device.addEventListener(
             "gattserverdisconnected",
-            handleDisconnect
+            disconnected
         );
 
 
         const server =
-            await bluetoothDevice.gatt.connect();
+            await device.gatt.connect();
 
 
         const service =
@@ -228,142 +109,115 @@ async function connectBluetooth() {
             );
 
 
-        bluetoothCharacteristic =
+        characteristic =
             await service.getCharacteristic(
                 CHARACTERISTIC_UUID
             );
 
 
-        setConnectedUI(true);
-
-
-        addConsole(
-            "Bluetooth connected successfully."
+        setConnection(
+            "BLE CONNECTED",
+            true
         );
 
 
-    }
+        document.getElementById(
+            "bleStatus"
+        ).textContent = "ONLINE";
 
-    catch (error) {
 
-        addConsole(
-            "Bluetooth error: " +
-            error.message
+        document.getElementById(
+            "mainStatus"
+        ).textContent = "CONNECTED";
+
+
+        alert(
+            "VAJRA-C3 connected successfully!"
         );
 
-        setConnectedUI(false);
 
+    } catch (error) {
+
+        console.error(error);
+
+        setConnection(
+            "BLE ERROR",
+            false
+        );
     }
-
 }
 
 
 /* =========================================================
-   DISCONNECT
-========================================================= */
+   BLE DISCONNECT
+   ========================================================= */
 
-function disconnectBluetooth() {
+function disconnected() {
 
-    if (
-        bluetoothDevice &&
-        bluetoothDevice.gatt.connected
-    ) {
+    characteristic = null;
 
-        bluetoothDevice.gatt.disconnect();
-
-    }
-
-    bluetoothDevice = null;
-    bluetoothCharacteristic = null;
-
-    setConnectedUI(false);
-
-}
-
-
-/* =========================================================
-   DISCONNECT EVENT
-========================================================= */
-
-function handleDisconnect() {
-
-    addConsole(
-        "Bluetooth disconnected."
+    setConnection(
+        "BLE DISCONNECTED",
+        false
     );
 
-    setConnectedUI(false);
+    document.getElementById(
+        "bleStatus"
+    ).textContent = "OFFLINE";
 
+    document.getElementById(
+        "mainStatus"
+    ).textContent = "WAITING";
 }
 
 
 /* =========================================================
    CONNECTION UI
-========================================================= */
+   ========================================================= */
 
-function setConnectedUI(connected) {
+function setConnection(text, connected) {
+
+    document.getElementById(
+        "connectionText"
+    ).textContent = text;
+
+    const dot =
+        document.getElementById(
+            "connectionDot"
+        );
+
 
     if (connected) {
 
-        connectionStatus.textContent =
-            "● CONNECTED";
+        dot.style.background = "#00ff91";
+        dot.style.boxShadow =
+            "0 0 12px #00ff91";
 
-        connectionStatus.className =
-            "status connected";
+    } else {
 
-        bluetoothStatus.textContent =
-            "Connected";
-
-        fcStatus.textContent =
-            "Connected";
-
-        connectBtn.textContent =
-            "DISCONNECT";
-
-        connectBtn.onclick =
-            disconnectBluetooth;
-
+        dot.style.background = "#ff3d5c";
+        dot.style.boxShadow =
+            "0 0 12px #ff3d5c";
     }
-
-    else {
-
-        connectionStatus.textContent =
-            "● DISCONNECTED";
-
-        connectionStatus.className =
-            "status disconnected";
-
-        bluetoothStatus.textContent =
-            "Disconnected";
-
-        fcStatus.textContent =
-            "Not Connected";
-
-        connectBtn.textContent =
-            "CONNECT BLUETOOTH";
-
-        connectBtn.onclick =
-            connectBluetooth;
-
-    }
-
 }
 
 
 /* =========================================================
-   SEND BLUETOOTH COMMAND
-========================================================= */
+   SEND BLE COMMAND
+   ========================================================= */
 
 async function sendCommand(command) {
 
-    addConsole(
-        "TX → " + command
+    console.log(
+        "VAJRA COMMAND:",
+        command
     );
 
 
-    if (!bluetoothCharacteristic) {
+    if (!characteristic) {
 
-        addConsole(
-            "Bluetooth not connected. Command not sent."
+        console.log(
+            "BLE not connected"
         );
 
         return;
@@ -375,444 +229,513 @@ async function sendCommand(command) {
         const encoder =
             new TextEncoder();
 
-        const data =
-            encoder.encode(command + "\n");
-
-        await bluetoothCharacteristic
-            .writeValue(data);
-
-    }
-
-    catch (error) {
-
-        addConsole(
-            "TX ERROR → " +
-            error.message
+        await characteristic.writeValue(
+            encoder.encode(command + "\n")
         );
 
-    }
+    } catch (error) {
 
+        console.error(
+            "BLE SEND ERROR:",
+            error
+        );
+    }
 }
 
 
 /* =========================================================
    ARM
-========================================================= */
+   ========================================================= */
 
-document
-    .getElementById("armBtn")
-    .addEventListener("click", function() {
+function armDrone() {
 
-        if (!bluetoothCharacteristic) {
+    armed = true;
 
-            addConsole(
-                "Connect to VAJRA before arming."
-            );
+    document.getElementById(
+        "armedBadge"
+    ).textContent = "ARMED";
 
-            return;
-        }
-
-
-        sendCommand("ARM");
-
-        droneArmed = true;
-
-        droneStatus.textContent =
-            "ARMED";
-
-        addConsole(
-            "VAJRA ARMED"
-        );
-
-    });
+    sendCommand("ARM");
+}
 
 
 /* =========================================================
    DISARM
-========================================================= */
+   ========================================================= */
 
-document
-    .getElementById("disarmBtn")
-    .addEventListener("click", function() {
+function disarmDrone() {
 
-        sendCommand("DISARM");
+    armed = false;
 
-        droneArmed = false;
+    document.getElementById(
+        "armedBadge"
+    ).textContent = "DISARMED";
 
-        droneStatus.textContent =
-            "DISARMED";
-
-        setAllMotorsToZero();
-
-        addConsole(
-            "VAJRA DISARMED"
-        );
-
-    });
+    sendCommand("DISARM");
+}
 
 
 /* =========================================================
    EMERGENCY STOP
-========================================================= */
+   ========================================================= */
 
-document
-    .getElementById("stopBtn")
-    .addEventListener("click", function() {
+function emergencyStop() {
 
-        sendCommand("STOP");
+    armed = false;
 
-        droneArmed = false;
+    document.getElementById(
+        "armedBadge"
+    ).textContent = "DISARMED";
 
-        droneStatus.textContent =
-            "DISARMED";
+    resetAllControls();
 
-        setAllMotorsToZero();
-
-        addConsole(
-            "!!! EMERGENCY STOP !!!"
-        );
-
-    });
+    sendCommand("STOP");
+}
 
 
 /* =========================================================
-   MASTER SLIDER
-========================================================= */
+   BUTTON COMMAND FIX
+   ========================================================= */
 
-masterSlider.addEventListener(
-    "input",
-    function() {
+const originalSendCommand = sendCommand;
 
-        const speed =
-            Number(masterSlider.value);
+function sendCommand(command) {
 
-        masterSpeedValue.textContent =
-            speed;
+    console.log("COMMAND:", command);
 
-        masterSpeedText.textContent =
-            speed + "%";
 
+    if (command === "ARM") {
+
+        armed = true;
+
+        document.getElementById(
+            "armedBadge"
+        ).textContent = "ARMED";
+    }
+
+
+    if (command === "DISARM" ||
+        command === "STOP") {
+
+        armed = false;
+
+        document.getElementById(
+            "armedBadge"
+        ).textContent = "DISARMED";
+    }
+
+
+    if (!characteristic) {
+
+        console.log(
+            "BLE not connected:",
+            command
+        );
+
+        return;
+    }
+
+
+    const encoder =
+        new TextEncoder();
+
+
+    characteristic.writeValue(
+        encoder.encode(command + "\n")
+    );
+}
+
+
+/* =========================================================
+   ALL MOTOR
+   ========================================================= */
+
+function allMotorChanged(value) {
+
+    document.getElementById(
+        "allValue"
+    ).textContent = value;
+
+
+    for (let i = 1; i <= 4; i++) {
+
+        document.getElementById(
+            "m" + i
+        ).value = value;
+
+        document.getElementById(
+            "m" + i + "Value"
+        ).textContent = value;
+    }
+
+
+    sendCommand(
+        "ALL:" + value
+    );
+}
+
+
+/* =========================================================
+   INDIVIDUAL MOTOR
+   ========================================================= */
+
+function motorChanged(
+    motor,
+    value
+) {
+
+    document.getElementById(
+        "m" + motor + "Value"
+    ).textContent = value;
+
+
+    sendCommand(
+        "M" + motor + ":" + value
+    );
+}
+
+
+/* =========================================================
+   RESET CONTROLS
+   ========================================================= */
+
+function resetAllControls() {
+
+    document.getElementById(
+        "allThrottle"
+    ).value = 0;
+
+    document.getElementById(
+        "allValue"
+    ).textContent = "0";
+
+
+    for (let i = 1; i <= 4; i++) {
+
+        document.getElementById(
+            "m" + i
+        ).value = 0;
+
+        document.getElementById(
+            "m" + i + "Value"
+        ).textContent = "0";
+    }
+
+
+    throttle = 0;
+    yaw = 0;
+    pitch = 0;
+    roll = 0;
+
+
+    updateFlightValues();
+}
+
+
+/* =========================================================
+   VIRTUAL JOYSTICKS
+   ========================================================= */
+
+let throttle = 0;
+let yaw = 0;
+
+let pitch = 0;
+let roll = 0;
+
+
+/* LEFT */
+
+setupJoystick(
+    "leftJoystick",
+    "leftStick",
+    function(x, y) {
+
+        /*
+           Left stick:
+           Y = throttle
+           X = yaw
+        */
+
+        yaw = Math.round(
+            x * 1000
+        );
+
+        throttle = Math.round(
+            ((1 - y) / 2) * 1000
+        );
+
+
+        throttle =
+            Math.max(
+                0,
+                Math.min(1000, throttle)
+            );
+
+
+        sendFlightCommand();
+    }
+);
+
+
+/* RIGHT */
+
+setupJoystick(
+    "rightJoystick",
+    "rightStick",
+    function(x, y) {
+
+        /*
+           Right stick:
+           X = roll
+           Y = pitch
+        */
+
+        roll = Math.round(
+            x * 1000
+        );
+
+        pitch = Math.round(
+            -y * 1000
+        );
+
+
+        sendFlightCommand();
     }
 );
 
 
 /* =========================================================
-   RUN ALL MOTORS
-========================================================= */
+   JOYSTICK ENGINE
+   ========================================================= */
 
-document
-    .getElementById("allMotorsBtn")
-    .addEventListener("click", function() {
+function setupJoystick(
+    areaId,
+    stickId,
+    callback
+) {
 
-        if (!droneArmed) {
+    const area =
+        document.getElementById(
+            areaId
+        );
 
-            addConsole(
-                "ARM the system before running motors."
+    const stick =
+        document.getElementById(
+            stickId
+        );
+
+
+    let active = false;
+
+
+    function move(clientX, clientY) {
+
+        const rect =
+            area.getBoundingClientRect();
+
+
+        const centerX =
+            rect.left +
+            rect.width / 2;
+
+        const centerY =
+            rect.top +
+            rect.height / 2;
+
+
+        let dx =
+            clientX - centerX;
+
+        let dy =
+            clientY - centerY;
+
+
+        const radius =
+            rect.width / 2;
+
+        const max =
+            radius * 0.58;
+
+
+        const distance =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
             );
 
-            return;
+
+        if (distance > max) {
+
+            dx =
+                dx / distance * max;
+
+            dy =
+                dy / distance * max;
         }
 
 
-        const speed =
-            Number(masterSlider.value);
+        const percentX =
+            dx / max;
+
+        const percentY =
+            dy / max;
 
 
-        for (let motor = 1; motor <= 4; motor++) {
-
-            motorSpeeds[motor] = speed;
-
-            updateMotorDisplay(motor);
-
-        }
+        stick.style.transform =
+            `translate(${dx}px, ${dy}px)`;
 
 
-        sendCommand(
-            `ALL ${speed}`
+        callback(
+            percentX,
+            percentY
         );
 
 
-        addConsole(
-            `All motors → ${speed}%`
-        );
-
-    });
+        updateFlightValues();
+    }
 
 
-/* =========================================================
-   STOP ALL MOTORS
-========================================================= */
+    function center() {
 
-document
-    .getElementById("stopAllBtn")
-    .addEventListener("click", function() {
+        stick.style.transform =
+            "translate(0px, 0px)";
 
-        setAllMotorsToZero();
+        callback(0, 0);
 
-        sendCommand("ALL 0");
-
-        addConsole(
-            "All motors → 0%"
-        );
-
-    });
+        updateFlightValues();
+    }
 
 
-/* =========================================================
-   INDIVIDUAL MOTOR SLIDERS
-========================================================= */
+    area.addEventListener(
+        "pointerdown",
+        function(event) {
 
-for (let motor = 1; motor <= 4; motor++) {
+            active = true;
 
-    const slider =
-        document.getElementById(
-            `m${motor}Slider`
-        );
+            area.setPointerCapture(
+                event.pointerId
+            );
 
-
-    slider.addEventListener(
-        "input",
-        function() {
-
-            const speed =
-                Number(slider.value);
-
-            motorSpeeds[motor] =
-                speed;
-
-            updateMotorDisplay(motor);
-
+            move(
+                event.clientX,
+                event.clientY
+            );
         }
     );
 
+
+    area.addEventListener(
+        "pointermove",
+        function(event) {
+
+            if (!active) return;
+
+            move(
+                event.clientX,
+                event.clientY
+            );
+        }
+    );
+
+
+    area.addEventListener(
+        "pointerup",
+        function() {
+
+            active = false;
+
+            center();
+        }
+    );
+
+
+    area.addEventListener(
+        "pointercancel",
+        function() {
+
+            active = false;
+
+            center();
+        }
+    );
 }
 
 
 /* =========================================================
-   MOTOR RUN BUTTONS
-========================================================= */
+   SEND FLIGHT COMMAND
+   ========================================================= */
 
-document
-    .querySelectorAll(".motor-run")
-    .forEach(function(button) {
-
-        button.addEventListener(
-            "click",
-            function() {
-
-                if (!droneArmed) {
-
-                    addConsole(
-                        "ARM the system first."
-                    );
-
-                    return;
-                }
+let lastFlightCommand = "";
 
 
-                const motor =
-                    Number(
-                        button.dataset.motor
-                    );
+function sendFlightCommand() {
+
+    const command =
+        "FLIGHT:" +
+        "T=" + throttle +
+        ",Y=" + yaw +
+        ",P=" + pitch +
+        ",R=" + roll;
 
 
-                const speed =
-                    motorSpeeds[motor];
+    updateFlightValues();
 
 
-                sendCommand(
-                    `M${motor} ${speed}`
-                );
+    /*
+       Reduce duplicate BLE packets.
+    */
 
-
-                addConsole(
-                    `Motor ${motor} → ${speed}%`
-                );
-
-            }
-        );
-
-    });
-
-
-/* =========================================================
-   MOTOR STOP BUTTONS
-========================================================= */
-
-document
-    .querySelectorAll(".motor-stop")
-    .forEach(function(button) {
-
-        button.addEventListener(
-            "click",
-            function() {
-
-                const motor =
-                    Number(
-                        button.dataset.motor
-                    );
-
-
-                motorSpeeds[motor] = 0;
-
-                updateMotorDisplay(motor);
-
-
-                sendCommand(
-                    `M${motor} 0`
-                );
-
-
-                addConsole(
-                    `Motor ${motor} → 0%`
-                );
-
-            }
-        );
-
-    });
-
-
-/* =========================================================
-   UPDATE MOTOR DISPLAY
-========================================================= */
-
-function updateMotorDisplay(motor) {
-
-    const speed =
-        motorSpeeds[motor];
-
-
-    document.getElementById(
-        `m${motor}Value`
-    ).textContent = speed;
-
-
-    document.getElementById(
-        `m${motor}Slider`
-    ).value = speed;
-
-}
-
-
-/* =========================================================
-   SET ALL MOTORS ZERO
-========================================================= */
-
-function setAllMotorsToZero() {
-
-    for (let motor = 1; motor <= 4; motor++) {
-
-        motorSpeeds[motor] = 0;
-
-        updateMotorDisplay(motor);
-
+    if (command === lastFlightCommand) {
+        return;
     }
 
 
-    masterSlider.value = 0;
+    lastFlightCommand = command;
 
-    masterSpeedValue.textContent = 0;
-    masterSpeedText.textContent = "0%";
 
+    sendCommand(command);
 }
 
 
 /* =========================================================
-   CALIBRATE ALL
-========================================================= */
+   VALUES
+   ========================================================= */
 
-document
-    .getElementById("calibrateBtn")
-    .addEventListener("click", function() {
+function updateFlightValues() {
 
-        sendCommand("CALIBRATE_ALL");
+    document.getElementById(
+        "throttleValue"
+    ).textContent = throttle;
 
-        addConsole(
-            "Calibration command sent."
-        );
+    document.getElementById(
+        "yawValue"
+    ).textContent = yaw;
 
-    });
+    document.getElementById(
+        "pitchValue"
+    ).textContent = pitch;
 
-
-/* =========================================================
-   INDIVIDUAL CALIBRATION
-========================================================= */
-
-for (let motor = 1; motor <= 4; motor++) {
-
-    document
-        .getElementById(
-            `calibrateM${motor}`
-        )
-        .addEventListener(
-            "click",
-            function() {
-
-                sendCommand(
-                    `CALIBRATE_M${motor}`
-                );
-
-                addConsole(
-                    `Calibration → M${motor}`
-                );
-
-            }
-        );
-
+    document.getElementById(
+        "rollValue"
+    ).textContent = roll;
 }
 
 
 /* =========================================================
-   CLEAR CONSOLE
-========================================================= */
+   BUTTON OVERRIDES
+   ========================================================= */
 
-document
-    .getElementById("clearConsoleBtn")
-    .addEventListener("click", function() {
+document.querySelector(
+    ".arm-btn"
+).onclick = function() {
 
-        consoleBox.innerHTML = "";
-
-    });
-
-
-/* =========================================================
-   CONSOLE
-========================================================= */
-
-function addConsole(message) {
-
-    const line =
-        document.createElement("div");
-
-    const time =
-        new Date().toLocaleTimeString();
-
-    line.textContent =
-        `[${time}] ${message}`;
-
-    consoleBox.appendChild(line);
-
-    consoleBox.scrollTop =
-        consoleBox.scrollHeight;
-
-}
+    armDrone();
+};
 
 
-/* =========================================================
-   INITIAL STATE
-========================================================= */
+document.querySelector(
+    ".disarm-btn"
+).onclick = function() {
 
-setAllMotorsToZero();
-
-addConsole(
-    "VAJRA website initialized."
-);
-
-addConsole(
-    "Login username: VAJRA"
-);
-
-addConsole(
-    "Bluetooth interface ready."
-);
+    disarmDrone();
+};
