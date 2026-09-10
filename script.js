@@ -1,53 +1,19 @@
 /* =====================================================
    VAJRA DRONE WEBSITE
-   LOGIN + NAVIGATION + JOYSTICKS + TELEMETRY + LOGS
+   LOGIN + PAGES + JOYSTICKS + BLE
    ===================================================== */
 
 
 /* ================= LOGIN ================= */
 
-const loginPage = document.getElementById("loginPage");
+const loginScreen = document.getElementById("loginScreen");
 const app = document.getElementById("app");
-
-const loginButton = document.getElementById("loginButton");
-const logoutButton = document.getElementById("logoutButton");
 
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 
+const loginBtn = document.getElementById("loginBtn");
 const loginError = document.getElementById("loginError");
-
-
-/*
-   IMPORTANT:
-   Every time the website opens, LOGIN is shown.
-   We intentionally do NOT save the login in localStorage.
-*/
-
-function showLogin() {
-
-    loginPage.classList.remove("hidden");
-    app.classList.add("hidden");
-
-    usernameInput.value = "";
-    passwordInput.value = "";
-
-    loginError.textContent = "";
-}
-
-
-function showApp() {
-
-    loginPage.classList.add("hidden");
-    app.classList.remove("hidden");
-
-    openPage("control");
-
-    addLog("AUTH", "VAJRA control interface unlocked");
-}
-
-
-loginButton.addEventListener("click", login);
 
 
 function login() {
@@ -57,15 +23,37 @@ function login() {
 
     if (username === "VAJRA" && password === "VAJRA") {
 
-        showApp();
+        loginError.textContent = "";
+
+        loginScreen.classList.add("hidden");
+        app.classList.remove("hidden");
+
+        addLog("LOGIN SUCCESSFUL");
+        addLog("VAJRA COMMAND CENTER OPENED");
 
     } else {
 
         loginError.textContent =
-            "ACCESS DENIED — INVALID VAJRA CREDENTIALS";
+            "❌ WRONG USERNAME OR PASSWORD";
 
+        passwordInput.value = "";
+        passwordInput.focus();
     }
 }
+
+
+loginBtn.addEventListener("click", login);
+
+
+/* ENTER KEY LOGIN */
+
+usernameInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        passwordInput.focus();
+    }
+
+});
 
 
 passwordInput.addEventListener("keydown", function(event) {
@@ -77,77 +65,55 @@ passwordInput.addEventListener("keydown", function(event) {
 });
 
 
-logoutButton.addEventListener("click", function() {
+/* ================= LOGOUT ================= */
 
-    addLog("AUTH", "User logged out");
+document.getElementById("logoutBtn")
+    .addEventListener("click", function() {
 
-    showLogin();
+        disconnectBluetooth();
 
-});
+        app.classList.add("hidden");
+        loginScreen.classList.remove("hidden");
+
+        usernameInput.value = "";
+        passwordInput.value = "";
+
+        addLog("USER LOGGED OUT");
+
+    });
 
 
 /* ================= PAGE NAVIGATION ================= */
 
 const navButtons =
-    document.querySelectorAll(".nav-button");
+    document.querySelectorAll(".nav-btn");
 
 const pages =
     document.querySelectorAll(".page");
 
 
-function openPage(pageName) {
-
-    pages.forEach(page => {
-
-        page.classList.remove("active-page");
-
-    });
-
-
-    navButtons.forEach(button => {
-
-        button.classList.remove("active");
-
-    });
-
-
-    const targetPage =
-        document.getElementById(pageName + "Page");
-
-    if (targetPage) {
-
-        targetPage.classList.add("active-page");
-
-    }
-
-
-    const targetButton =
-        document.querySelector(
-            `.nav-button[data-page="${pageName}"]`
-        );
-
-    if (targetButton) {
-
-        targetButton.classList.add("active");
-
-    }
-
-}
-
-
-navButtons.forEach(button => {
+navButtons.forEach(function(button) {
 
     button.addEventListener("click", function() {
 
-        const page =
-            this.getAttribute("data-page");
+        const target =
+            button.getAttribute("data-page");
 
-        openPage(page);
+        pages.forEach(function(page) {
+            page.classList.remove("active");
+        });
 
-        addLog(
-            "NAV",
-            `${page.toUpperCase()} page opened`
-        );
+        navButtons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        document
+            .getElementById(target)
+            .classList.add("active");
+
+        button.classList.add("active");
+
+        addLog("OPENED " + target);
 
     });
 
@@ -155,51 +121,283 @@ navButtons.forEach(button => {
 
 
 /* =====================================================
-   JOYSTICK SYSTEM
+   BLUETOOTH
    ===================================================== */
+
+let bluetoothDevice = null;
+let bluetoothServer = null;
+let bluetoothCharacteristic = null;
 
 
 /*
-   This is the important joystick fix.
-
-   The old problem usually happens when joystick movement
-   is calculated from the stick itself instead of the
-   whole joystick area.
-
-   Here the user can press/click ANYWHERE inside the
-   circular joystick.
-
-   The stick then moves to that location.
-
-   Pointer Events allow:
-   - Mouse
-   - Touch
-   - Pen
+   These UUIDs must match your ESP32-C3 BLE code.
 */
 
+const SERVICE_UUID =
+    "12345678-1234-1234-1234-1234567890ab";
+
+const CHARACTERISTIC_UUID =
+    "12345678-1234-1234-1234-1234567890ac";
+
+
+const connectBtn =
+    document.getElementById("connectBtn");
+
+const disconnectBtn =
+    document.getElementById("disconnectBtn");
+
+const bleLight =
+    document.getElementById("bleLight");
+
+const bleText =
+    document.getElementById("bleText");
+
+const bleDeviceName =
+    document.getElementById("bleDeviceName");
+
+const warningConnect =
+    document.getElementById("warningConnect");
+
+
+/* ================= BLE STATUS ================= */
+
+function setConnected(name) {
+
+    bleLight.classList.add("connected");
+
+    bleText.textContent = "CONNECTED";
+
+    bleDeviceName.textContent =
+        name || "VAJRA";
+
+    connectBtn.classList.add("hidden");
+
+    disconnectBtn.classList.remove("hidden");
+
+    warningConnect.textContent =
+        "✓ VAJRA CONNECTED — CONTROLS ENABLED";
+
+    warningConnect.style.color = "#00ff88";
+
+    document.getElementById("bluetoothSetting")
+        .textContent = "CONNECTED";
+
+    document.getElementById("teleLink")
+        .textContent = "ONLINE";
+
+    addLog("BLUETOOTH CONNECTED");
+
+}
+
+
+function setDisconnected() {
+
+    bleLight.classList.remove("connected");
+
+    bleText.textContent = "DISCONNECTED";
+
+    bleDeviceName.textContent =
+        "No device connected";
+
+    connectBtn.classList.remove("hidden");
+
+    disconnectBtn.classList.add("hidden");
+
+    warningConnect.textContent =
+        "⚠ CONNECT VAJRA TO ENABLE FLIGHT CONTROLS";
+
+    warningConnect.style.color = "#ffbf3f";
+
+    document.getElementById("bluetoothSetting")
+        .textContent = "DISCONNECTED";
+
+    document.getElementById("teleLink")
+        .textContent = "OFFLINE";
+
+    addLog("BLUETOOTH DISCONNECTED");
+
+}
+
+
+/* ================= CONNECT ================= */
+
+connectBtn.addEventListener("click", async function() {
+
+    if (!navigator.bluetooth) {
+
+        alert(
+            "Web Bluetooth is not supported in this browser.\n\n" +
+            "Use Google Chrome or Microsoft Edge."
+        );
+
+        addLog("WEB BLUETOOTH NOT SUPPORTED");
+
+        return;
+    }
+
+
+    try {
+
+        addLog("SEARCHING FOR VAJRA...");
+
+        bluetoothDevice =
+            await navigator.bluetooth.requestDevice({
+
+                filters: [
+                    {
+                        namePrefix: "VAJRA"
+                    }
+                ],
+
+                optionalServices: [
+                    SERVICE_UUID
+                ]
+
+            });
+
+
+        addLog(
+            "DEVICE FOUND: " +
+            (bluetoothDevice.name || "VAJRA")
+        );
+
+
+        bluetoothDevice.addEventListener(
+            "gattserverdisconnected",
+            function() {
+
+                bluetoothCharacteristic = null;
+                bluetoothServer = null;
+
+                setDisconnected();
+
+            }
+        );
+
+
+        bluetoothServer =
+            await bluetoothDevice.gatt.connect();
+
+
+        const service =
+            await bluetoothServer.getPrimaryService(
+                SERVICE_UUID
+            );
+
+
+        bluetoothCharacteristic =
+            await service.getCharacteristic(
+                CHARACTERISTIC_UUID
+            );
+
+
+        setConnected(
+            bluetoothDevice.name
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        addLog(
+            "BLE ERROR: " +
+            error.message
+        );
+
+        setDisconnected();
+
+    }
+
+});
+
+
+/* ================= DISCONNECT ================= */
+
+disconnectBtn.addEventListener(
+    "click",
+    disconnectBluetooth
+);
+
+
+function disconnectBluetooth() {
+
+    if (
+        bluetoothDevice &&
+        bluetoothDevice.gatt &&
+        bluetoothDevice.gatt.connected
+    ) {
+
+        bluetoothDevice.gatt.disconnect();
+
+    }
+
+    bluetoothDevice = null;
+    bluetoothServer = null;
+    bluetoothCharacteristic = null;
+
+    setDisconnected();
+
+}
+
+
+/* ================= SEND BLE COMMAND ================= */
+
+async function sendCommand(command) {
+
+    if (!bluetoothCharacteristic) {
+
+        addLog(
+            "COMMAND BLOCKED: VAJRA NOT CONNECTED"
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const data =
+            new TextEncoder().encode(command);
+
+        await bluetoothCharacteristic.writeValue(data);
+
+        addLog("TX → " + command);
+
+    } catch (error) {
+
+        addLog(
+            "TX ERROR: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   JOYSTICK
+   ===================================================== */
 
 class VirtualJoystick {
 
-    constructor(baseElement, stickElement, callback) {
+    constructor(baseId, stickId, callback) {
 
-        this.base = baseElement;
-        this.stick = stickElement;
+        this.base =
+            document.getElementById(baseId);
+
+        this.stick =
+            document.getElementById(stickId);
 
         this.callback = callback;
 
         this.active = false;
 
+        this.pointerId = null;
+
         this.x = 0;
         this.y = 0;
-
-
-        /*
-           Maximum distance the stick is allowed
-           to move from the center.
-        */
-
-        this.maxDistance =
-            this.base.clientWidth / 2 - 38;
 
 
         this.base.addEventListener(
@@ -227,48 +425,63 @@ class VirtualJoystick {
 
     start(event) {
 
-        /*
-           Prevent browser scrolling/dragging.
-        */
-
         event.preventDefault();
 
         this.active = true;
 
-        /*
-           Capture pointer so movement continues
-           even if pointer moves slightly outside.
-        */
+        this.pointerId = event.pointerId;
 
-        try {
-            this.base.setPointerCapture(event.pointerId);
-        } catch (e) {}
+        this.base.setPointerCapture(
+            event.pointerId
+        );
 
-        this.updatePosition(event);
+        this.update(event);
 
     }
 
 
     move(event) {
 
-        if (!this.active) return;
+        if (
+            !this.active ||
+            event.pointerId !== this.pointerId
+        ) {
+            return;
+        }
 
-        event.preventDefault();
-
-        this.updatePosition(event);
+        this.update(event);
 
     }
 
 
-    updatePosition(event) {
+    end(event) {
+
+        if (
+            !this.active ||
+            event.pointerId !== this.pointerId
+        ) {
+            return;
+        }
+
+        this.active = false;
+
+        this.pointerId = null;
+
+        this.x = 0;
+        this.y = 0;
+
+        this.stick.style.left = "90px";
+        this.stick.style.top = "90px";
+
+        this.callback(0, 0);
+
+    }
+
+
+    update(event) {
 
         const rect =
             this.base.getBoundingClientRect();
-
-
-        /*
-           Center of joystick.
-        */
 
         const centerX =
             rect.left + rect.width / 2;
@@ -276,116 +489,62 @@ class VirtualJoystick {
         const centerY =
             rect.top + rect.height / 2;
 
-
-        /*
-           Pointer distance from center.
-        */
-
-        let dx =
+        let x =
             event.clientX - centerX;
 
-        let dy =
+        let y =
             event.clientY - centerY;
 
 
-        /*
-           Calculate distance.
-        */
+        const radius =
+            rect.width / 2 - 35;
+
 
         const distance =
-            Math.sqrt(dx * dx + dy * dy);
+            Math.sqrt(x * x + y * y);
 
 
-        /*
-           If user pushes beyond the circle,
-           clamp the stick to the edge.
-        */
+        if (distance > radius) {
 
-        if (distance > this.maxDistance) {
+            x =
+                x / distance * radius;
 
-            const angle =
-                Math.atan2(dy, dx);
-
-            dx =
-                Math.cos(angle) *
-                this.maxDistance;
-
-            dy =
-                Math.sin(angle) *
-                this.maxDistance;
+            y =
+                y / distance * radius;
 
         }
 
 
-        this.x =
-            dx / this.maxDistance;
+        this.x = x / radius;
+        this.y = y / radius;
 
-        this.y =
-            dy / this.maxDistance;
-
-
-        /*
-           Move visual joystick.
-        */
 
         this.stick.style.left =
-            `calc(50% + ${dx}px)`;
+            (90 + x) + "px";
 
         this.stick.style.top =
-            `calc(50% + ${dy}px)`;
+            (90 + y) + "px";
 
-
-        /*
-           Send joystick values.
-        */
 
         this.callback(
             this.x,
-            -this.y
+            this.y
         );
-
-    }
-
-
-    end() {
-
-        if (!this.active) return;
-
-        this.active = false;
-
-        /*
-           Return joystick smoothly to center.
-        */
-
-        this.x = 0;
-        this.y = 0;
-
-        this.stick.style.left = "50%";
-        this.stick.style.top = "50%";
-
-        this.callback(0, 0);
 
     }
 
 }
 
 
-/* ================= JOYSTICK ELEMENTS ================= */
+/* =====================================================
+   JOYSTICK VALUES
+   ===================================================== */
 
-const leftJoystick =
-    document.getElementById("leftJoystick");
+let throttle = 0;
+let yaw = 0;
+let pitch = 0;
+let roll = 0;
 
-const leftStick =
-    document.getElementById("leftStick");
-
-const rightJoystick =
-    document.getElementById("rightJoystick");
-
-const rightStick =
-    document.getElementById("rightStick");
-
-
-/* ================= VALUES ================= */
 
 const throttleValue =
     document.getElementById("throttleValue");
@@ -400,210 +559,131 @@ const rollValue =
     document.getElementById("rollValue");
 
 
-/* ================= DRONE STATE ================= */
+function updateLeft(x, y) {
 
-let drone = {
+    yaw =
+        Math.round(x * 100);
 
-    throttle: 0,
-    yaw: 0,
+    throttle =
+        Math.round(-y * 100);
 
-    pitch: 0,
-    roll: 0,
-
-    armed: false
-
-};
-
-
-/* ================= LEFT JOYSTICK ================= */
-
-/*
-   Left:
-   X = YAW
-   Y = THROTTLE
-*/
-
-const leftControl =
-    new VirtualJoystick(
-        leftJoystick,
-        leftStick,
-        function(x, y) {
-
-            drone.yaw =
-                Math.round(x * 100);
-
-
-            /*
-               Bottom = 0
-               Top = 100
-            */
-
-            drone.throttle =
-                Math.round(
-                    ((y + 1) / 2) * 100
-                );
-
-
-            updateDisplay();
-
-        }
-    );
-
-
-/* ================= RIGHT JOYSTICK ================= */
-
-/*
-   Right:
-   X = ROLL
-   Y = PITCH
-*/
-
-const rightControl =
-    new VirtualJoystick(
-        rightJoystick,
-        rightStick,
-        function(x, y) {
-
-            drone.roll =
-                Math.round(x * 100);
-
-            drone.pitch =
-                Math.round(y * 100);
-
-            updateDisplay();
-
-        }
-    );
-
-
-/* =====================================================
-   DISPLAY UPDATE
-   ===================================================== */
-
-function updateDisplay() {
 
     throttleValue.textContent =
-        `${drone.throttle}%`;
+        throttle;
 
     yawValue.textContent =
-        `${drone.yaw}%`;
-
-    pitchValue.textContent =
-        `${drone.pitch}%`;
-
-    rollValue.textContent =
-        `${drone.roll}%`;
+        yaw;
 
 
-    document.getElementById("telePitch").textContent =
-        `${drone.pitch}°`;
+    updateMotors();
 
-    document.getElementById("teleRoll").textContent =
-        `${drone.roll}°`;
-
-    document.getElementById("teleYaw").textContent =
-        `${drone.yaw}°`;
-
-
-    calculateMotors();
+    sendCommand(
+        `JOY,${throttle},${yaw},${pitch},${roll}`
+    );
 
 }
+
+
+function updateRight(x, y) {
+
+    roll =
+        Math.round(x * 100);
+
+    pitch =
+        Math.round(-y * 100);
+
+
+    pitchValue.textContent =
+        pitch;
+
+    rollValue.textContent =
+        roll;
+
+
+    updateMotors();
+
+    sendCommand(
+        `JOY,${throttle},${yaw},${pitch},${roll}`
+    );
+
+}
+
+
+new VirtualJoystick(
+    "leftJoystick",
+    "leftStick",
+    updateLeft
+);
+
+
+new VirtualJoystick(
+    "rightJoystick",
+    "rightStick",
+    updateRight
+);
 
 
 /* =====================================================
    MOTOR MIXING
    ===================================================== */
 
-
-/*
-   Basic quadcopter-style mixing for the interface.
-
-   M1 = Front Right
-   M2 = Rear Right
-   M3 = Rear Left
-   M4 = Front Left
-
-   This follows your VAJRA motor numbering.
-*/
-
-
-function calculateMotors() {
-
-    let throttle =
-        drone.throttle;
-
-
-    let pitch =
-        drone.pitch * 0.35;
-
-    let roll =
-        drone.roll * 0.35;
-
-    let yaw =
-        drone.yaw * 0.20;
-
+function updateMotors() {
 
     let m1 =
-        throttle
-        - pitch
-        - roll
-        - yaw;
-
+        throttle +
+        pitch -
+        roll +
+        yaw;
 
     let m2 =
-        throttle
-        + pitch
-        - roll
-        + yaw;
-
+        throttle -
+        pitch -
+        roll -
+        yaw;
 
     let m3 =
-        throttle
-        + pitch
-        + roll
-        - yaw;
-
+        throttle -
+        pitch +
+        roll +
+        yaw;
 
     let m4 =
-        throttle
-        - pitch
-        + roll
-        + yaw;
+        throttle +
+        pitch +
+        roll -
+        yaw;
 
 
-    m1 = clamp(m1, 0, 100);
-    m2 = clamp(m2, 0, 100);
-    m3 = clamp(m3, 0, 100);
-    m4 = clamp(m4, 0, 100);
+    m1 = constrain(m1, 0, 100);
+    m2 = constrain(m2, 0, 100);
+    m3 = constrain(m3, 0, 100);
+    m4 = constrain(m4, 0, 100);
 
 
-    updateMotor("m1", m1);
-    updateMotor("m2", m2);
-    updateMotor("m3", m3);
-    updateMotor("m4", m4);
+    setMotor(
+        1,
+        m1
+    );
 
-}
+    setMotor(
+        2,
+        m2
+    );
 
+    setMotor(
+        3,
+        m3
+    );
 
-function updateMotor(name, value) {
-
-    const bar =
-        document.getElementById(name + "Bar");
-
-    const text =
-        document.getElementById(name + "Text");
-
-
-    bar.style.width =
-        `${value}%`;
-
-    text.textContent =
-        `${Math.round(value)}%`;
+    setMotor(
+        4,
+        m4
+    );
 
 }
 
 
-function clamp(value, min, max) {
+function constrain(value, min, max) {
 
     return Math.max(
         min,
@@ -613,273 +693,145 @@ function clamp(value, min, max) {
 }
 
 
+function setMotor(number, value) {
+
+    document.getElementById(
+        "m" + number + "Text"
+    ).textContent =
+        Math.round(value) + "%";
+
+
+    document.getElementById(
+        "m" + number + "Bar"
+    ).style.width =
+        value + "%";
+
+}
+
+
 /* =====================================================
-   COMMAND BUTTONS
+   FLIGHT BUTTONS
    ===================================================== */
 
-const armButton =
-    document.getElementById("armButton");
+document.getElementById("armBtn")
+    .addEventListener("click", function() {
 
-const takeoffButton =
-    document.getElementById("takeoffButton");
+        sendCommand("ARM");
 
-const landButton =
-    document.getElementById("landButton");
-
-const emergencyButton =
-    document.getElementById("emergencyButton");
-
-const commandStatus =
-    document.getElementById("commandStatus");
+    });
 
 
-armButton.addEventListener("click", function() {
+document.getElementById("takeoffBtn")
+    .addEventListener("click", function() {
 
-    drone.armed =
-        !drone.armed;
+        sendCommand("TAKEOFF");
 
-
-    if (drone.armed) {
-
-        commandStatus.textContent =
-            "SYSTEM ARMED — READY FOR FLIGHT";
-
-        armButton.textContent =
-            "DISARM";
-
-        addLog(
-            "FLIGHT",
-            "Drone armed"
-        );
-
-    } else {
-
-        commandStatus.textContent =
-            "SYSTEM STANDBY";
-
-        armButton.textContent =
-            "ARM";
-
-        addLog(
-            "FLIGHT",
-            "Drone disarmed"
-        );
-
-    }
-
-});
+    });
 
 
-takeoffButton.addEventListener("click", function() {
+document.getElementById("landBtn")
+    .addEventListener("click", function() {
 
-    if (!drone.armed) {
+        sendCommand("LAND");
 
-        commandStatus.textContent =
-            "ARM SYSTEM FIRST";
-
-        addLog(
-            "WARNING",
-            "Takeoff blocked — drone not armed"
-        );
-
-        return;
-
-    }
+    });
 
 
-    commandStatus.textContent =
-        "TAKEOFF COMMAND SENT";
+document.getElementById("stopBtn")
+    .addEventListener("click", function() {
 
-    addLog(
-        "FLIGHT",
-        "Takeoff command sent"
-    );
+        sendCommand("EMERGENCY");
 
-});
+        throttle = 0;
+        yaw = 0;
+        pitch = 0;
+        roll = 0;
 
+        updateMotors();
 
-landButton.addEventListener("click", function() {
-
-    commandStatus.textContent =
-        "LANDING COMMAND SENT";
-
-    addLog(
-        "FLIGHT",
-        "Landing command sent"
-    );
-
-});
-
-
-emergencyButton.addEventListener("click", function() {
-
-    drone.armed = false;
-
-    drone.throttle = 0;
-    drone.yaw = 0;
-    drone.pitch = 0;
-    drone.roll = 0;
-
-
-    updateDisplay();
-
-
-    armButton.textContent =
-        "ARM";
-
-
-    commandStatus.textContent =
-        "⚠ EMERGENCY STOP ACTIVATED";
-
-
-    addLog(
-        "EMERGENCY",
-        "Emergency stop activated"
-    );
-
-});
+    });
 
 
 /* =====================================================
-   LOG SYSTEM
+   LOGGING
    ===================================================== */
 
 const logContainer =
     document.getElementById("logContainer");
 
 
-function addLog(type, message) {
+function addLog(message) {
 
-    if (!logContainer) return;
-
-
-    const now =
-        new Date();
-
+    if (!logContainer) {
+        return;
+    }
 
     const time =
-        now.toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            }
-        );
+        new Date().toLocaleTimeString();
 
 
-    const entry =
+    const div =
         document.createElement("div");
 
+    div.className = "log";
 
-    entry.className =
-        "log-entry";
-
-
-    entry.innerHTML = `
-        <span>${time}</span>
-        <strong>${type}</strong>
-        ${message}
-    `;
+    div.innerHTML =
+        `<span>[${time}]</span> ${message}`;
 
 
-    logContainer.prepend(entry);
+    logContainer.prepend(div);
 
 }
 
 
-document
-    .getElementById("clearLogs")
+document.getElementById("clearLogs")
     .addEventListener("click", function() {
 
         logContainer.innerHTML = "";
 
-        addLog(
-            "SYSTEM",
-            "Flight logs cleared"
-        );
+        addLog("LOGS CLEARED");
 
     });
-
-
-/* =====================================================
-   SETTINGS
-   ===================================================== */
-
-const controlMode =
-    document.getElementById("controlMode");
-
-
-controlMode.addEventListener("click", function() {
-
-    this.classList.toggle("active");
-
-
-    if (this.classList.contains("active")) {
-
-        this.textContent = "ON";
-
-        addLog(
-            "SETTINGS",
-            "Joystick control enabled"
-        );
-
-    } else {
-
-        this.textContent = "OFF";
-
-        addLog(
-            "SETTINGS",
-            "Joystick control disabled"
-        );
-
-    }
-
-});
 
 
 /* =====================================================
    DEMO TELEMETRY
    ===================================================== */
 
-
-/*
-   These values are only simulated in the website.
-
-   They are NOT actual MPU6050 / ESP32 telemetry yet.
-*/
-
 setInterval(function() {
 
-    if (app.classList.contains("hidden")) {
-        return;
+    const link =
+        document.getElementById("teleLink").textContent;
+
+
+    if (link === "ONLINE") {
+
+        document.getElementById("speed")
+            .textContent =
+            Math.abs(throttle) + " km/h";
+
+        document.getElementById("telePitch")
+            .textContent =
+            pitch + "°";
+
+        document.getElementById("teleRoll")
+            .textContent =
+            roll + "°";
+
+        document.getElementById("teleYaw")
+            .textContent =
+            yaw + "°";
+
     }
 
-
-    const altitude =
-        drone.throttle * 0.04;
-
-
-    const speed =
-        Math.abs(drone.pitch) * 0.02 +
-        Math.abs(drone.roll) * 0.02;
-
-
-    document.getElementById("altitude").textContent =
-        altitude.toFixed(1) + " m";
-
-
-    document.getElementById("speed").textContent =
-        speed.toFixed(1) + " m/s";
-
-
-}, 300);
+}, 500);
 
 
 /* =====================================================
    INITIAL STATE
    ===================================================== */
 
-showLogin();
+setDisconnected();
 
-updateDisplay();
+addLog("VAJRA SYSTEM INITIALIZED");
+addLog("LOGIN REQUIRED");
