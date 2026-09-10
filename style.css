@@ -1,28 +1,33 @@
+/* ============================================================
+   VAJRA DRONE CONTROL SYSTEM
+   FUTURISTIC SCI-FI UI
+============================================================ */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html,
 body {
-    font-family: Arial, Helvetica, sans-serif;
-
-    background:
-        radial-gradient(circle at 50% 0%,
-        #14264b 0%,
-        #07101f 35%,
-        #02050a 75%);
-
+    width: 100%;
+    min-height: 100%;
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+    background: #020812;
     color: white;
-
-    min-height: 100vh;
 }
 
+body {
+    overflow-x: hidden;
+}
 
-/* PAGE */
-
-.page {
-    min-height: 100vh;
+button,
+input {
+    font-family: inherit;
 }
 
 .hidden {
@@ -30,327 +35,1095 @@ body {
 }
 
 
-/* LOGIN */
+/* ============================================================
+   GENERAL
+============================================================ */
 
-#loginPage {
+.page {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 100, 255, 0.14),
+            transparent 45%
+        );
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   LOGIN PAGE
+============================================================ */
+
+.login-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #062452 0%,
+            #020d20 38%,
+            #01050d 75%
+        );
+}
+
+
+/* futuristic grid */
+
+.grid-bg {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 125, 255, 0.08) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 125, 255, 0.08) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 25%,
+            black 75%,
+            transparent
+        );
+
+    pointer-events: none;
+}
+
+
+/* stars */
+
+.stars {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        radial-gradient(
+            white 1px,
+            transparent 1px
+        );
+
+    background-size: 110px 110px;
+
+    opacity: 0.25;
+}
+
+
+/* ============================================================
+   TOP LOGO
+============================================================ */
+
+.top-logo {
+    position: absolute;
+
+    top: 25px;
+    left: 50px;
+
+    display: flex;
+    align-items: center;
+
+    z-index: 5;
+}
+
+.logo-symbol {
+    width: 60px;
+    height: 60px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 25px;
+
+    font-size: 48px;
+    font-weight: 900;
+
+    color: #00bfff;
+
+    text-shadow:
+        0 0 10px #00aaff,
+        0 0 30px #008cff;
 }
+
+.brand {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            white,
+            #5dcfff,
+            #168dff
+        );
+
+    -webkit-background-clip: text;
+    color: transparent;
+
+    text-shadow:
+        0 0 25px rgba(0, 150, 255, 0.5);
+}
+
+.brand-sub {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #00bfff;
+}
+
+
+/* ============================================================
+   LOGIN LAYOUT
+============================================================ */
+
+.login-layout {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        minmax(400px, 570px)
+        1fr;
+
+    align-items: center;
+
+    gap: 30px;
+
+    padding: 90px 50px 40px;
+}
+
+
+/* ============================================================
+   DRONE AREA
+============================================================ */
+
+.login-drone-area {
+    position: relative;
+
+    min-height: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+.drone-placeholder {
+    font-size: 170px;
+
+    filter:
+        drop-shadow(0 0 20px #009dff)
+        drop-shadow(0 0 60px #0066ff);
+
+    animation:
+        droneFloat 4s ease-in-out infinite;
+}
+
+@keyframes droneFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-2deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(2deg);
+    }
+}
+
+.sky-title {
+    margin-top: 30px;
+
+    font-size: 26px;
+
+    letter-spacing: 7px;
+
+    font-weight: 700;
+
+    color: white;
+}
+
+.sky-title span {
+    color: #00c8ff;
+}
+
+
+/* ============================================================
+   LOGIN CARD
+============================================================ */
 
 .login-card {
 
-    width: 390px;
-    max-width: 100%;
+    position: relative;
 
-    padding: 45px 35px;
+    padding: 45px 40px;
 
-    background: rgba(10, 20, 38, 0.92);
+    border: 1px solid #008cff;
 
-    border: 1px solid rgba(0, 170, 255, 0.35);
-
-    border-radius: 25px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(3, 24, 52, 0.94),
+            rgba(0, 7, 19, 0.96)
+        );
 
     box-shadow:
-        0 0 30px rgba(0, 150, 255, 0.15),
-        inset 0 0 25px rgba(0, 150, 255, 0.04);
+        0 0 15px rgba(0, 130, 255, 0.4),
+        inset 0 0 40px rgba(0, 110, 255, 0.08);
+
+    clip-path:
+        polygon(
+            25px 0,
+            calc(100% - 25px) 0,
+            100% 25px,
+            100% calc(100% - 25px),
+            calc(100% - 25px) 100%,
+            25px 100%,
+            0 calc(100% - 25px),
+            0 25px
+        );
+}
+
+.login-card::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 7px;
+
+    border: 1px solid rgba(0, 174, 255, 0.2);
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   LOGIN LOGO
+============================================================ */
+
+.login-logo {
+    text-align: center;
+}
+
+.big-bolt {
+    font-size: 70px;
+
+    color: #00bfff;
+
+    text-shadow:
+        0 0 10px #00c8ff,
+        0 0 35px #0077ff,
+        0 0 70px #0055ff;
+}
+
+.login-logo h1 {
+    font-size: 54px;
+
+    letter-spacing: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #51cfff,
+            #007cff
+        );
+
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.login-logo p {
+    color: #00c7ff;
+
+    letter-spacing: 5px;
+
+    font-size: 12px;
+}
+
+.welcome {
+    text-align: center;
+
+    margin-top: 35px;
+
+    font-size: 25px;
+
+    color: #45d7ff;
+
+    letter-spacing: 2px;
+
+    font-weight: 700;
+}
+
+.login-description {
+    text-align: center;
+
+    color: #7bcfff;
+
+    margin: 8px 0 30px;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   INPUT
+============================================================ */
+
+.input-box {
+    position: relative;
+
+    height: 58px;
+
+    margin: 16px 0;
+
+    border: 1px solid #087dce;
+
+    background: rgba(0, 25, 55, 0.65);
+
+    display: flex;
+    align-items: center;
+
+    box-shadow:
+        inset 0 0 20px rgba(0, 130, 255, 0.08);
+
+    transition: 0.25s;
+}
+
+.input-box:focus-within {
+    border-color: #00c8ff;
+
+    box-shadow:
+        0 0 20px rgba(0, 150, 255, 0.25),
+        inset 0 0 20px rgba(0, 150, 255, 0.1);
+}
+
+.input-icon {
+    width: 55px;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    color: #51bfff;
+}
+
+.input-box input {
+    flex: 1;
+
+    height: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 17px;
+}
+
+.input-box input::placeholder {
+    color: #6685a8;
+}
+
+.show-password {
+    background: none;
+    border: none;
+
+    color: #55bfff;
+
+    cursor: pointer;
+
+    padding: 15px;
+}
+
+
+/* ============================================================
+   LOGIN BUTTON
+============================================================ */
+
+.login-button {
+    width: 100%;
+
+    height: 60px;
+
+    margin-top: 22px;
+
+    border: 1px solid #00d4ff;
+
+    background:
+        linear-gradient(
+            90deg,
+            #006fff,
+            #00bfff,
+            #007aff
+        );
+
+    color: white;
+
+    font-size: 18px;
+
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-around;
+
+    box-shadow:
+        0 0 15px rgba(0, 180, 255, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.15);
+
+    transition: 0.25s;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 30px rgba(0, 200, 255, 0.8);
+}
+
+
+/* ============================================================
+   LOGIN MESSAGE
+============================================================ */
+
+.login-message {
+    text-align: center;
+
+    min-height: 25px;
+
+    margin-top: 10px;
+
+    color: #00ffae;
+
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   CONNECT OPTIONS
+============================================================ */
+
+.or-connect {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 25px 0;
+
+    color: #3bbfff;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    white-space: nowrap;
+}
+
+.or-connect span {
+    height: 1px;
+
+    flex: 1;
+
+    background: #0879bd;
+}
+
+.connection-options {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    color: #44c9ff;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+}
+
+.connection-options div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.connection-options span {
+    font-size: 25px;
+}
+
+
+/* ============================================================
+   LOGIN FOOTER
+============================================================ */
+
+.login-footer {
+    margin-top: 30px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(0, 140, 255, 0.25);
+
+    text-align: center;
+
+    color: #238dcb;
+
+    font-size: 10px;
+
+    letter-spacing: 5px;
+}
+
+
+/* ============================================================
+   LOGIN FEATURES
+============================================================ */
+
+.login-features {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 28px;
+
+    padding-left: 20px;
+}
+
+.feature {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+.feature-icon {
+    width: 55px;
+    height: 55px;
+
+    border: 1px solid #008fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #00c8ff;
+
+    font-size: 25px;
+
+    background: rgba(0, 70, 150, 0.15);
+
+    box-shadow:
+        0 0 20px rgba(0, 130, 255, 0.25);
+}
+
+.feature b {
+    display: block;
+
+    color: #43d2ff;
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+}
+
+.feature small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #6f9fc1;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+
+.control-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #062b55,
+            #020914 48%,
+            #01050a
+        );
+}
+
+.control-grid-bg {
+    position: fixed;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 130, 255, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 130, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 45px 45px;
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.dashboard-header {
+    height: 90px;
+
+    border-bottom: 1px solid #064c80;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    position: relative;
+
+    z-index: 10;
+
+    background:
+        rgba(0, 10, 25, 0.88);
+
+    backdrop-filter: blur(10px);
+}
+
+.dashboard-logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.dashboard-bolt {
+    font-size: 48px;
+
+    color: #00c8ff;
+
+    text-shadow:
+        0 0 25px #008cff;
+}
+
+.dashboard-brand {
+    font-size: 32px;
+
+    font-weight: 800;
+
+    letter-spacing: 4px;
+}
+
+.dashboard-sub {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #28bfff;
+}
+
+.dashboard-header nav {
+    display: flex;
+
+    gap: 20px;
+
+    color: #20bfff;
+
+    letter-spacing: 4px;
+
+    font-size: 13px;
+}
+
+.dashboard-header nav .active {
+    color: white;
+}
+
+
+/* ============================================================
+   HEADER BLE
+============================================================ */
+
+.header-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.ble-status {
+    min-width: 210px;
+
+    border: 1px solid #07598e;
+
+    padding: 10px 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: rgba(0, 40, 80, 0.35);
+}
+
+.bluetooth-symbol {
+    font-size: 30px;
+
+    color: #00bfff;
+}
+
+.ble-status strong {
+    display: block;
+
+    color: #00ff9d;
+
+    font-size: 12px;
+}
+
+.ble-status small {
+    display: block;
+
+    color: #62a6c9;
+
+    margin-top: 3px;
+}
+
+.status-dot {
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    margin-left: auto;
+}
+
+.status-dot.red {
+    background: #ff3155;
+
+    box-shadow:
+        0 0 10px #ff3155;
+}
+
+.status-dot.green {
+    background: #00ff9d;
+
+    box-shadow:
+        0 0 10px #00ff9d;
+}
+
+.ble-connect {
+    height: 45px;
+
+    border: 1px solid #00aaff;
+
+    background: #002b59;
+
+    color: #5dd6ff;
+
+    padding: 0 16px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.ble-connect:hover {
+    background: #00529a;
+
+    box-shadow:
+        0 0 20px rgba(0, 160, 255, 0.5);
+}
+
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+.sidebar {
+    position: fixed;
+
+    top: 90px;
+    bottom: 35px;
+    left: 0;
+
+    width: 180px;
+
+    border-right: 1px solid #06426c;
+
+    background: rgba(0, 10, 22, 0.85);
+
+    padding-top: 25px;
+
+    z-index: 5;
+}
+
+.side-button {
+    width: 100%;
+
+    height: 65px;
+
+    border: none;
+
+    border-bottom: 1px solid rgba(0, 120, 220, 0.15);
+
+    background: transparent;
+
+    color: #6ba7c9;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding-left: 30px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+.side-button.active,
+.side-button:hover {
+    color: white;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 120, 255, 0.35),
+            transparent
+        );
+
+    border-left: 3px solid #00c8ff;
+
+    text-shadow:
+        0 0 10px #00aaff;
+}
+
+
+/* ============================================================
+   DASHBOARD CONTENT
+============================================================ */
+
+.dashboard {
+    margin-left: 180px;
+
+    padding: 20px 25px 55px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* ============================================================
+   PANELS
+============================================================ */
+
+.drone-banner,
+.transmitter-panel,
+.motor-panel,
+.system-panel,
+.telemetry-panel,
+.quick-panel {
+    border: 1px solid #075e96;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(2, 28, 55, 0.88),
+            rgba(0, 8, 18, 0.92)
+        );
+
+    box-shadow:
+        inset 0 0 35px rgba(0, 120, 255, 0.04),
+        0 0 20px rgba(0, 70, 150, 0.12);
+
+    position: relative;
+}
+
+
+/* ============================================================
+   DRONE BANNER
+============================================================ */
+
+.drone-banner {
+    min-height: 145px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 25px;
+
+    margin-bottom: 12px;
+
+    overflow: hidden;
+}
+
+.drone-banner h1 {
+    color: #d9f7ff;
+
+    font-size: 34px;
+
+    letter-spacing: 5px;
+}
+
+.drone-banner p {
+    color: #55cfff;
+
+    margin-top: 4px;
+}
+
+.drone-visual {
+    font-size: 105px;
+
+    filter:
+        drop-shadow(0 0 15px #008cff);
+
+    animation:
+        droneFloat 4s ease-in-out infinite;
+}
+
+.flight-mode {
+    border: 1px solid #087bc2;
+
+    padding: 14px 20px;
+
+    min-width: 145px;
+}
+
+.flight-mode small {
+    display: block;
+
+    color: #71a9c7;
+
+    font-size: 10px;
+}
+
+.flight-mode strong {
+    display: block;
+
+    color: #fff;
+
+    margin-top: 8px;
+
+    background: #075fe0;
+
+    padding: 7px;
 
     text-align: center;
 }
 
-.logo {
 
-    width: 90px;
-    height: 90px;
+/* ============================================================
+   MAIN COLUMNS
+============================================================ */
 
-    margin: auto;
-    margin-bottom: 20px;
+.main-columns {
+    display: grid;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    grid-template-columns:
+        minmax(0, 1fr)
+        360px;
 
-    border-radius: 50%;
-
-    background: rgba(0, 150, 255, 0.12);
-
-    border: 2px solid #00aaff;
-
-    font-size: 45px;
-
-    box-shadow:
-        0 0 30px rgba(0, 170, 255, 0.4);
-}
-
-.login-card h1 {
-
-    font-size: 42px;
-    letter-spacing: 7px;
-
-    color: #00b7ff;
-}
-
-.subtitle {
-
-    margin-top: 5px;
-    margin-bottom: 35px;
-
-    color: #8497ad;
-    font-size: 12px;
-    letter-spacing: 3px;
-}
-
-.input-group {
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.input-group label {
-
-    display: block;
-
-    color: #7f91a8;
-
-    font-size: 11px;
-
-    margin-bottom: 8px;
-
-    letter-spacing: 2px;
-}
-
-.input-group input {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    border: 1px solid #253b55;
-
-    background: #07101d;
-
-    color: white;
-
-    outline: none;
-
-    font-size: 15px;
-}
-
-.input-group input:focus {
-
-    border-color: #00aaff;
-
-    box-shadow: 0 0 15px rgba(0, 170, 255, 0.2);
-}
-
-.login-btn {
-
-    width: 100%;
-
-    padding: 16px;
-
-    margin-top: 10px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: linear-gradient(
-        90deg,
-        #0077ff,
-        #00c6ff
-    );
-
-    color: white;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
-
-    cursor: pointer;
-}
-
-#loginMessage {
-    margin-top: 15px;
-    color: #ff496c;
+    gap: 12px;
 }
 
 
-/* HEADER */
+/* ============================================================
+   PANEL TITLE
+============================================================ */
 
-header {
-
+.panel-title {
     display: flex;
 
-    justify-content: space-between;
-    align-items: center;
+    gap: 12px;
 
-    padding: 20px 5%;
+    padding: 15px 20px;
 
-    border-bottom: 1px solid rgba(0, 150, 255, 0.15);
-
-    background: rgba(2, 8, 18, 0.8);
-
-    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 130, 255, 0.2);
 }
 
-.brand {
-
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.bolt {
-    font-size: 35px;
-}
-
-.brand h1 {
-
+.title-icon {
     font-size: 25px;
-    letter-spacing: 5px;
-    color: #00b7ff;
+
+    color: #00c8ff;
+
+    text-shadow:
+        0 0 15px #008cff;
 }
 
-.brand span {
-
-    font-size: 10px;
-    color: #71869e;
-    letter-spacing: 2px;
-}
-
-.connection {
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    font-size: 11px;
-    letter-spacing: 1px;
-}
-
-#connectionDot {
-
-    width: 10px;
-    height: 10px;
-
-    border-radius: 50%;
-
-    background: #ff3d5c;
-
-    box-shadow: 0 0 10px #ff3d5c;
-}
-
-
-/* MAIN */
-
-main {
-
-    width: 1100px;
-    max-width: 94%;
-
-    margin: 30px auto;
-}
-
-.card {
-
-    background: rgba(7, 16, 30, 0.82);
-
-    border: 1px solid rgba(0, 160, 255, 0.18);
-
-    border-radius: 22px;
-
-    padding: 25px;
-
-    margin-bottom: 22px;
-
-    box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.25);
-}
-
-.connection-card {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-}
-
-.card h2 {
-
+.panel-title h2 {
     font-size: 17px;
-    letter-spacing: 1px;
-}
 
-.card p {
-
-    color: #74869b;
-    font-size: 12px;
-
-    margin-top: 5px;
-}
-
-.blue-btn {
-
-    border: none;
-
-    padding: 13px 25px;
-
-    border-radius: 10px;
-
-    color: white;
-
-    background: #007dff;
-
-    cursor: pointer;
-
-    font-weight: bold;
-}
-
-
-/* SECTION */
-
-.section-title {
-
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 25px;
-}
-
-.status-badge,
-.warning {
-
-    padding: 8px 14px;
-
-    border-radius: 20px;
-
-    font-size: 10px;
+    color: #cbeeff;
 
     letter-spacing: 1px;
 }
 
-.status-badge {
+.panel-title p {
+    font-size: 11px;
 
-    background: rgba(255, 60, 90, 0.12);
-    color: #ff506c;
-}
+    color: #6e9fbd;
 
-.warning {
-
-    background: rgba(255, 180, 0, 0.1);
-    color: #ffc400;
+    margin-top: 3px;
 }
 
 
-/* REMOTE */
+/* ============================================================
+   TRANSMITTER
+============================================================ */
 
-.remote {
+.transmitter-content {
+    min-height: 400px;
 
     display: grid;
 
@@ -359,429 +1132,927 @@ main {
         180px
         1fr;
 
-    gap: 35px;
-
     align-items: center;
 
-    max-width: 900px;
-
-    margin: auto;
+    padding: 20px;
 }
 
 .stick-section {
-
     text-align: center;
 }
 
-.stick-title {
+.stick-section h3 {
+    color: #44d4ff;
+
+    font-size: 13px;
+}
+
+.stick-section p {
+    color: #79aeca;
 
     font-size: 11px;
 
-    color: #8195aa;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 15px;
+    margin-top: 5px;
 }
 
 .joystick {
+    width: 205px;
+    height: 205px;
+
+    margin: 18px auto;
+
+    border-radius: 50%;
 
     position: relative;
 
-    width: 230px;
-    height: 230px;
-
-    max-width: 100%;
-    margin: auto;
-
-    border-radius: 50%;
+    border: 2px solid #008cff;
 
     background:
         radial-gradient(
             circle,
-            #172940,
-            #08111f
+            #063c67,
+            #021426 65%,
+            #010812
         );
 
-    border: 2px solid #21405e;
-
     box-shadow:
-        inset 0 0 30px rgba(0, 160, 255, 0.08),
-        0 0 20px rgba(0, 140, 255, 0.08);
+        0 0 15px #007cff,
+        inset 0 0 30px rgba(0, 140, 255, 0.2);
 
     touch-action: none;
 }
 
-.axis {
+.joystick::before,
+.joystick::after {
+    content: "";
 
     position: absolute;
 
-    background: rgba(0, 170, 255, 0.12);
+    background: rgba(0, 174, 255, 0.4);
 }
 
-.axis.vertical {
-
+.joystick::before {
     width: 1px;
     height: 100%;
 
     left: 50%;
 }
 
-.axis.horizontal {
-
+.joystick::after {
     width: 100%;
     height: 1px;
 
     top: 50%;
 }
 
-.stick {
+.stick-ring {
+    position: absolute;
 
+    inset: 15px;
+
+    border: 1px dashed rgba(0, 188, 255, 0.45);
+
+    border-radius: 50%;
+}
+
+.stick-knob {
     position: absolute;
 
     width: 65px;
     height: 65px;
 
-    left: calc(50% - 32.5px);
-    top: calc(50% - 32.5px);
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle at 35% 30%,
-            #36d5ff,
-            #0073c9 60%,
-            #003d70
+            #dfffff,
+            #25a9ff 30%,
+            #075da8 55%,
+            #021b34
         );
 
-    border: 3px solid #5ee2ff;
+    border: 2px solid #00bfff;
 
     box-shadow:
-        0 0 25px rgba(0, 190, 255, 0.5);
+        0 0 20px #009cff;
 
-    pointer-events: none;
+    cursor: grab;
+
+    z-index: 3;
 }
 
-.stick-label {
+.stick-knob:active {
+    cursor: grabbing;
+}
 
-    margin-top: 15px;
+.stick-labels {
+    color: #43cfff;
 
     font-size: 10px;
 
-    color: #6f849b;
-
     letter-spacing: 1px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
 }
 
 
-/* CENTER */
+/* ============================================================
+   CENTER TRANSMITTER
+============================================================ */
 
-.remote-center {
-
+.transmitter-center {
     text-align: center;
 }
 
 .vajra-symbol {
+    color: #00c8ff;
 
-    font-size: 45px;
-
-    color: #00b7ff;
+    font-size: 48px;
 
     text-shadow:
-        0 0 20px #00b7ff;
+        0 0 20px #008cff;
 }
 
-.remote-name {
-
-    font-size: 22px;
+.transmitter-center h2 {
+    color: #22bfff;
 
     letter-spacing: 5px;
 
-    font-weight: bold;
+    font-size: 18px;
 }
 
-.remote-mode {
+.arm-status {
+    border: 1px solid #076292;
 
-    color: #647b94;
+    padding: 12px;
+
+    margin: 18px 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-align: left;
+}
+
+.arm-indicator {
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #ff3455;
+
+    box-shadow:
+        0 0 10px #ff3455;
+}
+
+.arm-indicator.armed {
+    background: #00ff9d;
+
+    box-shadow:
+        0 0 15px #00ff9d;
+}
+
+.arm-status strong {
+    display: block;
+
+    font-size: 12px;
+}
+
+.arm-status small {
+    display: block;
+
+    color: #6c9ab7;
 
     font-size: 9px;
 
-    letter-spacing: 2px;
-
-    margin: 5px 0 20px;
+    margin-top: 3px;
 }
 
-.remote-center button {
-
+.arm-button,
+.disarm-button,
+.emergency-button {
     width: 100%;
 
     border: none;
 
-    padding: 12px;
+    height: 42px;
 
-    border-radius: 10px;
-
-    margin-bottom: 9px;
-
-    color: white;
+    margin: 5px 0;
 
     cursor: pointer;
 
-    font-weight: bold;
+    font-weight: 700;
+
+    color: white;
+
+    transition: 0.2s;
 }
 
-.arm-btn {
-    background: #0b8f58;
+.arm-button {
+    background:
+        linear-gradient(
+            90deg,
+            #008d61,
+            #00c978
+        );
 }
 
-.disarm-btn {
-    background: #444e5a;
+.disarm-button {
+    background:
+        linear-gradient(
+            90deg,
+            #36546c,
+            #657f96
+        );
 }
 
-.stop-btn {
-    background: #bd2340;
+.emergency-button {
+    background:
+        linear-gradient(
+            90deg,
+            #bd1538,
+            #ff3154
+        );
+
+    box-shadow:
+        0 0 15px rgba(255, 40, 80, 0.25);
+}
+
+.arm-button:hover,
+.disarm-button:hover,
+.emergency-button:hover {
+    transform: scale(1.02);
 }
 
 
-/* FLIGHT */
+/* ============================================================
+   FLIGHT VALUES
+============================================================ */
 
-.flight-grid {
-
+.flight-values {
     display: grid;
 
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 12px;
+    gap: 8px;
+
+    padding: 10px 15px 15px;
 }
 
-.value-box {
+.value-card {
+    border: 1px solid #075d91;
 
-    padding: 20px;
-
-    background: #081321;
-
-    border-radius: 13px;
-
-    border: 1px solid #152b42;
+    padding: 15px;
 
     text-align: center;
+
+    background: rgba(0, 25, 50, 0.45);
 }
 
-.value-box span {
-
+.value-card span {
     display: block;
 
-    color: #657a91;
+    color: #a9d9ec;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+.value-card strong {
+    display: block;
+
+    font-size: 22px;
+
+    color: #00c8ff;
+
+    margin: 7px;
+}
+
+.value-bar {
+    height: 6px;
+
+    background: #08273e;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+.value-bar i {
+    display: block;
+
+    height: 100%;
+
+    width: 0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #006cff,
+            #00d4ff
+        );
+}
+
+.value-card small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #61869d;
+
+    font-size: 8px;
+}
+
+
+/* ============================================================
+   MOTOR PANEL
+============================================================ */
+
+.motor-panel {
+    padding-bottom: 15px;
+}
+
+.all-motors {
+    margin: 15px;
+
+    border: 1px solid #075d91;
+
+    padding: 14px;
+}
+
+.motor-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #40cfff;
+
+    font-size: 12px;
+}
+
+input[type="range"] {
+    width: 100%;
+
+    appearance: none;
+
+    height: 7px;
+
+    border-radius: 10px;
+
+    background: #092b43;
+
+    outline: none;
+
+    margin-top: 12px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    background: #39caff;
+
+    border: 2px solid white;
+
+    box-shadow:
+        0 0 15px #00aaff;
+
+    cursor: pointer;
+}
+
+.range-labels {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #628ba6;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+}
+
+.range-labels strong,
+.range-labels span:nth-child(2) {
+    color: #42d2ff;
+}
+
+.motor-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 12px 15px;
+}
+
+.motor-number {
+    width: 37px;
+    height: 37px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+
+    border: 2px solid;
+}
+
+.m1 {
+    border-color: #ff3355;
+    color: #ff6680;
+}
+
+.m2 {
+    border-color: #ffad1f;
+    color: #ffc35b;
+}
+
+.m3 {
+    border-color: #00e4bd;
+    color: #00e4bd;
+}
+
+.m4 {
+    border-color: #28aaff;
+    color: #28aaff;
+}
+
+.motor-info {
+    flex: 1;
+}
+
+.motor-info > strong {
+    font-size: 12px;
+
+    color: #bce8f9;
+}
+
+.motor-status {
+    border-top: 1px solid rgba(0, 120, 220, 0.2);
+
+    margin-top: 15px;
+
+    padding: 15px;
+}
+
+.motor-status h3 {
+    font-size: 11px;
+
+    color: #81b5ce;
+
+    margin-bottom: 12px;
+}
+
+.rpm-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    text-align: center;
+
+    color: #5db7da;
+
+    font-size: 9px;
+}
+
+.rpm-circle {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    border: 4px solid #087bc1;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    color: #00d2ff;
+}
+
+.rpm-circle span {
+    font-size: 13px;
+}
+
+.rpm-circle small {
+    font-size: 7px;
+}
+
+.test-warning {
+    text-align: center;
+
+    color: #ffc328;
 
     font-size: 9px;
 
     letter-spacing: 1px;
 }
 
-.value-box strong {
 
-    display: block;
+/* ============================================================
+   BOTTOM
+============================================================ */
 
-    margin-top: 8px;
+.bottom-columns {
+    display: grid;
 
-    color: #00b7ff;
+    grid-template-columns:
+        230px
+        1fr
+        330px;
 
-    font-size: 23px;
+    gap: 12px;
+
+    margin-top: 12px;
+}
+
+.system-panel,
+.telemetry-panel,
+.quick-panel {
+    padding: 16px;
+}
+
+.system-panel h2,
+.telemetry-panel h2,
+.quick-panel h2 {
+    color: #42cfff;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
+
+.system-row {
+    display: grid;
+
+    grid-template-columns:
+        12px 1fr auto;
+
+    gap: 8px;
+
+    align-items: center;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid rgba(0, 100, 180, 0.12);
+
+    font-size: 10px;
+
+    color: #7ba7bc;
+}
+
+.system-row strong {
+    color: #00ff9d;
+
+    font-size: 9px;
+}
+
+.green-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #00ff8c;
+
+    box-shadow:
+        0 0 8px #00ff8c;
 }
 
 
-/* THROTTLE */
+/* ============================================================
+   TELEMETRY
+============================================================ */
 
-.throttle-control {
-
-    margin-bottom: 25px;
-}
-
-.throttle-control label {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    color: #9aacc0;
-
-    font-size: 12px;
-
-    margin-bottom: 12px;
-}
-
-input[type="range"] {
-
-    width: 100%;
-
-    accent-color: #00aaff;
-
-    cursor: pointer;
-}
-
-
-/* MOTORS */
-
-.motor-grid {
-
+.telemetry-grid {
     display: grid;
 
     grid-template-columns:
         repeat(4, 1fr);
 
-    gap: 15px;
+    gap: 8px;
 }
 
-.motor {
+.telemetry-grid div {
+    border: 1px solid #07547f;
 
-    background: #081321;
-
-    padding: 18px;
-
-    border-radius: 14px;
+    padding: 15px 8px;
 
     text-align: center;
 }
 
-.motor h3 {
-
-    font-size: 13px;
-
-    color: #8ca0b7;
-
-    margin-bottom: 12px;
-}
-
-.motor span {
-
+.telemetry-grid span {
     display: block;
-
-    margin-top: 8px;
-
-    color: #00b7ff;
-
-    font-weight: bold;
-}
-
-
-/* SYSTEM */
-
-.system-row {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 14px 0;
-
-    border-bottom: 1px solid #142335;
-
-    font-size: 12px;
-}
-
-.system-row span {
-    color: #71849a;
-}
-
-.system-row strong {
-    color: #00b7ff;
-}
-
-
-/* FOOTER */
-
-footer {
-
-    text-align: center;
-
-    padding: 25px;
-
-    color: #4c6075;
 
     font-size: 9px;
 
-    letter-spacing: 2px;
+    color: #6997b0;
+}
+
+.telemetry-grid strong {
+    display: block;
+
+    color: #00c8ff;
+
+    font-size: 16px;
+
+    margin-top: 7px;
 }
 
 
-/* MOBILE */
+/* ============================================================
+   QUICK ACTIONS
+============================================================ */
 
-@media(max-width: 800px) {
+.quick-grid {
+    display: grid;
 
-    header {
-        padding: 16px;
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+}
+
+.quick-grid button {
+    min-height: 65px;
+
+    background:
+        rgba(0, 40, 75, 0.5);
+
+    border: 1px solid #086aa1;
+
+    color: #45cfff;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+}
+
+.quick-grid button:hover {
+    background: #063c6b;
+
+    box-shadow:
+        0 0 15px rgba(0, 150, 255, 0.3);
+}
+
+.quick-grid span {
+    font-size: 8px;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.dashboard-footer {
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 35px;
+
+    background: #01060d;
+
+    border-top: 1px solid #073958;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 0 25px;
+
+    color: #4d91b3;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+.footer-right {
+    margin-left: auto;
+
+    color: #3ebfff;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1200px) {
+
+    .login-layout {
+        grid-template-columns:
+            1fr
+            minmax(380px, 550px)
+            1fr;
     }
 
-    .connection {
-        font-size: 8px;
+    .login-drone-area {
+        display: none;
     }
 
-    .remote {
-
-        grid-template-columns: 1fr 1fr;
-
-        gap: 20px;
+    .main-columns {
+        grid-template-columns:
+            1fr;
     }
 
-    .remote-center {
-
-        grid-column: 1 / 3;
-        grid-row: 2;
+    .bottom-columns {
+        grid-template-columns:
+            1fr 1fr;
     }
 
-    .joystick {
-        width: 170px;
-        height: 170px;
+    .quick-panel {
+        grid-column: span 2;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .top-logo {
+        left: 20px;
     }
 
-    .stick {
-        width: 52px;
-        height: 52px;
-
-        left: calc(50% - 26px);
-        top: calc(50% - 26px);
+    .brand {
+        font-size: 27px;
     }
 
-    .flight-grid {
+    .login-layout {
+        padding:
+            90px 15px 30px;
+    }
 
+    .login-features {
+        display: none;
+    }
+
+    .login-card {
+        padding: 35px 22px;
+    }
+
+    .sidebar {
+        position: relative;
+
+        top: auto;
+        bottom: auto;
+
+        width: 100%;
+
+        height: auto;
+
+        display: flex;
+
+        overflow-x: auto;
+    }
+
+    .side-button {
+        min-width: 130px;
+
+        justify-content: center;
+
+        padding: 0;
+    }
+
+    .dashboard {
+        margin-left: 0;
+
+        padding: 10px;
+    }
+
+    .dashboard-header {
+        height: auto;
+
+        padding: 15px;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+    }
+
+    .dashboard-header nav {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .header-status {
+        margin-left: auto;
+    }
+
+    .transmitter-content {
+        grid-template-columns:
+            1fr;
+    }
+
+    .transmitter-center {
+        order: -1;
+
+        margin-bottom: 20px;
+    }
+
+    .flight-values {
         grid-template-columns:
             repeat(2, 1fr);
     }
 
-    .motor-grid {
+    .bottom-columns {
+        grid-template-columns:
+            1fr;
+    }
 
+    .quick-panel {
+        grid-column: auto;
+    }
+
+    .telemetry-grid {
         grid-template-columns:
             repeat(2, 1fr);
     }
 }
 
 
-@media(max-width: 450px) {
+@media (max-width: 500px) {
 
-    main {
-        max-width: 96%;
+    .dashboard-brand {
+        font-size: 25px;
     }
 
-    .card {
-        padding: 17px;
-    }
-
-    .brand h1 {
-        font-size: 20px;
-    }
-
-    .brand span {
+    .dashboard-sub {
         font-size: 7px;
     }
 
-    .remote {
-        gap: 10px;
+    .ble-status {
+        min-width: 0;
+    }
+
+    .ble-status strong {
+        font-size: 9px;
+    }
+
+    .ble-connect {
+        padding: 0 8px;
+
+        font-size: 9px;
     }
 
     .joystick {
-        width: 145px;
-        height: 145px;
+        width: 185px;
+        height: 185px;
+    }
+
+    .quick-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 }
