@@ -1,1 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAJRA | Drone Control System</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= LOGIN SCREEN ================= -->
+    <section id="loginScreen" class="login-screen">
+
+        <div class="login-glow"></div>
+
+        <div class="login-card">
+
+            <div class="logo">
+                <span class="bolt">⚡</span>
+                <h1>VAJRA</h1>
+                <p>DRONE CONTROL SYSTEM</p>
+            </div>
+
+            <div class="login-line"></div>
+
+            <label>USERNAME</label>
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                autocomplete="off"
+            >
+
+            <label>PASSWORD</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+            >
+
+            <button id="loginBtn" class="login-btn">
+                ENTER VAJRA
+            </button>
+
+            <p id="loginError" class="login-error"></p>
+
+            <div class="login-status">
+                <span class="status-dot"></span>
+                SYSTEM READY
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================= MAIN APPLICATION ================= -->
+    <div id="app" class="app hidden">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="brand">
+                <div class="brand-icon">⚡</div>
+
+                <div>
+                    <h1>VAJRA</h1>
+                    <span>DRONE COMMAND SYSTEM</span>
+                </div>
+            </div>
+
+            <div class="connection-area">
+
+                <div class="ble-status">
+                    <span id="bleLight" class="ble-light disconnected"></span>
+
+                    <div>
+                        <strong id="bleText">DISCONNECTED</strong>
+                        <small id="bleDeviceName">
+                            No device connected
+                        </small>
+                    </div>
+                </div>
+
+                <button id="connectBtn" class="connect-btn">
+                    CONNECT VAJRA
+                </button>
+
+                <button id="disconnectBtn"
+                        class="disconnect-btn hidden">
+                    DISCONNECT
+                </button>
+
+                <button id="logoutBtn" class="logout-btn">
+                    LOGOUT
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
+
+            <div class="system-title">
+                <span>VAJRA</span>
+                <small>COMMAND CENTER</small>
+            </div>
+
+            <nav>
+
+                <button class="nav-item active"
+                        data-page="control">
+                    <span>🎮</span>
+                    <span>CONTROL</span>
+                </button>
+
+                <button class="nav-item"
+                        data-page="telemetry">
+                    <span>📡</span>
+                    <span>TELEMETRY</span>
+                </button>
+
+                <button class="nav-item"
+                        data-page="settings">
+                    <span>⚙️</span>
+                    <span>SETTINGS</span>
+                </button>
+
+                <button class="nav-item"
+                        data-page="logs">
+                    <span>📋</span>
+                    <span>LOGS</span>
+                </button>
+
+                <button class="nav-item"
+                        data-page="about">
+                    <span>ⓘ</span>
+                    <span>ABOUT</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="fc-status">
+                    <span class="status-dot"></span>
+                    FLIGHT CONTROLLER
+                    <strong>READY</strong>
+                </div>
+
+                <div class="version">
+                    VAJRA SYSTEM v1.0
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="main-content">
+
+            <!-- ============================================= -->
+            <!-- CONTROL PAGE -->
+            <!-- ============================================= -->
+
+            <section id="controlPage"
+                     class="page active-page">
+
+                <div class="page-header">
+
+                    <div>
+                        <span class="section-label">
+                            COMMAND
+                        </span>
+
+                        <h2>
+                            FLIGHT CONTROL
+                        </h2>
+
+                        <p>
+                            Control your VAJRA drone from the command center.
+                        </p>
+                    </div>
+
+                    <div id="warningConnect"
+                         class="warning-box">
+                        ⚠ CONNECT VAJRA TO ENABLE CONTROLS
+                    </div>
+
+                </div>
+
+
+                <!-- FLIGHT CONTROLS -->
+
+                <div class="control-grid">
+
+                    <!-- LEFT JOYSTICK -->
+                    <div class="joystick-panel">
+
+                        <h3>THROTTLE / YAW</h3>
+
+                        <div class="joystick"
+                             id="leftJoystick">
+
+                            <div class="joystick-ring ring-1"></div>
+                            <div class="joystick-ring ring-2"></div>
+
+                            <div class="joystick-cross horizontal"></div>
+                            <div class="joystick-cross vertical"></div>
+
+                            <div id="leftStick"
+                                 class="stick">
+                            </div>
+
+                        </div>
+
+                        <div class="joystick-values">
+
+                            <span>
+                                THR:
+                                <b id="throttleValue">0</b>
+                            </span>
+
+                            <span>
+                                YAW:
+                                <b id="yawValue">0</b>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RIGHT JOYSTICK -->
+                    <div class="joystick-panel">
+
+                        <h3>PITCH / ROLL</h3>
+
+                        <div class="joystick"
+                             id="rightJoystick">
+
+                            <div class="joystick-ring ring-1"></div>
+                            <div class="joystick-ring ring-2"></div>
+
+                            <div class="joystick-cross horizontal"></div>
+                            <div class="joystick-cross vertical"></div>
+
+                            <div id="rightStick"
+                                 class="stick">
+                            </div>
+
+                        </div>
+
+                        <div class="joystick-values">
+
+                            <span>
+                                PIT:
+                                <b id="pitchValue">0</b>
+                            </span>
+
+                            <span>
+                                ROL:
+                                <b id="rollValue">0</b>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMMAND PANEL -->
+                    <div class="command-panel">
+
+                        <h3>FLIGHT COMMANDS</h3>
+
+                        <button id="armBtn"
+                                class="command arm">
+                            ARM
+                        </button>
+
+                        <button id="takeoffBtn"
+                                class="command takeoff">
+                            TAKE OFF
+                        </button>
+
+                        <button id="landBtn"
+                                class="command land">
+                            LAND
+                        </button>
+
+                        <button id="stopBtn"
+                                class="command emergency">
+                            EMERGENCY STOP
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MOTOR OUTPUT -->
+
+                <div class="motor-section">
+
+                    <div class="panel-title">
+                        <span>⚙ MOTOR OUTPUT</span>
+                        <small>ESC CHANNEL MONITOR</small>
+                    </div>
+
+                    <div class="motor-grid">
+
+                        <div class="motor-card">
+
+                            <div class="motor-header">
+                                <span>M1</span>
+                                <strong id="m1Text">
+                                    0%
+                                </strong>
+                            </div>
+
+                            <div class="motor-bar">
+                                <div id="m1Bar"
+                                     class="motor-fill">
+                                </div>
+                            </div>
+
+                            <small>
+                                FRONT RIGHT
+                            </small>
+
+                        </div>
+
+
+                        <div class="motor-card">
+
+                            <div class="motor-header">
+                                <span>M2</span>
+                                <strong id="m2Text">
+                                    0%
+                                </strong>
+                            </div>
+
+                            <div class="motor-bar">
+                                <div id="m2Bar"
+                                     class="motor-fill">
+                                </div>
+                            </div>
+
+                            <small>
+                                REAR RIGHT
+                            </small>
+
+                        </div>
+
+
+                        <div class="motor-card">
+
+                            <div class="motor-header">
+                                <span>M3</span>
+                                <strong id="m3Text">
+                                    0%
+                                </strong>
+                            </div>
+
+                            <div class="motor-bar">
+                                <div id="m3Bar"
+                                     class="motor-fill">
+                                </div>
+                            </div>
+
+                            <small>
+                                REAR LEFT
+                            </small>
+
+                        </div>
+
+
+                        <div class="motor-card">
+
+                            <div class="motor-header">
+                                <span>M4</span>
+                                <strong id="m4Text">
+                                    0%
+                                </strong>
+                            </div>
+
+                            <div class="motor-bar">
+                                <div id="m4Bar"
+                                     class="motor-fill">
+                                </div>
+                            </div>
+
+                            <small>
+                                FRONT LEFT
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================================= -->
+            <!-- TELEMETRY PAGE -->
+            <!-- ============================================= -->
+
+            <section id="telemetryPage"
+                     class="page">
+
+                <div class="page-header">
+
+                    <div>
+                        <span class="section-label">
+                            LIVE DATA
+                        </span>
+
+                        <h2>
+                            TELEMETRY
+                        </h2>
+
+                        <p>
+                            Flight controller information.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="telemetry-grid">
+
+                    <div class="telemetry-card">
+                        <span>ALTITUDE</span>
+                        <strong id="altitude">
+                            0.0 m
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>BATTERY</span>
+                        <strong id="battery">
+                            100%
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>VOLTAGE</span>
+                        <strong id="voltage">
+                            12.6 V
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>SPEED</span>
+                        <strong id="speed">
+                            0 km/h
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>PITCH</span>
+                        <strong id="telePitch">
+                            0°
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>ROLL</span>
+                        <strong id="teleRoll">
+                            0°
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>YAW</span>
+                        <strong id="teleYaw">
+                            0°
+                        </strong>
+                    </div>
+
+                    <div class="telemetry-card">
+                        <span>LINK</span>
+                        <strong id="teleLink">
+                            OFFLINE
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="telemetry-panel">
+
+                    <div class="panel-title">
+                        MPU6050
+                        <small>FLIGHT CONTROLLER #1</small>
+                    </div>
+
+                    <div class="sensor-status">
+
+                        <div>
+                            <span class="status-dot"></span>
+                            IMU SENSOR
+                        </div>
+
+                        <strong>
+                            READY
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================================= -->
+            <!-- SETTINGS PAGE -->
+            <!-- ============================================= -->
+
+            <section id="settingsPage"
+                     class="page">
+
+                <div class="page-header">
+
+                    <div>
+                        <span class="section-label">
+                            SYSTEM
+                        </span>
+
+                        <h2>
+                            SETTINGS
+                        </h2>
+
+                        <p>
+                            VAJRA system configuration.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-container">
+
+                    <div class="setting-card">
+
+                        <span>
+                            FLIGHT CONTROLLER
+                        </span>
+
+                        <strong>
+                            ESP32-C3 #1
+                        </strong>
+
+                        <small>
+                            MPU6050 IMU
+                        </small>
+
+                    </div>
+
+
+                    <div class="setting-card">
+
+                        <span>
+                            MAIN CONTROLLER
+                        </span>
+
+                        <strong>
+                            ESP32-C3 #2
+                        </strong>
+
+                        <small>
+                            4 ESC MOTOR CONTROL
+                        </small>
+
+                    </div>
+
+
+                    <div class="setting-card">
+
+                        <span>
+                            IMU SENSOR
+                        </span>
+
+                        <strong>
+                            MPU6050
+                        </strong>
+
+                        <small>
+                            I2C • GPIO 8 / GPIO 9
+                        </small>
+
+                    </div>
+
+
+                    <div class="setting-card">
+
+                        <span>
+                            BLUETOOTH
+                        </span>
+
+                        <strong id="bluetoothSetting">
+                            DISCONNECTED
+                        </strong>
+
+                        <small>
+                            Web Bluetooth
+                        </small>
+
+                    </div>
+
+
+                    <div class="setting-card toggle-card">
+
+                        <span>
+                            VIRTUAL JOYSTICK
+                        </span>
+
+                        <label class="switch">
+
+                            <input type="checkbox"
+                                   id="joystickToggle"
+                                   checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================================= -->
+            <!-- LOGS PAGE -->
+            <!-- ============================================= -->
+
+            <section id="logsPage"
+                     class="page">
+
+                <div class="page-header">
+
+                    <div>
+                        <span class="section-label">
+                            SYSTEM EVENTS
+                        </span>
+
+                        <h2>
+                            LOGS
+                        </h2>
+
+                        <p>
+                            VAJRA communication and system events.
+                        </p>
+                    </div>
+
+                    <button id="clearLogs"
+                            class="clear-btn">
+                        CLEAR LOGS
+                    </button>
+
+                </div>
+
+
+                <div id="logContainer"
+                     class="log-container">
+
+                    <div class="log-entry">
+                        <span>[SYSTEM]</span>
+                        VAJRA interface initialized.
+                    </div>
+
+                    <div class="log-entry">
+                        <span>[SYSTEM]</span>
+                        Waiting for Bluetooth connection.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================================= -->
+            <!-- ABOUT PAGE -->
+            <!-- ============================================= -->
+
+            <section id="aboutPage"
+                     class="page">
+
+                <div class="about-hero">
+
+                    <div class="about-logo">
+                        ⚡
+                    </div>
+
+                    <h2>
+                        VAJRA
+                    </h2>
+
+                    <p>
+                        ANSH'S DRONE
+                    </p>
+
+                    <div class="about-line"></div>
+
+                    <p class="about-description">
+                        A custom ESP32-C3 based drone control
+                        and telemetry platform designed for
+                        intelligent flight control.
+                    </p>
+
+                </div>
+
+
+                <div class="spec-grid">
+
+                    <div>
+                        <span>FLIGHT CONTROLLER</span>
+                        <strong>ESP32-C3</strong>
+                    </div>
+
+                    <div>
+                        <span>MAIN CONTROLLER</span>
+                        <strong>ESP32-C3</strong>
+                    </div>
+
+                    <div>
+                        <span>IMU</span>
+                        <strong>MPU6050</strong>
+                    </div>
+
+                    <div>
+                        <span>MOTORS</span>
+                        <strong>4 × BLDC</strong>
+                    </div>
+
+                    <div>
+                        <span>ESC</span>
+                        <strong>4 CHANNEL</strong>
+                    </div>
+
+                    <div>
+                        <span>CONTROL</span>
+                        <strong>BLE</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
