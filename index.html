@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ANSH'S DRONE VAJRA</title>
 
@@ -16,25 +11,19 @@
 
 <body>
 
-
 <!-- =====================================================
-     LOGIN PAGE
+     LOGIN
 ===================================================== -->
 
-<div id="loginPage" class="login-page">
+<section id="loginPage" class="login-page">
 
     <div class="login-card">
 
-        <div class="logo">
-            ⚡
-        </div>
+        <div class="logo">⚡</div>
 
         <h1>VAJRA</h1>
 
-        <p class="login-subtitle">
-            ANSH'S DRONE CONTROL SYSTEM
-        </p>
-
+        <p>ANSH'S DRONE CONTROL SYSTEM</p>
 
         <input
             id="username"
@@ -43,46 +32,32 @@
             autocomplete="off"
         >
 
-
         <input
             id="password"
             type="password"
             placeholder="Password"
         >
 
-
-        <button
-            id="loginButton"
-            type="button"
-        >
+        <button id="loginButton" type="button">
             ACCESS VAJRA
         </button>
-
 
         <div id="loginError"></div>
 
     </div>
 
-</div>
-
+</section>
 
 
 <!-- =====================================================
      DASHBOARD
 ===================================================== -->
 
-<div
-    id="dashboard"
-    class="dashboard hidden"
->
+<section id="dashboard" class="dashboard hidden">
 
-
-    <!-- =================================================
-         TOP BAR
-    ================================================== -->
+    <!-- TOP BAR -->
 
     <header class="topbar">
-
 
         <div class="brand">
 
@@ -91,24 +66,16 @@
             </div>
 
             <div>
-
                 <h2>VAJRA</h2>
-
-                <span>
-                    ANSH'S DRONE
-                </span>
-
+                <span>ANSH'S DRONE</span>
             </div>
 
         </div>
 
 
-
-        <!-- REAL BLE CONNECT BUTTON -->
-
         <div class="top-connection">
 
-            <div class="status-wrapper">
+            <div class="connection-status">
 
                 <span id="connectionDot"></span>
 
@@ -132,86 +99,68 @@
     </header>
 
 
-
-    <!-- =================================================
-         SIDEBAR
-    ================================================== -->
+    <!-- SIDEBAR -->
 
     <aside class="sidebar">
-
 
         <button
             class="nav-button active"
             data-page="controlPage"
             type="button"
         >
-            🎮
-            <span>Control</span>
+            🎮 <span>Control</span>
         </button>
-
 
         <button
             class="nav-button"
             data-page="telemetryPage"
             type="button"
         >
-            📡
-            <span>Telemetry</span>
+            📡 <span>Telemetry</span>
         </button>
-
 
         <button
             class="nav-button"
             data-page="settingsPage"
             type="button"
         >
-            ⚙️
-            <span>Settings</span>
+            ⚙️ <span>Settings</span>
         </button>
-
 
         <button
             class="nav-button"
             data-page="logsPage"
             type="button"
         >
-            📋
-            <span>Logs</span>
+            📋 <span>Logs</span>
         </button>
-
 
         <button
             class="nav-button"
             data-page="aboutPage"
             type="button"
         >
-            ℹ️
-            <span>About</span>
+            ℹ️ <span>About</span>
         </button>
-
 
         <button
             id="logoutButton"
             class="logout-button"
             type="button"
         >
-            🚪
-            <span>Logout</span>
+            🚪 <span>Logout</span>
         </button>
 
     </aside>
 
 
-
-    <!-- =================================================
-         MAIN CONTENT
-    ================================================== -->
+    <!-- MAIN -->
 
     <main class="main-content">
 
 
         <!-- =================================================
-             CONTROL PAGE
+             CONTROL
         ================================================== -->
 
         <section
@@ -219,28 +168,18 @@
             class="page active"
         >
 
-
             <div class="page-header">
 
-                <div>
+                <small>FLIGHT CONTROL</small>
 
-                    <small>
-                        FLIGHT CONTROL
-                    </small>
-
-                    <h1>
-                        Remote Controller
-                    </h1>
-
-                </div>
+                <h1>
+                    VAJRA Remote Controller
+                </h1>
 
             </div>
 
 
-
-            <!-- =================================================
-                 BLE CONNECTION PANEL
-            ================================================== -->
+            <!-- BLUETOOTH PANEL -->
 
             <div class="connection-panel">
 
@@ -251,21 +190,14 @@
                         class="large-dot"
                     ></span>
 
-
                     <div>
 
-                        <strong
-                            id="largeConnectionText"
-                        >
+                        <strong id="largeConnectionText">
                             DRONE NOT CONNECTED
                         </strong>
 
-
-                        <span
-                            id="deviceText"
-                        >
-                            Press CONNECT to search for
-                            ANSH'S DRONE VAJRA
+                        <span id="deviceText">
+                            Press SEARCH FOR BLUETOOTH
                         </span>
 
                     </div>
@@ -278,30 +210,24 @@
                     class="search-button"
                     type="button"
                 >
-                    🔎 SEARCH FOR VAJRA
+                    🔎 SEARCH BLUETOOTH
                 </button>
 
             </div>
 
 
-
-            <!-- =================================================
-                 REMOTE CONTROLLER
-            ================================================== -->
+            <!-- REMOTE -->
 
             <div class="remote">
-
 
                 <div class="remote-header">
 
                     <div>
 
-                        <span>
-                            VAJRA REMOTE
-                        </span>
+                        <span>VAJRA REMOTE</span>
 
                         <strong>
-                            DUAL JOYSTICK FLIGHT CONTROL
+                            DUAL JOYSTICK CONTROLLER
                         </strong>
 
                     </div>
@@ -317,22 +243,18 @@
                 </div>
 
 
-
-                <!-- =================================================
-                     JOYSTICKS
-                ================================================== -->
+                <!-- JOYSTICKS -->
 
                 <div class="joystick-area">
 
 
-                    <!-- LEFT JOYSTICK -->
+                    <!-- LEFT -->
 
                     <div class="joystick-section">
 
                         <div class="joystick-title">
                             LEFT JOYSTICK
                         </div>
-
 
                         <div
                             id="leftJoystick"
@@ -345,7 +267,6 @@
                             ></div>
 
                         </div>
-
 
                         <div class="axis-labels">
 
@@ -362,7 +283,6 @@
                     </div>
 
 
-
                     <!-- CENTER -->
 
                     <div class="center-control">
@@ -371,11 +291,9 @@
                             🚁
                         </div>
 
-
                         <div class="arm-label">
                             FLIGHT SYSTEM
                         </div>
-
 
                         <button
                             id="armButton"
@@ -384,7 +302,6 @@
                         >
                             ARM
                         </button>
-
 
                         <button
                             id="stopButton"
@@ -397,15 +314,13 @@
                     </div>
 
 
-
-                    <!-- RIGHT JOYSTICK -->
+                    <!-- RIGHT -->
 
                     <div class="joystick-section">
 
                         <div class="joystick-title">
                             RIGHT JOYSTICK
                         </div>
-
 
                         <div
                             id="rightJoystick"
@@ -418,7 +333,6 @@
                             ></div>
 
                         </div>
-
 
                         <div class="axis-labels">
 
@@ -437,10 +351,7 @@
                 </div>
 
 
-
-                <!-- =================================================
-                     VALUES
-                ================================================== -->
+                <!-- VALUES -->
 
                 <div class="flight-values">
 
@@ -451,7 +362,6 @@
                         </strong>
                     </div>
 
-
                     <div>
                         <span>YAW</span>
                         <strong id="yawValue">
@@ -459,14 +369,12 @@
                         </strong>
                     </div>
 
-
                     <div>
                         <span>PITCH</span>
                         <strong id="pitchValue">
                             0
                         </strong>
                     </div>
-
 
                     <div>
                         <span>ROLL</span>
@@ -480,10 +388,7 @@
             </div>
 
 
-
-            <!-- =================================================
-                 MOTOR TEST
-            ================================================== -->
+            <!-- MOTOR TEST -->
 
             <div class="section-heading">
                 4 MOTOR TEST
@@ -500,13 +405,14 @@
                     <div class="motor-top">
 
                         <div>
+
                             <span>M1</span>
 
                             <h3>
                                 Front Right
                             </h3>
-                        </div>
 
+                        </div>
 
                         <span
                             id="m1Status"
@@ -536,7 +442,6 @@
                             START
                         </button>
 
-
                         <button
                             class="motor-stop"
                             data-motor="M1"
@@ -550,7 +455,6 @@
                 </div>
 
 
-
                 <!-- M2 -->
 
                 <div class="motor-card">
@@ -558,13 +462,14 @@
                     <div class="motor-top">
 
                         <div>
+
                             <span>M2</span>
 
                             <h3>
                                 Rear Right
                             </h3>
-                        </div>
 
+                        </div>
 
                         <span
                             id="m2Status"
@@ -594,7 +499,6 @@
                             START
                         </button>
 
-
                         <button
                             class="motor-stop"
                             data-motor="M2"
@@ -608,7 +512,6 @@
                 </div>
 
 
-
                 <!-- M3 -->
 
                 <div class="motor-card">
@@ -616,13 +519,14 @@
                     <div class="motor-top">
 
                         <div>
+
                             <span>M3</span>
 
                             <h3>
                                 Rear Left
                             </h3>
-                        </div>
 
+                        </div>
 
                         <span
                             id="m3Status"
@@ -652,7 +556,6 @@
                             START
                         </button>
 
-
                         <button
                             class="motor-stop"
                             data-motor="M3"
@@ -666,7 +569,6 @@
                 </div>
 
 
-
                 <!-- M4 -->
 
                 <div class="motor-card">
@@ -674,13 +576,14 @@
                     <div class="motor-top">
 
                         <div>
+
                             <span>M4</span>
 
                             <h3>
                                 Front Left
                             </h3>
-                        </div>
 
+                        </div>
 
                         <span
                             id="m4Status"
@@ -710,7 +613,6 @@
                             START
                         </button>
 
-
                         <button
                             class="motor-stop"
                             data-motor="M4"
@@ -728,7 +630,6 @@
         </section>
 
 
-
         <!-- =================================================
              TELEMETRY
         ================================================== -->
@@ -740,13 +641,9 @@
 
             <div class="page-header">
 
-                <small>
-                    SYSTEM DATA
-                </small>
+                <small>SYSTEM DATA</small>
 
-                <h1>
-                    Telemetry
-                </h1>
+                <h1>Telemetry</h1>
 
             </div>
 
@@ -790,7 +687,6 @@
         </section>
 
 
-
         <!-- =================================================
              SETTINGS
         ================================================== -->
@@ -802,13 +698,9 @@
 
             <div class="page-header">
 
-                <small>
-                    CONFIGURATION
-                </small>
+                <small>CONFIGURATION</small>
 
-                <h1>
-                    Settings
-                </h1>
+                <h1>Settings</h1>
 
             </div>
 
@@ -816,35 +708,29 @@
             <div class="info-box">
 
                 <p>
+                    BLE Device:
                     <strong>
-                        BLE DEVICE
+                        ANSH'S DRONE VAJRA
                     </strong>
-
-                    ANSH'S DRONE VAJRA
                 </p>
 
-
                 <p>
+                    Stop Signal:
                     <strong>
-                        STOP SIGNAL
+                        900 µs
                     </strong>
-
-                    900 µs
                 </p>
 
-
                 <p>
+                    PWM Frequency:
                     <strong>
-                        PWM FREQUENCY
+                        50 Hz
                     </strong>
-
-                    50 Hz
                 </p>
 
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -858,13 +744,9 @@
 
             <div class="page-header">
 
-                <small>
-                    SYSTEM ACTIVITY
-                </small>
+                <small>SYSTEM ACTIVITY</small>
 
-                <h1>
-                    Logs
-                </h1>
+                <h1>Logs</h1>
 
             </div>
 
@@ -875,7 +757,6 @@
             ></div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -898,9 +779,9 @@
                 </h1>
 
                 <p>
-                    ESP32-C3 based four-motor drone
-                    control system with BLE control
-                    and MPU6050 flight sensing.
+                    Four BLDC motors, two ESP32-C3
+                    controllers, BLE control and
+                    MPU6050 flight sensing.
                 </p>
 
             </div>
@@ -909,7 +790,7 @@
 
     </main>
 
-</div>
+</section>
 
 
 <script src="script.js"></script>
