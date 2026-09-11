@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ANSH'S DRONE VAJRA</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <!-- =====================================================
-     LOGIN PAGE
+     LOGIN
 ===================================================== -->
 
 <section id="loginPage" class="login-page">
@@ -28,18 +26,21 @@
         </p>
 
         <input
-            type="text"
             id="username"
+            type="text"
             placeholder="Username"
         >
 
         <input
-            type="password"
             id="password"
+            type="password"
             placeholder="Password"
         >
 
-        <button id="loginBtn" class="login-button">
+        <button
+            id="loginBtn"
+            class="login-button"
+        >
             ACCESS VAJRA
         </button>
 
@@ -62,9 +63,7 @@
 
         <div class="brand">
 
-            <div class="brand-symbol">
-                ⚡
-            </div>
+            <div class="brand-symbol">⚡</div>
 
             <div>
                 <h2>VAJRA</h2>
@@ -73,6 +72,8 @@
 
         </div>
 
+
+        <!-- REAL BLE CONNECTION -->
 
         <div class="connection-area">
 
@@ -89,6 +90,7 @@
             <button
                 id="connectBtn"
                 class="connect-button"
+                type="button"
             >
                 CONNECT
             </button>
@@ -106,45 +108,42 @@
             class="nav-button active"
             data-page="controlPage"
         >
-            🎮
-            <span>Control</span>
+            🎮 <span>Control</span>
         </button>
 
         <button
             class="nav-button"
             data-page="telemetryPage"
         >
-            📡
-            <span>Telemetry</span>
+            📡 <span>Telemetry</span>
         </button>
 
         <button
             class="nav-button"
             data-page="settingsPage"
         >
-            ⚙️
-            <span>Settings</span>
+            ⚙️ <span>Settings</span>
         </button>
 
         <button
             class="nav-button"
             data-page="logsPage"
         >
-            📋
-            <span>Logs</span>
+            📋 <span>Logs</span>
         </button>
 
         <button
             class="nav-button"
             data-page="aboutPage"
         >
-            ℹ️
-            <span>About</span>
+            ℹ️ <span>About</span>
         </button>
 
-        <button id="logoutBtn" class="logout-button">
-            🚪
-            <span>Logout</span>
+        <button
+            id="logoutBtn"
+            class="logout-button"
+        >
+            🚪 <span>Logout</span>
         </button>
 
     </aside>
@@ -154,9 +153,8 @@
 
     <main class="main">
 
-
         <!-- =================================================
-             CONTROL PAGE
+             CONTROL
         ================================================== -->
 
         <section
@@ -168,15 +166,48 @@
 
                 <div>
                     <small>FLIGHT CONTROL</small>
-
-                    <h1>
-                        Remote Controller
-                    </h1>
+                    <h1>Remote Controller</h1>
                 </div>
 
                 <div class="easy-control">
                     ● EASY TO CONTROL
                 </div>
+
+            </div>
+
+
+            <!-- CONNECTION PANEL -->
+
+            <div class="connection-panel">
+
+                <div class="connection-info">
+
+                    <div
+                        id="bigConnectionDot"
+                        class="big-connection-dot"
+                    ></div>
+
+                    <div>
+
+                        <strong id="bigConnectionText">
+                            DRONE NOT CONNECTED
+                        </strong>
+
+                        <span id="deviceName">
+                            Press CONNECT to search for VAJRA
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <button
+                    id="connectMainBtn"
+                    class="search-button"
+                    type="button"
+                >
+                    🔎 SEARCH FOR VAJRA
+                </button>
 
             </div>
 
@@ -187,21 +218,21 @@
 
                 <div class="remote">
 
-
-                    <!-- TOP STATUS -->
-
                     <div class="remote-header">
 
                         <div>
                             <span>VAJRA REMOTE</span>
-                            <strong>2-AXIS FLIGHT CONTROL</strong>
+
+                            <strong>
+                                DUAL JOYSTICK FLIGHT CONTROL
+                            </strong>
                         </div>
 
                         <div
                             id="remoteStatus"
                             class="remote-status"
                         >
-                            DISARMED
+                            DISCONNECTED
                         </div>
 
                     </div>
@@ -212,12 +243,12 @@
                     <div class="joystick-area">
 
 
-                        <!-- LEFT -->
+                        <!-- LEFT JOYSTICK -->
 
                         <div class="joystick-unit">
 
                             <div class="joystick-label">
-                                LEFT
+                                LEFT JOYSTICK
                             </div>
 
                             <div
@@ -233,13 +264,8 @@
                             </div>
 
                             <div class="axis-labels">
-                                <span>
-                                    THROTTLE
-                                </span>
-
-                                <span>
-                                    YAW
-                                </span>
+                                <span>THROTTLE</span>
+                                <span>YAW</span>
                             </div>
 
                         </div>
@@ -253,13 +279,14 @@
                                 🚁
                             </div>
 
-                            <div class="arm-label">
-                                ARM
-                            </div>
+                            <span class="arm-label">
+                                FLIGHT SYSTEM
+                            </span>
 
                             <button
                                 id="armBtn"
                                 class="arm-button"
+                                type="button"
                             >
                                 ARM
                             </button>
@@ -267,6 +294,7 @@
                             <button
                                 id="stopBtn"
                                 class="big-stop"
+                                type="button"
                             >
                                 STOP
                             </button>
@@ -274,12 +302,12 @@
                         </div>
 
 
-                        <!-- RIGHT -->
+                        <!-- RIGHT JOYSTICK -->
 
                         <div class="joystick-unit">
 
                             <div class="joystick-label">
-                                RIGHT
+                                RIGHT JOYSTICK
                             </div>
 
                             <div
@@ -295,13 +323,8 @@
                             </div>
 
                             <div class="axis-labels">
-                                <span>
-                                    PITCH
-                                </span>
-
-                                <span>
-                                    ROLL
-                                </span>
+                                <span>PITCH</span>
+                                <span>ROLL</span>
                             </div>
 
                         </div>
@@ -309,36 +332,28 @@
                     </div>
 
 
-                    <!-- JOYSTICK VALUES -->
+                    <!-- VALUES -->
 
                     <div class="flight-values">
 
                         <div>
                             <span>THROTTLE</span>
-                            <strong id="throttleValue">
-                                0
-                            </strong>
+                            <strong id="throttleValue">0</strong>
                         </div>
 
                         <div>
                             <span>YAW</span>
-                            <strong id="yawValue">
-                                0
-                            </strong>
+                            <strong id="yawValue">0</strong>
                         </div>
 
                         <div>
                             <span>PITCH</span>
-                            <strong id="pitchValue">
-                                0
-                            </strong>
+                            <strong id="pitchValue">0</strong>
                         </div>
 
                         <div>
                             <span>ROLL</span>
-                            <strong id="rollValue">
-                                0
-                            </strong>
+                            <strong id="rollValue">0</strong>
                         </div>
 
                     </div>
@@ -348,16 +363,13 @@
             </div>
 
 
-            <!-- MOTOR CONTROL -->
+            <!-- MOTOR TEST -->
 
             <div class="section-title">
                 MOTOR TEST
             </div>
 
-
             <div class="motor-grid">
-
-                <!-- M1 -->
 
                 <div class="motor-card">
 
@@ -387,6 +399,7 @@
                         <button
                             onclick="motorOn('M1')"
                             class="motor-start"
+                            type="button"
                         >
                             START
                         </button>
@@ -394,6 +407,7 @@
                         <button
                             onclick="motorOff('M1')"
                             class="motor-stop"
+                            type="button"
                         >
                             OFF
                         </button>
@@ -403,12 +417,9 @@
                 </div>
 
 
-                <!-- M2 -->
-
                 <div class="motor-card">
 
                     <div class="motor-heading">
-
                         <div>
                             <span>M2</span>
                             <h3>Rear Right</h3>
@@ -420,7 +431,6 @@
                         >
                             OFF
                         </div>
-
                     </div>
 
                     <strong
@@ -435,6 +445,7 @@
                         <button
                             onclick="motorOn('M2')"
                             class="motor-start"
+                            type="button"
                         >
                             START
                         </button>
@@ -442,6 +453,7 @@
                         <button
                             onclick="motorOff('M2')"
                             class="motor-stop"
+                            type="button"
                         >
                             OFF
                         </button>
@@ -451,12 +463,9 @@
                 </div>
 
 
-                <!-- M3 -->
-
                 <div class="motor-card">
 
                     <div class="motor-heading">
-
                         <div>
                             <span>M3</span>
                             <h3>Rear Left</h3>
@@ -468,7 +477,6 @@
                         >
                             OFF
                         </div>
-
                     </div>
 
                     <strong
@@ -483,6 +491,7 @@
                         <button
                             onclick="motorOn('M3')"
                             class="motor-start"
+                            type="button"
                         >
                             START
                         </button>
@@ -490,6 +499,7 @@
                         <button
                             onclick="motorOff('M3')"
                             class="motor-stop"
+                            type="button"
                         >
                             OFF
                         </button>
@@ -499,12 +509,9 @@
                 </div>
 
 
-                <!-- M4 -->
-
                 <div class="motor-card">
 
                     <div class="motor-heading">
-
                         <div>
                             <span>M4</span>
                             <h3>Front Left</h3>
@@ -516,7 +523,6 @@
                         >
                             OFF
                         </div>
-
                     </div>
 
                     <strong
@@ -531,6 +537,7 @@
                         <button
                             onclick="motorOn('M4')"
                             class="motor-start"
+                            type="button"
                         >
                             START
                         </button>
@@ -538,6 +545,7 @@
                         <button
                             onclick="motorOff('M4')"
                             class="motor-stop"
+                            type="button"
                         >
                             OFF
                         </button>
@@ -547,7 +555,6 @@
                 </div>
 
             </div>
-
 
         </section>
 
@@ -586,9 +593,7 @@
 
                 <div class="telemetry-card">
                     <span>BATTERY</span>
-                    <strong>
-                        --
-                    </strong>
+                    <strong>--</strong>
                 </div>
 
                 <div class="telemetry-card">
@@ -622,30 +627,18 @@
             <div class="settings-box">
 
                 <div class="setting">
-                    <div>
-                        <strong>BLE DEVICE</strong>
-                        <span>
-                            ANSH'S DRONE VAJRA
-                        </span>
-                    </div>
+                    <strong>BLE DEVICE</strong>
+                    <span>ANSH'S DRONE VAJRA</span>
                 </div>
 
                 <div class="setting">
-                    <div>
-                        <strong>STOP SIGNAL</strong>
-                        <span>
-                            900 µs
-                        </span>
-                    </div>
+                    <strong>STOP SIGNAL</strong>
+                    <span>900 µs</span>
                 </div>
 
                 <div class="setting">
-                    <div>
-                        <strong>PWM FREQUENCY</strong>
-                        <span>
-                            50 Hz
-                        </span>
-                    </div>
+                    <strong>PWM FREQUENCY</strong>
+                    <span>50 Hz</span>
                 </div>
 
             </div>
@@ -669,10 +662,7 @@
                 </div>
             </div>
 
-            <div
-                id="logs"
-                class="logs-box"
-            ></div>
+            <div id="logs" class="logs-box"></div>
 
         </section>
 
@@ -688,18 +678,15 @@
 
             <div class="about-box">
 
-                <div class="big-logo">
-                    ⚡
-                </div>
+                <div class="big-logo">⚡</div>
 
                 <h1>
                     ANSH'S DRONE VAJRA
                 </h1>
 
                 <p>
-                    Four-motor ESP32-C3 drone control
-                    system with MPU6050 flight sensing
-                    and Bluetooth Low Energy control.
+                    ESP32-C3 based four-motor drone
+                    control system with BLE and MPU6050.
                 </p>
 
             </div>
