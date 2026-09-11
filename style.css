@@ -7,7 +7,7 @@
 :root {
     --bg: #050811;
     --panel: #0b111d;
-    --panel2: #101827;
+    --panel2: #111a28;
     --border: rgba(255,255,255,.09);
     --text: #f5f7ff;
     --muted: #7e899d;
@@ -31,8 +31,13 @@ body {
             transparent 35%
         ),
         var(--bg);
+
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 .hidden {
@@ -40,14 +45,13 @@ body {
 }
 
 
-/* =====================================================
-   LOGIN
-===================================================== */
+/* ================= LOGIN ================= */
 
 .login-page {
     min-height: 100vh;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -59,16 +63,17 @@ body {
 
     padding: 45px;
 
-    background: rgba(11,17,29,.95);
+    background: rgba(11,17,29,.96);
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 25px;
 
     text-align: center;
 
     box-shadow:
-        0 25px 90px rgba(0,0,0,.6);
+        0 30px 100px rgba(0,0,0,.6);
 }
 
 .logo {
@@ -78,6 +83,7 @@ body {
     margin: auto;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -93,7 +99,8 @@ body {
         );
 
     box-shadow:
-        0 0 40px rgba(0,229,255,.2);
+        0 0 40px
+        rgba(0,229,255,.2);
 }
 
 .login-card h1 {
@@ -104,7 +111,7 @@ body {
     letter-spacing: 7px;
 }
 
-.login-subtitle {
+.login-card p {
     margin: 10px 0 28px;
 
     color: var(--muted);
@@ -122,7 +129,8 @@ body {
 
     padding: 0 15px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 11px;
 
@@ -139,7 +147,7 @@ body {
 
     margin-top: 18px;
 
-    border: 0;
+    border: none;
 
     border-radius: 11px;
 
@@ -168,9 +176,7 @@ body {
 }
 
 
-/* =====================================================
-   TOPBAR
-===================================================== */
+/* ================= TOPBAR ================= */
 
 .topbar {
     height: 80px;
@@ -178,15 +184,18 @@ body {
     padding: 0 26px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
     position: sticky;
+
     top: 0;
 
     z-index: 50;
 
-    background: rgba(5,8,17,.96);
+    background:
+        rgba(5,8,17,.97);
 
     border-bottom:
         1px solid var(--border);
@@ -205,6 +214,7 @@ body {
     height: 43px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -237,9 +247,7 @@ body {
 }
 
 
-/* =====================================================
-   CONNECTION
-===================================================== */
+/* ================= CONNECTION ================= */
 
 .top-connection {
     display: flex;
@@ -249,7 +257,7 @@ body {
     gap: 14px;
 }
 
-.status-wrapper {
+.connection-status {
     display: flex;
 
     align-items: center;
@@ -274,7 +282,7 @@ body {
     background: var(--green);
 
     box-shadow:
-        0 0 14px var(--green);
+        0 0 15px var(--green);
 }
 
 .connect-button {
@@ -282,7 +290,7 @@ body {
 
     height: 43px;
 
-    border: 0;
+    border: none;
 
     border-radius: 10px;
 
@@ -307,9 +315,7 @@ body {
 }
 
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
+/* ================= SIDEBAR ================= */
 
 .sidebar {
     position: fixed;
@@ -336,7 +342,7 @@ body {
 
     margin-bottom: 6px;
 
-    border: 0;
+    border: none;
 
     border-radius: 10px;
 
@@ -358,15 +364,13 @@ body {
 }
 
 .logout-button {
-    margin-top: 15px;
+    margin-top: 18px;
 
     color: var(--red);
 }
 
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* ================= MAIN ================= */
 
 .main-content {
     margin-left: 210px;
@@ -383,7 +387,7 @@ body {
 }
 
 .page-header {
-    margin-bottom: 24px;
+    margin-bottom: 25px;
 }
 
 .page-header small {
@@ -401,9 +405,7 @@ body {
 }
 
 
-/* =====================================================
-   BLE PANEL
-===================================================== */
+/* ================= BLE PANEL ================= */
 
 .connection-panel {
     max-width: 1100px;
@@ -415,14 +417,14 @@ body {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     gap: 20px;
 
     background: #0c121c;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 16px;
 }
@@ -470,15 +472,17 @@ body {
 }
 
 .search-button {
-    min-width: 190px;
+    min-width: 205px;
 
     height: 45px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 10px;
 
-    background: var(--panel2);
+    background:
+        var(--panel2);
 
     color: var(--cyan);
 
@@ -494,9 +498,7 @@ body {
 }
 
 
-/* =====================================================
-   REMOTE
-===================================================== */
+/* ================= REMOTE ================= */
 
 .remote {
     max-width: 1100px;
@@ -510,7 +512,8 @@ body {
             #080c14
         );
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 28px;
 }
@@ -519,7 +522,6 @@ body {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
     padding-bottom: 20px;
@@ -569,9 +571,7 @@ body {
 }
 
 
-/* =====================================================
-   JOYSTICKS
-===================================================== */
+/* ================= JOYSTICKS ================= */
 
 .joystick-area {
     display: grid;
@@ -668,7 +668,7 @@ body {
     left: 50%;
 
     transform:
-        translate(-50%,-50%);
+        translate(-50%, -50%);
 
     border-radius: 50%;
 
@@ -700,6 +700,9 @@ body {
     font-size: 9px;
 }
 
+
+/* ================= CENTER ================= */
+
 .center-control {
     text-align: center;
 }
@@ -713,7 +716,7 @@ body {
 .arm-label {
     display: block;
 
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 
     color: var(--muted);
 
@@ -729,8 +732,8 @@ body {
     width: 120px;
     height: 44px;
 
-    margin-left: auto;
-    margin-right: auto;
+    margin:
+        0 auto;
 
     border-radius: 9px;
 
@@ -759,7 +762,7 @@ body {
 .stop-button {
     margin-top: 10px;
 
-    border: 0;
+    border: none;
 
     background: var(--red);
 
@@ -767,9 +770,7 @@ body {
 }
 
 
-/* =====================================================
-   VALUES
-===================================================== */
+/* ================= VALUES ================= */
 
 .flight-values {
     display: grid;
@@ -808,9 +809,7 @@ body {
 }
 
 
-/* =====================================================
-   MOTOR
-===================================================== */
+/* ================= MOTORS ================= */
 
 .section-heading {
     margin: 30px 0 15px;
@@ -834,12 +833,12 @@ body {
 .motor-card {
     padding: 20px;
 
+    background: var(--panel);
+
     border:
         1px solid var(--border);
 
     border-radius: 16px;
-
-    background: var(--panel);
 }
 
 .motor-top {
@@ -934,9 +933,7 @@ body {
 }
 
 
-/* =====================================================
-   OTHER PAGES
-===================================================== */
+/* ================= OTHER PAGES ================= */
 
 .info-grid {
     display: grid;
@@ -975,7 +972,7 @@ body {
 }
 
 .info-box {
-    max-width: 800px;
+    max-width: 850px;
 }
 
 .info-box p {
@@ -983,13 +980,13 @@ body {
 
     color: var(--muted);
 
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .info-box p strong {
     color: white;
 
-    margin-right: 10px;
+    margin-left: 8px;
 }
 
 .logs {
@@ -1021,8 +1018,6 @@ body {
     text-align: center;
 
     margin: auto;
-
-    max-width: 800px;
 }
 
 .big-logo {
@@ -1031,18 +1026,10 @@ body {
     margin-bottom: 15px;
 }
 
-.about p {
-    color: var(--muted);
 
-    line-height: 1.7;
-}
+/* ================= MOBILE ================= */
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 1000px) {
+@media(max-width:1000px) {
 
     .sidebar {
         width: 70px;
@@ -1060,15 +1047,9 @@ body {
         grid-template-columns:
             1fr 1fr;
     }
-
-    .info-grid {
-        grid-template-columns:
-            1fr 1fr;
-    }
 }
 
-
-@media (max-width: 750px) {
+@media(max-width:750px) {
 
     .connection-panel {
         flex-direction: column;
@@ -1077,7 +1058,8 @@ body {
     }
 
     .joystick-area {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
     .center-control {
@@ -1086,27 +1068,23 @@ body {
 
     .motor-grid,
     .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .flight-values {
         grid-template-columns:
-            1fr 1fr;
+            1fr;
     }
 }
 
+@media(max-width:600px) {
 
-@media (max-width: 600px) {
-
-    .topbar {
-        padding: 0 12px;
-    }
-
-    .status-wrapper {
+    .connection-status {
         display: none;
     }
 
     .main-content {
         padding: 18px;
+    }
+
+    .flight-values {
+        grid-template-columns:
+            1fr 1fr;
     }
 }
