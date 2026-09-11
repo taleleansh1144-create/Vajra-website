@@ -5,12 +5,12 @@
 }
 
 :root {
-    --bg: #04060b;
-    --panel: #0b101a;
-    --panel2: #121a28;
-    --border: rgba(255,255,255,0.09);
-    --text: #f4f7ff;
-    --muted: #7f899e;
+    --bg: #050811;
+    --panel: #0b111d;
+    --panel2: #101827;
+    --border: rgba(255,255,255,.09);
+    --text: #f5f7ff;
+    --muted: #7e899d;
     --cyan: #00e5ff;
     --purple: #7c4dff;
     --green: #18e889;
@@ -22,19 +22,21 @@ body {
     background:
         radial-gradient(
             circle at 20% 10%,
-            rgba(0,229,255,0.08),
+            rgba(0,229,255,.07),
             transparent 30%
         ),
         radial-gradient(
-            circle at 80% 80%,
-            rgba(124,77,255,0.08),
+            circle at 85% 80%,
+            rgba(124,77,255,.08),
             transparent 35%
         ),
         var(--bg);
-
     color: var(--text);
-
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.hidden {
+    display: none !important;
 }
 
 
@@ -53,25 +55,23 @@ body {
 }
 
 .login-card {
-    width: 410px;
+    width: 400px;
 
     padding: 45px;
 
-    border:
-        1px solid var(--border);
+    background: rgba(11,17,29,.95);
+
+    border: 1px solid var(--border);
 
     border-radius: 25px;
 
-    background:
-        rgba(11,16,26,0.94);
+    text-align: center;
 
     box-shadow:
-        0 30px 100px rgba(0,0,0,0.65);
-
-    text-align: center;
+        0 25px 90px rgba(0,0,0,.6);
 }
 
-.vajra-logo {
+.logo {
     width: 85px;
     height: 85px;
 
@@ -81,7 +81,9 @@ body {
     align-items: center;
     justify-content: center;
 
-    border-radius: 23px;
+    border-radius: 22px;
+
+    font-size: 43px;
 
     background:
         linear-gradient(
@@ -90,11 +92,8 @@ body {
             var(--purple)
         );
 
-    font-size: 42px;
-
     box-shadow:
-        0 0 40px
-        rgba(0,229,255,0.25);
+        0 0 40px rgba(0,229,255,.2);
 }
 
 .login-card h1 {
@@ -106,7 +105,7 @@ body {
 }
 
 .login-subtitle {
-    margin: 10px 0 30px;
+    margin: 10px 0 28px;
 
     color: var(--muted);
 
@@ -117,33 +116,32 @@ body {
 
 .login-card input {
     width: 100%;
-    height: 53px;
+    height: 52px;
 
-    margin-top: 12px;
+    margin-top: 10px;
 
-    padding: 0 16px;
+    padding: 0 15px;
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     outline: none;
 
-    background: #060912;
+    background: #060a11;
 
     color: white;
 }
 
-.login-button {
+.login-card button {
     width: 100%;
-    height: 53px;
+    height: 52px;
 
-    margin-top: 20px;
+    margin-top: 18px;
 
-    border: none;
+    border: 0;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     background:
         linear-gradient(
@@ -162,7 +160,7 @@ body {
 #loginError {
     min-height: 20px;
 
-    margin-top: 15px;
+    margin-top: 12px;
 
     color: var(--red);
 
@@ -171,26 +169,13 @@ body {
 
 
 /* =====================================================
-   DASHBOARD
-===================================================== */
-
-.hidden {
-    display: none !important;
-}
-
-.dashboard {
-    min-height: 100vh;
-}
-
-
-/* =====================================================
-   TOP BAR
+   TOPBAR
 ===================================================== */
 
 .topbar {
     height: 80px;
 
-    padding: 0 28px;
+    padding: 0 26px;
 
     display: flex;
     align-items: center;
@@ -198,10 +183,10 @@ body {
 
     position: sticky;
     top: 0;
-    z-index: 100;
 
-    background:
-        rgba(4,6,11,0.96);
+    z-index: 50;
+
+    background: rgba(5,8,17,.96);
 
     border-bottom:
         1px solid var(--border);
@@ -209,12 +194,13 @@ body {
 
 .brand {
     display: flex;
+
     align-items: center;
 
     gap: 12px;
 }
 
-.brand-symbol {
+.brand-icon {
     width: 43px;
     height: 43px;
 
@@ -222,7 +208,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     background:
         linear-gradient(
@@ -239,6 +225,10 @@ body {
 }
 
 .brand span {
+    display: block;
+
+    margin-top: 3px;
+
     color: var(--muted);
 
     font-size: 9px;
@@ -251,20 +241,22 @@ body {
    CONNECTION
 ===================================================== */
 
-.connection-area {
+.top-connection {
     display: flex;
 
     align-items: center;
 
-    gap: 15px;
+    gap: 14px;
 }
 
-.connection-indicator {
+.status-wrapper {
     display: flex;
 
     align-items: center;
 
     gap: 8px;
+
+    color: var(--muted);
 
     font-size: 10px;
 }
@@ -282,16 +274,17 @@ body {
     background: var(--green);
 
     box-shadow:
-        0 0 15px var(--green);
+        0 0 14px var(--green);
 }
 
-.connect-button,
-.search-button {
-    border: none;
+.connect-button {
+    min-width: 140px;
+
+    height: 43px;
+
+    border: 0;
 
     border-radius: 10px;
-
-    padding: 11px 17px;
 
     background:
         linear-gradient(
@@ -307,9 +300,8 @@ body {
     cursor: pointer;
 }
 
-.connect-button.searching,
-.search-button.searching {
-    opacity: 0.65;
+.connect-button:disabled {
+    opacity: .6;
 
     cursor: wait;
 }
@@ -326,16 +318,11 @@ body {
     top: 80px;
     bottom: 0;
 
-    width: 220px;
+    width: 210px;
 
-    padding: 22px 15px;
+    padding: 20px 12px;
 
-    display: flex;
-    flex-direction: column;
-
-    gap: 8px;
-
-    background: #070a11;
+    background: #070b12;
 
     border-right:
         1px solid var(--border);
@@ -343,7 +330,15 @@ body {
 
 .nav-button,
 .logout-button {
-    border: none;
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 6px;
+
+    border: 0;
+
+    border-radius: 10px;
 
     background: transparent;
 
@@ -351,26 +346,20 @@ body {
 
     text-align: left;
 
-    padding: 15px;
-
-    border-radius: 12px;
-
     cursor: pointer;
 }
 
 .nav-button:hover,
 .nav-button.active {
     background:
-        rgba(0,229,255,0.08);
+        rgba(0,229,255,.08);
 
     color: white;
 }
 
 .logout-button {
-    margin-top: auto;
-}
+    margin-top: 15px;
 
-.logout-button:hover {
     color: var(--red);
 }
 
@@ -379,31 +368,25 @@ body {
    MAIN
 ===================================================== */
 
-.main {
-    margin-left: 220px;
+.main-content {
+    margin-left: 210px;
 
-    padding: 35px;
+    padding: 30px;
 }
 
-.content-page {
+.page {
     display: none;
 }
 
-.content-page.active {
+.page.active {
     display: block;
 }
 
-.page-heading {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 25px;
+.page-header {
+    margin-bottom: 24px;
 }
 
-.page-heading small {
+.page-header small {
     color: var(--cyan);
 
     font-size: 10px;
@@ -411,28 +394,15 @@ body {
     letter-spacing: 3px;
 }
 
-.page-heading h1 {
-    margin-top: 8px;
+.page-header h1 {
+    margin-top: 7px;
 
     font-size: 34px;
 }
 
-.easy-control {
-    color: var(--green);
-
-    padding: 10px 15px;
-
-    border:
-        1px solid rgba(24,232,137,0.2);
-
-    border-radius: 10px;
-
-    font-size: 10px;
-}
-
 
 /* =====================================================
-   CONNECTION PANEL
+   BLE PANEL
 ===================================================== */
 
 .connection-panel {
@@ -440,19 +410,7 @@ body {
 
     margin-bottom: 20px;
 
-    padding: 18px 22px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0c121e,
-            #080c14
-        );
+    padding: 20px;
 
     display: flex;
 
@@ -461,6 +419,12 @@ body {
     justify-content: space-between;
 
     gap: 20px;
+
+    background: #0c121c;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
 }
 
 .connection-info {
@@ -468,19 +432,21 @@ body {
 
     align-items: center;
 
-    gap: 14px;
+    gap: 13px;
 }
 
-.big-connection-dot {
-    width: 13px;
-    height: 13px;
+.large-dot {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
 
     border-radius: 50%;
 
     background: var(--red);
 }
 
-.big-connection-dot.connected {
+.large-dot.connected {
     background: var(--green);
 
     box-shadow:
@@ -493,7 +459,7 @@ body {
     font-size: 13px;
 }
 
-.connection-info span {
+.connection-info span:not(.large-dot) {
     display: block;
 
     margin-top: 5px;
@@ -503,35 +469,50 @@ body {
     font-size: 11px;
 }
 
+.search-button {
+    min-width: 190px;
+
+    height: 45px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--panel2);
+
+    color: var(--cyan);
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.search-button:disabled {
+    opacity: .6;
+
+    cursor: wait;
+}
+
 
 /* =====================================================
    REMOTE
 ===================================================== */
 
-.remote-wrapper {
-    display: flex;
-
-    justify-content: center;
-}
-
 .remote {
-    width: 100%;
-
     max-width: 1100px;
 
     padding: 28px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 30px;
 
     background:
         linear-gradient(
             145deg,
             #0d1420,
-            #080b12
+            #080c14
         );
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
 }
 
 .remote-header {
@@ -541,7 +522,7 @@ body {
 
     justify-content: space-between;
 
-    padding-bottom: 22px;
+    padding-bottom: 20px;
 
     border-bottom:
         1px solid var(--border);
@@ -560,7 +541,7 @@ body {
 .remote-header strong {
     display: block;
 
-    margin-top: 6px;
+    margin-top: 5px;
 
     color: var(--muted);
 
@@ -568,12 +549,12 @@ body {
 }
 
 .remote-status {
-    padding: 9px 14px;
+    padding: 8px 12px;
 
     border-radius: 8px;
 
     background:
-        rgba(255,49,88,0.1);
+        rgba(255,49,88,.1);
 
     color: var(--red);
 
@@ -581,35 +562,35 @@ body {
 }
 
 .remote-status.armed {
-    color: var(--green);
-
     background:
-        rgba(24,232,137,0.1);
+        rgba(24,232,137,.1);
+
+    color: var(--green);
 }
 
 
 /* =====================================================
-   JOYSTICK
+   JOYSTICKS
 ===================================================== */
 
 .joystick-area {
     display: grid;
 
     grid-template-columns:
-        1fr 180px 1fr;
+        1fr 160px 1fr;
+
+    gap: 35px;
 
     align-items: center;
 
-    gap: 40px;
-
-    padding: 40px 25px;
+    padding: 40px 20px;
 }
 
-.joystick-unit {
+.joystick-section {
     text-align: center;
 }
 
-.joystick-label {
+.joystick-title {
     margin-bottom: 15px;
 
     color: var(--muted);
@@ -627,47 +608,54 @@ body {
 
     position: relative;
 
-    border:
-        2px solid
-        rgba(0,229,255,0.2);
+    overflow: hidden;
 
     border-radius: 50%;
+
+    border:
+        2px solid
+        rgba(0,229,255,.2);
 
     background:
         radial-gradient(
             circle,
-            #192436,
-            #090d16
+            #1a2738,
+            #080c13
         );
-
-    box-shadow:
-        inset 0 0 50px rgba(0,0,0,0.5);
 
     touch-action: none;
 
     user-select: none;
 }
 
-.joystick::before,
+.joystick::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 1px;
+    height: 100%;
+
+    background:
+        rgba(255,255,255,.07);
+}
+
 .joystick::after {
     content: "";
 
     position: absolute;
 
-    background:
-        rgba(255,255,255,0.07);
-}
+    top: 50%;
+    left: 0;
 
-.joystick::before {
-    width: 1px;
-    height: 100%;
-    left: 50%;
-}
-
-.joystick::after {
     width: 100%;
     height: 1px;
-    top: 50%;
+
+    background:
+        rgba(255,255,255,.07);
 }
 
 .stick {
@@ -676,11 +664,11 @@ body {
 
     position: absolute;
 
-    left: 50%;
     top: 50%;
+    left: 50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(-50%,-50%);
 
     border-radius: 50%;
 
@@ -692,10 +680,10 @@ body {
         );
 
     box-shadow:
-        0 0 35px
-        rgba(0,229,255,0.3);
+        0 0 30px
+        rgba(0,229,255,.25);
 
-    cursor: grab;
+    pointer-events: none;
 }
 
 .axis-labels {
@@ -712,14 +700,14 @@ body {
     font-size: 9px;
 }
 
-.remote-center {
+.center-control {
     text-align: center;
 }
 
 .drone-icon {
-    font-size: 55px;
-
     margin-bottom: 15px;
+
+    font-size: 52px;
 }
 
 .arm-label {
@@ -735,11 +723,16 @@ body {
 }
 
 .arm-button,
-.big-stop {
+.stop-button {
+    display: block;
+
     width: 120px;
     height: 44px;
 
-    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 9px;
 
     cursor: pointer;
 
@@ -748,11 +741,11 @@ body {
 
 .arm-button {
     background:
-        rgba(24,232,137,0.1);
+        rgba(24,232,137,.1);
 
     border:
         1px solid
-        rgba(24,232,137,0.3);
+        rgba(24,232,137,.3);
 
     color: var(--green);
 }
@@ -760,15 +753,13 @@ body {
 .arm-button.armed {
     background: var(--green);
 
-    color: #03120b;
+    color: #021109;
 }
 
-.big-stop {
-    display: block;
+.stop-button {
+    margin-top: 10px;
 
-    margin: 12px auto 0;
-
-    border: none;
+    border: 0;
 
     background: var(--red);
 
@@ -788,10 +779,10 @@ body {
 
     gap: 10px;
 
+    padding-top: 20px;
+
     border-top:
         1px solid var(--border);
-
-    padding-top: 20px;
 }
 
 .flight-values div {
@@ -799,13 +790,11 @@ body {
 }
 
 .flight-values span {
-    display: block;
-
     color: var(--muted);
 
     font-size: 9px;
 
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 .flight-values strong {
@@ -820,11 +809,11 @@ body {
 
 
 /* =====================================================
-   MOTORS
+   MOTOR
 ===================================================== */
 
-.section-title {
-    margin: 35px 0 15px;
+.section-heading {
+    margin: 30px 0 15px;
 
     color: var(--muted);
 
@@ -839,43 +828,43 @@ body {
     grid-template-columns:
         repeat(4,1fr);
 
-    gap: 18px;
+    gap: 15px;
 }
 
 .motor-card {
-    padding: 22px;
+    padding: 20px;
 
     border:
         1px solid var(--border);
 
-    border-radius: 18px;
+    border-radius: 16px;
 
     background: var(--panel);
 }
 
-.motor-heading {
+.motor-top {
     display: flex;
 
-    justify-content: space-between;
-
     align-items: flex-start;
+
+    justify-content: space-between;
 }
 
-.motor-heading > div:first-child > span {
+.motor-top > div > span {
     color: var(--cyan);
 
     font-weight: bold;
 }
 
-.motor-heading h3 {
-    margin-top: 6px;
+.motor-top h3 {
+    margin-top: 5px;
 
     font-size: 14px;
 }
 
 .motor-off,
 .motor-on {
-    padding: 5px 8px;
+    padding: 5px 7px;
 
     border-radius: 6px;
 
@@ -886,150 +875,131 @@ body {
     color: var(--red);
 
     background:
-        rgba(255,49,88,0.1);
+        rgba(255,49,88,.1);
 }
 
 .motor-on {
     color: var(--green);
 
     background:
-        rgba(24,232,137,0.1);
+        rgba(24,232,137,.1);
 }
 
 .motor-speed {
     display: block;
 
-    margin: 25px 0;
+    margin: 22px 0;
 
-    font-size: 25px;
+    font-size: 24px;
 }
 
 .motor-buttons {
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
-    gap: 8px;
+    gap: 7px;
 }
 
 .motor-start,
 .motor-stop {
     height: 38px;
 
-    border-radius: 9px;
+    border-radius: 8px;
 
     cursor: pointer;
 }
 
 .motor-start {
+    background:
+        rgba(24,232,137,.1);
+
     border:
         1px solid
-        rgba(24,232,137,0.2);
-
-    background:
-        rgba(24,232,137,0.1);
+        rgba(24,232,137,.2);
 
     color: var(--green);
 }
 
 .motor-stop {
+    background:
+        rgba(255,49,88,.1);
+
     border:
         1px solid
-        rgba(255,49,88,0.2);
-
-    background:
-        rgba(255,49,88,0.1);
+        rgba(255,49,88,.2);
 
     color: var(--red);
 }
 
 
 /* =====================================================
-   TELEMETRY
+   OTHER PAGES
 ===================================================== */
 
-.telemetry-grid {
+.info-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(4,1fr);
+        repeat(3,1fr);
 
-    gap: 20px;
+    gap: 18px;
 }
 
-.telemetry-card {
+.info-card,
+.info-box,
+.logs {
     padding: 25px;
+
+    background: var(--panel);
 
     border:
         1px solid var(--border);
 
-    border-radius: 18px;
-
-    background: var(--panel);
+    border-radius: 16px;
 }
 
-.telemetry-card span {
+.info-card span {
     color: var(--muted);
 
     font-size: 10px;
 }
 
-.telemetry-card strong {
+.info-card strong {
     display: block;
 
-    margin-top: 15px;
+    margin-top: 12px;
 
-    font-size: 28px;
+    font-size: 27px;
 }
 
-
-/* =====================================================
-   SETTINGS / LOGS / ABOUT
-===================================================== */
-
-.settings-box,
-.logs-box,
-.about-box {
-    max-width: 850px;
-
-    padding: 25px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 18px;
-
-    background: var(--panel);
+.info-box {
+    max-width: 800px;
 }
 
-.setting {
-    padding: 20px 0;
-
-    border-bottom:
-        1px solid var(--border);
-}
-
-.setting:last-child {
-    border-bottom: none;
-}
-
-.setting strong,
-.setting span {
-    display: block;
-}
-
-.setting span {
-    margin-top: 6px;
+.info-box p {
+    margin: 16px 0;
 
     color: var(--muted);
+
+    line-height: 1.6;
 }
 
-.logs-box {
+.info-box p strong {
+    color: white;
+
+    margin-right: 10px;
+}
+
+.logs {
+    max-width: 900px;
+
     min-height: 300px;
 }
 
-.log-row {
-    padding: 12px 0;
+.log-entry {
+    padding: 10px 0;
 
     border-bottom:
         1px solid var(--border);
@@ -1037,27 +1007,31 @@ body {
     font-size: 12px;
 }
 
-.log-row span {
+.log-entry span {
     color: var(--cyan);
 
     margin-right: 10px;
 }
 
-.about-box {
+.log-entry strong {
+    margin-right: 10px;
+}
+
+.about {
+    text-align: center;
+
     margin: auto;
 
-    text-align: center;
+    max-width: 800px;
 }
 
 .big-logo {
-    font-size: 65px;
+    font-size: 60px;
+
+    margin-bottom: 15px;
 }
 
-.about-box p {
-    max-width: 600px;
-
-    margin: 18px auto;
-
+.about p {
     color: var(--muted);
 
     line-height: 1.7;
@@ -1071,15 +1045,15 @@ body {
 @media (max-width: 1000px) {
 
     .sidebar {
-        width: 75px;
+        width: 70px;
     }
 
     .sidebar span {
         display: none;
     }
 
-    .main {
-        margin-left: 75px;
+    .main-content {
+        margin-left: 70px;
     }
 
     .motor-grid {
@@ -1087,14 +1061,14 @@ body {
             1fr 1fr;
     }
 
-    .telemetry-grid {
+    .info-grid {
         grid-template-columns:
             1fr 1fr;
     }
-
 }
 
-@media (max-width: 760px) {
+
+@media (max-width: 750px) {
 
     .connection-panel {
         flex-direction: column;
@@ -1106,12 +1080,12 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .remote-center {
-        order: 2;
+    .center-control {
+        order: 3;
     }
 
     .motor-grid,
-    .telemetry-grid {
+    .info-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1119,13 +1093,20 @@ body {
         grid-template-columns:
             1fr 1fr;
     }
+}
 
-    .connection-indicator {
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .status-wrapper {
         display: none;
     }
 
-    .main {
-        padding: 20px;
+    .main-content {
+        padding: 18px;
     }
-
 }
