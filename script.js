@@ -1,23 +1,19 @@
 /* =====================================================
    ANSH'S DRONE VAJRA 🚁⚡
+   REAL WEB BLUETOOTH
 
-   REAL WEB BLUETOOTH CONTROL
+   Browser:
+   Google Chrome / Microsoft Edge
 
-   ESP32-C3 BLE UUIDS
-
-   SERVICE:
-   6e400001-b5a3-f393-e0a9-e50e24dcca9e
-
-   RX:
-   6e400002-b5a3-f393-e0a9-e50e24dcca9e
-
-   TX:
-   6e400003-b5a3-f393-e0a9-e50e24dcca9e
+   IMPORTANT:
+   This version uses acceptAllDevices:true
+   so Chrome can show BLE devices available
+   to the browser's Bluetooth chooser.
 ===================================================== */
 
 
 /* =====================================================
-   BLE CONFIGURATION
+   BLE UUIDs
 ===================================================== */
 
 const SERVICE_UUID =
@@ -28,9 +24,6 @@ const RX_UUID =
 
 const TX_UUID =
     "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
-const DEVICE_NAME =
-    "ANSH'S DRONE VAJRA";
 
 
 /* =====================================================
@@ -53,7 +46,7 @@ let isArmed = false;
 
 
 /* =====================================================
-   GET ELEMENTS
+   ELEMENTS
 ===================================================== */
 
 const loginPage =
@@ -66,6 +59,11 @@ const dashboard =
         "dashboard"
     );
 
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
 const username =
     document.getElementById(
         "username"
@@ -76,16 +74,10 @@ const password =
         "password"
     );
 
-const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
-
 const loginError =
     document.getElementById(
         "loginError"
     );
-
 
 const connectButton =
     document.getElementById(
@@ -226,22 +218,22 @@ document
 
 
 /* =====================================================
-   CONNECT BUTTON
+   CONNECT BUTTONS
 ===================================================== */
 
 connectButton.addEventListener(
     "click",
-    handleConnectionButton
+    connectionButtonPressed
 );
 
 
 searchButton.addEventListener(
     "click",
-    handleConnectionButton
+    connectionButtonPressed
 );
 
 
-async function handleConnectionButton() {
+async function connectionButtonPressed() {
 
     if (isSearching) {
 
@@ -252,12 +244,12 @@ async function handleConnectionButton() {
 
     if (isConnected) {
 
-        disconnectBLE();
+        disconnectBluetooth();
 
     }
     else {
 
-        await connectBLE();
+        await connectBluetooth();
 
     }
 
@@ -265,26 +257,26 @@ async function handleConnectionButton() {
 
 
 /* =====================================================
-   REAL BLE SEARCH
+   CONNECT BLUETOOTH
 ===================================================== */
 
-async function connectBLE() {
+async function connectBluetooth() {
 
     /*
-       Check Web Bluetooth.
+       Web Bluetooth support check.
     */
 
     if (
-        !navigator.bluetooth
+        !("bluetooth" in navigator)
     ) {
 
         alert(
-            "Web Bluetooth is not available in this browser.\n\nUse Google Chrome or Microsoft Edge."
+            "Web Bluetooth is not available.\n\nUse Google Chrome or Microsoft Edge."
         );
 
         addLog(
             "BLE ERROR",
-            "Web Bluetooth unavailable"
+            "Web Bluetooth is unavailable."
         );
 
         return;
@@ -301,6 +293,7 @@ async function connectBLE() {
 
     isSearching = true;
 
+
     setSearchingUI(
         true
     );
@@ -308,8 +301,7 @@ async function connectBLE() {
 
     addLog(
         "BLE",
-        "Searching for " +
-        DEVICE_NAME
+        "Opening Bluetooth device chooser..."
     );
 
 
@@ -318,18 +310,19 @@ async function connectBLE() {
         /*
            IMPORTANT:
 
-           This opens Chrome's REAL
-           Bluetooth device chooser.
+           acceptAllDevices:true
+
+           Chrome will display the Bluetooth
+           devices that can be selected by Web
+           Bluetooth.
+
+           We are NOT silently scanning Bluetooth.
         */
 
         bleDevice =
             await navigator.bluetooth.requestDevice(
                 {
-                    filters: [
-                        {
-                            name: DEVICE_NAME
-                        }
-                    ],
+                    acceptAllDevices: true,
 
                     optionalServices: [
                         SERVICE_UUID
@@ -340,26 +333,43 @@ async function connectBLE() {
 
         addLog(
             "BLE",
-            "Device selected: " +
+            "Selected: " +
             (
                 bleDevice.name ||
-                DEVICE_NAME
+                "Unknown device"
             )
         );
 
 
-        /*
-           Detect disconnect.
-        */
-
         bleDevice.addEventListener(
             "gattserverdisconnected",
-            handleBLEDisconnect
+            handleBluetoothDisconnect
         );
 
 
+        document
+            .getElementById(
+                "largeConnectionText"
+            )
+            .textContent =
+            "CONNECTING";
+
+
+        document
+            .getElementById(
+                "deviceText"
+            )
+            .textContent =
+            "Connecting to " +
+            (
+                bleDevice.name ||
+                "selected device"
+            ) +
+            "...";
+
+
         /*
-           Connect GATT.
+           Connect to GATT.
         */
 
         bleServer =
@@ -368,12 +378,12 @@ async function connectBLE() {
 
         addLog(
             "BLE",
-            "GATT server connected"
+            "GATT server connected."
         );
 
 
         /*
-           Get service.
+           Find the VAJRA BLE service.
         */
 
         const service =
@@ -383,7 +393,7 @@ async function connectBLE() {
 
 
         /*
-           Get RX characteristic.
+           Browser -> ESP32
         */
 
         rxCharacteristic =
@@ -393,7 +403,7 @@ async function connectBLE() {
 
 
         /*
-           Get TX characteristic.
+           ESP32 -> Browser
         */
 
         txCharacteristic =
@@ -403,7 +413,7 @@ async function connectBLE() {
 
 
         /*
-           Subscribe to telemetry.
+           Enable telemetry notifications.
         */
 
         await txCharacteristic.startNotifications();
@@ -411,7 +421,7 @@ async function connectBLE() {
 
         txCharacteristic.addEventListener(
             "characteristicvaluechanged",
-            handleTelemetry
+            receiveTelemetry
         );
 
 
@@ -425,12 +435,12 @@ async function connectBLE() {
 
         addLog(
             "BLE",
-            "VAJRA CONNECTED"
+            "VAJRA connected successfully."
         );
 
 
         /*
-           SAFE INITIAL COMMAND
+           Safe initial command.
         */
 
         await sendCommand(
@@ -450,6 +460,8 @@ async function connectBLE() {
 
         isSearching = false;
 
+        bleServer = null;
+
         rxCharacteristic = null;
 
         txCharacteristic = null;
@@ -462,7 +474,7 @@ async function connectBLE() {
 
             addLog(
                 "BLE",
-                "Bluetooth search cancelled"
+                "No Bluetooth device selected."
             );
 
         }
@@ -531,7 +543,7 @@ function setSearchingUI(
                 "largeConnectionText"
             )
             .textContent =
-            "SEARCHING FOR VAJRA";
+            "SEARCHING BLUETOOTH";
 
 
         document
@@ -539,7 +551,7 @@ function setSearchingUI(
                 "deviceText"
             )
             .textContent =
-            "Select ANSH'S DRONE VAJRA in the Bluetooth window.";
+            "Choose a BLE device from Chrome's Bluetooth window.";
 
     }
     else {
@@ -566,36 +578,40 @@ function updateConnectionUI() {
             "connectionDot"
         );
 
-
     const largeDot =
         document.getElementById(
             "largeConnectionDot"
         );
 
-
-    const connectionText =
+    const text =
         document.getElementById(
             "connectionText"
         );
 
+    const topButton =
+        document.getElementById(
+            "connectButton"
+        );
+
+    const searchButtonElement =
+        document.getElementById(
+            "searchButton"
+        );
 
     const largeText =
         document.getElementById(
             "largeConnectionText"
         );
 
-
     const deviceText =
         document.getElementById(
             "deviceText"
         );
 
-
     const remoteStatus =
         document.getElementById(
             "remoteStatus"
         );
-
 
     const telemetryBLE =
         document.getElementById(
@@ -609,21 +625,20 @@ function updateConnectionUI() {
             "connected"
         );
 
-
         largeDot.classList.add(
             "connected"
         );
 
 
-        connectionText.textContent =
+        text.textContent =
             "CONNECTED";
 
 
-        connectButton.textContent =
+        topButton.textContent =
             "DISCONNECT";
 
 
-        searchButton.textContent =
+        searchButtonElement.textContent =
             "DISCONNECT VAJRA";
 
 
@@ -633,7 +648,7 @@ function updateConnectionUI() {
 
         deviceText.textContent =
             bleDevice?.name ||
-            DEVICE_NAME;
+            "Bluetooth device connected";
 
 
         remoteStatus.textContent =
@@ -650,22 +665,21 @@ function updateConnectionUI() {
             "connected"
         );
 
-
         largeDot.classList.remove(
             "connected"
         );
 
 
-        connectionText.textContent =
+        text.textContent =
             "DISCONNECTED";
 
 
-        connectButton.textContent =
+        topButton.textContent =
             "CONNECT";
 
 
-        searchButton.textContent =
-            "🔎 SEARCH FOR VAJRA";
+        searchButtonElement.textContent =
+            "🔎 SEARCH BLUETOOTH";
 
 
         largeText.textContent =
@@ -673,8 +687,7 @@ function updateConnectionUI() {
 
 
         deviceText.textContent =
-            "Press CONNECT to search for " +
-            DEVICE_NAME;
+            "Press SEARCH FOR BLUETOOTH";
 
 
         remoteStatus.textContent =
@@ -693,15 +706,17 @@ function updateConnectionUI() {
    DISCONNECT
 ===================================================== */
 
-function disconnectBLE() {
+async function disconnectBluetooth() {
 
     /*
-       Send STOP before disconnecting.
+       Stop command before disconnect.
     */
 
-    if (rxCharacteristic) {
+    if (
+        rxCharacteristic
+    ) {
 
-        sendCommand(
+        await sendCommand(
             "STOP"
         );
 
@@ -739,25 +754,24 @@ function disconnectBLE() {
     isArmed = false;
 
 
+    resetArmUI();
+
     updateConnectionUI();
-
-
-    resetARM();
 
 
     addLog(
         "BLE",
-        "VAJRA disconnected"
+        "VAJRA disconnected."
     );
 
 }
 
 
 /* =====================================================
-   BLE DISCONNECT EVENT
+   GATT DISCONNECTED
 ===================================================== */
 
-function handleBLEDisconnect() {
+function handleBluetoothDisconnect() {
 
     bleServer = null;
 
@@ -770,34 +784,30 @@ function handleBLEDisconnect() {
     isArmed = false;
 
 
-    updateConnectionUI();
+    resetArmUI();
 
-    resetARM();
+    updateConnectionUI();
 
 
     addLog(
         "BLE",
-        "VAJRA connection lost"
+        "VAJRA connection lost."
     );
 
 }
 
 
 /* =====================================================
-   SEND BLE COMMAND
+   SEND COMMAND
 ===================================================== */
 
 async function sendCommand(
     command
 ) {
 
-    command =
-        String(command)
-            .trim()
-            .toUpperCase();
-
-
-    if (!rxCharacteristic) {
+    if (
+        !rxCharacteristic
+    ) {
 
         addLog(
             "TX",
@@ -818,9 +828,29 @@ async function sendCommand(
             );
 
 
-        await rxCharacteristic.writeValue(
-            data
-        );
+        /*
+           writeValueWithResponse is supported
+           by many BLE UART implementations.
+        */
+
+        if (
+            rxCharacteristic.writeValueWithResponse
+        ) {
+
+            await rxCharacteristic
+                .writeValueWithResponse(
+                    data
+                );
+
+        }
+        else {
+
+            await rxCharacteristic
+                .writeValue(
+                    data
+                );
+
+        }
 
 
         addLog(
@@ -834,10 +864,14 @@ async function sendCommand(
     }
     catch(error) {
 
+        console.error(error);
+
+
         addLog(
             "TX ERROR",
             error.message
         );
+
 
         return false;
 
@@ -850,7 +884,7 @@ async function sendCommand(
    TELEMETRY
 ===================================================== */
 
-function handleTelemetry(
+function receiveTelemetry(
     event
 ) {
 
@@ -860,6 +894,12 @@ function handleTelemetry(
                 event.target.value
             )
             .trim();
+
+
+    console.log(
+        "VAJRA RX:",
+        data
+    );
 
 
     addLog(
@@ -880,7 +920,9 @@ function handleTelemetry(
         );
 
 
-    if (rollMatch) {
+    if (
+        rollMatch
+    ) {
 
         document
             .getElementById(
@@ -895,7 +937,9 @@ function handleTelemetry(
     }
 
 
-    if (pitchMatch) {
+    if (
+        pitchMatch
+    ) {
 
         document
             .getElementById(
@@ -979,7 +1023,7 @@ document
                 );
 
 
-                resetARM();
+                resetArmUI();
 
             }
 
@@ -988,10 +1032,10 @@ document
 
 
 /* =====================================================
-   RESET ARM
+   ARM RESET
 ===================================================== */
 
-function resetARM() {
+function resetArmUI() {
 
     const button =
         document.getElementById(
@@ -1008,18 +1052,18 @@ function resetARM() {
     );
 
 
-    const remoteStatus =
+    const status =
         document.getElementById(
             "remoteStatus"
         );
 
 
-    remoteStatus.classList.remove(
+    status.classList.remove(
         "armed"
     );
 
 
-    remoteStatus.textContent =
+    status.textContent =
         isConnected
             ? "CONNECTED"
             : "DISCONNECTED";
@@ -1028,7 +1072,7 @@ function resetARM() {
 
 
 /* =====================================================
-   STOP BUTTON
+   STOP
 ===================================================== */
 
 document
@@ -1045,6 +1089,11 @@ async function stopAll() {
 
     isArmed = false;
 
+
+    /*
+       Flight controller should interpret
+       STOP as 900 us on all four motors.
+    */
 
     await sendCommand(
         "STOP"
@@ -1066,19 +1115,19 @@ async function stopAll() {
     }
 
 
-    resetARM();
+    resetArmUI();
 
 
     addLog(
         "STOP",
-        "STOP sent - all motors = 900 µs"
+        "STOP sent — all motors = 900 µs"
     );
 
 }
 
 
 /* =====================================================
-   MOTOR START
+   MOTOR BUTTONS
 ===================================================== */
 
 document
@@ -1092,11 +1141,8 @@ document
                 "click",
                 function() {
 
-                    const motor =
-                        button.dataset.motor;
-
                     motorOn(
-                        motor
+                        button.dataset.motor
                     );
 
                 }
@@ -1105,10 +1151,6 @@ document
         }
     );
 
-
-/* =====================================================
-   MOTOR STOP
-===================================================== */
 
 document
     .querySelectorAll(
@@ -1121,11 +1163,8 @@ document
                 "click",
                 function() {
 
-                    const motor =
-                        button.dataset.motor;
-
                     motorOff(
-                        motor
+                        button.dataset.motor
                     );
 
                 }
@@ -1160,7 +1199,8 @@ async function motorOn(
 
 
     await sendCommand(
-        motor + " ON"
+        motor +
+        " ON"
     );
 
 
@@ -1182,7 +1222,8 @@ async function motorOff(
 ) {
 
     await sendCommand(
-        motor + " OFF"
+        motor +
+        " OFF"
     );
 
 
@@ -1255,7 +1296,7 @@ function updateMotorUI(
 
 
 /* =====================================================
-   JOYSTICK VARIABLES
+   JOYSTICK DATA
 ===================================================== */
 
 let throttle = 0;
@@ -1418,13 +1459,10 @@ class VirtualJoystick {
 
 
         this.stick.style.transform =
-            "translate(" +
-            "calc(-50% + " +
-            x +
-            "px), " +
-            "calc(-50% + " +
-            y +
-            "px))";
+            `translate(
+                calc(-50% + ${x}px),
+                calc(-50% + ${y}px)
+            )`;
 
 
         this.callback(
@@ -1448,7 +1486,7 @@ class VirtualJoystick {
 
 
         this.stick.style.transform =
-            "translate(-50%, -50%)";
+            "translate(-50%,-50%)";
 
 
         this.callback(
@@ -1463,9 +1501,6 @@ class VirtualJoystick {
 
 /* =====================================================
    LEFT JOYSTICK
-
-   Y = THROTTLE
-   X = YAW
 ===================================================== */
 
 new VirtualJoystick(
@@ -1482,15 +1517,6 @@ new VirtualJoystick(
         x,
         y
     ) {
-
-        /*
-           Center = throttle 50 in
-           this UI representation.
-
-           Later the flight firmware
-           should map this to its safe
-           throttle range.
-        */
 
         throttle =
             Math.round(
@@ -1530,9 +1556,6 @@ new VirtualJoystick(
 
 /* =====================================================
    RIGHT JOYSTICK
-
-   Y = PITCH
-   X = ROLL
 ===================================================== */
 
 new VirtualJoystick(
@@ -1586,7 +1609,7 @@ new VirtualJoystick(
 
 
 /* =====================================================
-   SEND JOYSTICK DATA
+   SEND JOYSTICK COMMAND
 ===================================================== */
 
 function sendJoystick() {
@@ -1608,10 +1631,6 @@ function sendJoystick() {
     const now =
         Date.now();
 
-
-    /*
-       12.5 packets/second maximum.
-    */
 
     if (
         now -
@@ -1647,7 +1666,7 @@ function sendJoystick() {
 
 
 /* =====================================================
-   LOGGING
+   LOG
 ===================================================== */
 
 function addLog(
@@ -1699,14 +1718,14 @@ function addLog(
 
 
 /* =====================================================
-   SIMPLE HTML ESCAPE
+   ESCAPE LOG TEXT
 ===================================================== */
 
 function escapeHTML(
-    value
+    text
 ) {
 
-    return String(value)
+    return String(text)
         .replace(
             /&/g,
             "&amp;"
@@ -1732,39 +1751,6 @@ function escapeHTML(
 
 
 /* =====================================================
-   LOGOUT
-===================================================== */
-
-document
-    .getElementById(
-        "logoutButton"
-    )
-    .addEventListener(
-        "click",
-        async function() {
-
-            await stopAll();
-
-            disconnectBLE();
-
-
-            dashboard.classList.add(
-                "hidden"
-            );
-
-
-            loginPage.classList.remove(
-                "hidden"
-            );
-
-
-            password.value = "";
-
-        }
-    );
-
-
-/* =====================================================
    INITIAL STATE
 ===================================================== */
 
@@ -1772,5 +1758,5 @@ updateConnectionUI();
 
 addLog(
     "SYSTEM",
-    "VAJRA ready - disconnected"
+    "VAJRA ready — Bluetooth disconnected."
 );
