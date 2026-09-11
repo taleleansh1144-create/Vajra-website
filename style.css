@@ -1,185 +1,214 @@
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 :root {
-    --bg: #05070d;
-    --panel: #0b0f19;
-    --panel2: #101522;
-    --border: rgba(255, 255, 255, 0.08);
-    --text: #f5f7ff;
-    --muted: #858da3;
-    --accent: #00e5ff;
-    --accent2: #7c4dff;
-    --danger: #ff3157;
-    --success: #19e68c;
+    --bg: #04060b;
+    --panel: #0b101a;
+    --panel2: #111827;
+    --border: rgba(255,255,255,0.09);
+    --text: #f4f7ff;
+    --muted: #7e879c;
+    --cyan: #00e5ff;
+    --purple: #7c4dff;
+    --green: #18e889;
+    --red: #ff3158;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
     min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 30% 20%,
+            rgba(0,229,255,0.07),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(124,77,255,0.08),
+            transparent 35%
+        ),
+        var(--bg);
+    color: var(--text);
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 
-/* ================= LOGIN ================= */
+/* =====================================================
+   LOGIN
+===================================================== */
 
-.page {
+.login-page {
     min-height: 100vh;
-    display: none;
+
+    display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
 
-.page.active {
-    display: flex;
-}
-
-.login-glow {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: var(--accent);
-    opacity: 0.08;
-    filter: blur(100px);
+    padding: 20px;
 }
 
 .login-card {
-    width: 420px;
+    width: 410px;
+
     padding: 45px;
-    background: rgba(11, 15, 25, 0.9);
+
+    background: rgba(11,16,26,0.92);
+
     border: 1px solid var(--border);
+
     border-radius: 25px;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+
     text-align: center;
-    position: relative;
-    z-index: 2;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,0.6);
 }
 
-.logo {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.vajra-logo {
+    width: 85px;
+    height: 85px;
+
     margin: auto;
-    border-radius: 22px;
-    background: linear-gradient(
-        135deg,
-        var(--accent),
-        var(--accent2)
-    );
-    font-size: 40px;
-    box-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 24px;
+
+    font-size: 42px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--purple)
+        );
+
+    box-shadow:
+        0 0 45px
+        rgba(0,229,255,0.25);
 }
 
 .login-card h1 {
-    font-size: 42px;
-    margin-top: 20px;
-    letter-spacing: 5px;
+    margin-top: 22px;
+
+    font-size: 44px;
+
+    letter-spacing: 7px;
 }
 
-.subtitle {
-    color: var(--muted);
-    font-size: 11px;
+.login-subtitle {
+    margin: 10px 0 30px;
+
+    font-size: 10px;
+
     letter-spacing: 3px;
-    margin: 10px 0 35px;
-}
 
-.input-box {
-    height: 55px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    padding: 0 18px;
-    background: #070a12;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-}
-
-.input-box span {
-    margin-right: 12px;
-}
-
-.input-box input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    font-size: 15px;
-}
-
-.login-btn {
-    width: 100%;
-    height: 55px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(
-        135deg,
-        var(--accent),
-        var(--accent2)
-    );
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-.login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,229,255,0.2);
-}
-
-#loginMessage {
-    min-height: 20px;
-    color: var(--danger);
-    margin-top: 15px;
-}
-
-.login-footer {
-    margin-top: 25px;
     color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 1px;
 }
 
-.login-footer span {
-    color: var(--success);
+.login-card input {
+    width: 100%;
+
+    height: 52px;
+
+    margin-top: 12px;
+
+    padding: 0 16px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #060912;
+
+    color: white;
+
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+
+    height: 53px;
+
+    margin-top: 20px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--purple)
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+#loginError {
+    min-height: 20px;
+
+    margin-top: 15px;
+
+    color: var(--red);
+
+    font-size: 13px;
 }
 
 
-/* ================= DASHBOARD ================= */
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
-.dashboard-page {
-    display: none;
+.hidden {
+    display: none !important;
+}
+
+.dashboard {
     min-height: 100vh;
 }
 
-.dashboard-page.active {
-    display: block;
-}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar {
-    height: 78px;
-    padding: 0 30px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(5, 7, 13, 0.9);
+    height: 80px;
+
+    padding: 0 28px;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background: rgba(4,6,11,0.94);
+
     position: sticky;
+
     top: 0;
-    z-index: 20;
+
+    z-index: 50;
 }
 
 .brand {
@@ -188,108 +217,160 @@ body {
     gap: 12px;
 }
 
-.brand-icon {
-    width: 42px;
-    height: 42px;
+.brand-symbol {
+    width: 43px;
+    height: 43px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(
-        135deg,
-        var(--accent),
-        var(--accent2)
-    );
+
     border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--cyan),
+            var(--purple)
+        );
 }
 
 .brand h2 {
     font-size: 18px;
-    letter-spacing: 2px;
+
+    letter-spacing: 3px;
 }
 
-.brand p {
-    color: var(--muted);
+.brand span {
     font-size: 9px;
+
     letter-spacing: 2px;
+
+    color: var(--muted);
 }
 
-.connection {
+.connection-area {
     display: flex;
-    gap: 10px;
+
     align-items: center;
+
+    gap: 18px;
+}
+
+.connection-indicator {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
     font-size: 11px;
 }
 
-.connection-dot {
-    width: 9px;
-    height: 9px;
+#connectionDot {
+    width: 10px;
+    height: 10px;
+
     border-radius: 50%;
-    background: var(--danger);
+
+    background: var(--red);
 }
 
-.connection-dot.connected {
-    background: var(--success);
-    box-shadow: 0 0 12px var(--success);
+#connectionDot.connected {
+    background: var(--green);
+
+    box-shadow:
+        0 0 15px var(--green);
 }
 
-#connectBtn {
-    border: 1px solid var(--border);
+.connect-button {
+    padding: 10px 18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
     background: var(--panel2);
+
     color: white;
-    border-radius: 8px;
-    padding: 9px 15px;
+
     cursor: pointer;
 }
 
 
-/* ================= SIDEBAR ================= */
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar {
     position: fixed;
+
     left: 0;
-    top: 78px;
+    top: 80px;
     bottom: 0;
+
     width: 220px;
+
+    padding: 22px 15px;
+
     background: #070a11;
-    border-right: 1px solid var(--border);
-    padding: 25px 15px;
+
+    border-right:
+        1px solid var(--border);
+
     display: flex;
+
     flex-direction: column;
+
     gap: 8px;
 }
 
-.nav-btn,
-.logout-btn {
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    text-align: left;
+.nav-button,
+.logout-button {
+    width: 100%;
+
     padding: 15px;
+
+    border: none;
+
     border-radius: 12px;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    text-align: left;
+
     cursor: pointer;
+
     font-size: 14px;
 }
 
-.nav-btn:hover,
-.nav-btn.active {
-    background: rgba(0,229,255,0.08);
+.nav-button:hover,
+.nav-button.active {
+    background:
+        rgba(0,229,255,0.08);
+
     color: white;
 }
 
-.logout-btn {
+.logout-button {
     margin-top: auto;
 }
 
-.logout-btn:hover {
-    background: rgba(255,49,87,0.1);
-    color: var(--danger);
+.logout-button:hover {
+    color: var(--red);
 }
 
 
-/* ================= MAIN ================= */
+/* =====================================================
+   MAIN
+===================================================== */
 
-.main-content {
+.main {
     margin-left: 220px;
+
     padding: 35px;
 }
 
@@ -301,391 +382,621 @@ body {
     display: block;
 }
 
-.page-title {
+.page-heading {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     margin-bottom: 30px;
 }
 
-.page-title p {
-    color: var(--accent);
-    font-size: 10px;
+.page-heading small {
+    color: var(--cyan);
+
     letter-spacing: 3px;
+
+    font-size: 10px;
 }
 
-.page-title h1 {
+.page-heading h1 {
     margin-top: 8px;
+
     font-size: 34px;
 }
 
-.live-status {
-    border: 1px solid var(--border);
+.easy-control {
+    color: var(--green);
+
+    border:
+        1px solid rgba(24,232,137,0.2);
+
     padding: 10px 15px;
+
     border-radius: 10px;
+
     font-size: 10px;
-    color: var(--muted);
-}
-
-.live-status span {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: var(--success);
-    border-radius: 50%;
-    margin-right: 7px;
 }
 
 
-/* ================= CARDS ================= */
+/* =====================================================
+   REMOTE
+===================================================== */
 
-.card {
-    background: linear-gradient(
-        145deg,
-        #0c111d,
-        #080b13
-    );
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 25px;
-}
-
-.control-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 20px;
-}
-
-.master-card {
-    grid-row: span 2;
-}
-
-.card-header {
+.remote-wrapper {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+    justify-content: center;
 }
 
-.small-label {
-    color: var(--muted);
-    font-size: 9px;
+.remote {
+    width: 100%;
+
+    max-width: 1100px;
+
+    padding: 28px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d1420,
+            #080b12
+        );
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.35);
+}
+
+.remote-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 22px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.remote-header span {
+    display: block;
+
+    color: var(--cyan);
+
+    font-size: 11px;
+
     letter-spacing: 2px;
 }
 
-.card-header h2 {
-    margin-top: 7px;
-}
+.remote-header strong {
+    display: block;
 
-.motor-icon {
-    font-size: 35px;
-}
+    margin-top: 6px;
 
-
-/* ================= SPEED ================= */
-
-.speed-display {
-    text-align: center;
-    margin: 45px 0 25px;
-}
-
-.speed-display span {
-    font-size: 62px;
-    font-weight: bold;
-}
-
-.speed-display small {
     color: var(--muted);
-    font-size: 18px;
-}
 
-input[type="range"] {
-    width: 100%;
-    accent-color: var(--accent);
-}
-
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
     font-size: 10px;
-    margin-top: 8px;
+
+    letter-spacing: 1px;
 }
 
-.master-buttons {
+.remote-status {
+    padding: 9px 14px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255,49,88,0.1);
+
+    color: var(--red);
+
+    font-size: 10px;
+}
+
+.remote-status.armed {
+    background:
+        rgba(24,232,137,0.1);
+
+    color: var(--green);
+}
+
+
+/* =====================================================
+   JOYSTICKS
+===================================================== */
+
+.joystick-area {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 35px;
+
+    grid-template-columns:
+        1fr 180px 1fr;
+
+    align-items: center;
+
+    gap: 40px;
+
+    padding: 45px 30px;
 }
 
-.start-btn,
-.stop-btn {
-    height: 52px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+.joystick-unit {
+    text-align: center;
 }
 
-.start-btn {
-    background: linear-gradient(
-        135deg,
-        #0cbf72,
-        #19e68c
-    );
+.joystick-label {
+    margin-bottom: 16px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
 }
 
-.stop-btn {
-    background: linear-gradient(
-        135deg,
-        #e52349,
-        #ff3157
-    );
+.joystick {
+    width: 210px;
+    height: 210px;
+
+    margin: auto;
+
+    position: relative;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(0,229,255,0.2);
+
+    background:
+        radial-gradient(
+            circle,
+            #172234,
+            #090d16
+        );
+
+    box-shadow:
+        inset 0 0 45px rgba(0,0,0,0.5),
+        0 0 35px rgba(0,229,255,0.05);
+
+    touch-action: none;
+
+    user-select: none;
 }
 
+.joystick::before,
+.joystick::after {
+    content: "";
 
-/* ================= MOTOR CARDS ================= */
+    position: absolute;
 
-.motor-top {
+    background:
+        rgba(255,255,255,0.06);
+}
+
+.joystick::before {
+    width: 1px;
+
+    height: 100%;
+
+    left: 50%;
+}
+
+.joystick::after {
+    width: 100%;
+
+    height: 1px;
+
+    top: 50%;
+}
+
+.stick {
+    width: 72px;
+    height: 72px;
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--cyan),
+            var(--purple)
+        );
+
+    box-shadow:
+        0 0 30px
+        rgba(0,229,255,0.3);
+
+    cursor: grab;
+}
+
+.stick:active {
+    cursor: grabbing;
+}
+
+.axis-labels {
     display: flex;
+
     justify-content: space-between;
-    align-items: flex-start;
+
+    margin: 15px auto 0;
+
+    width: 210px;
+
+    color: var(--muted);
+
+    font-size: 9px;
 }
 
-.motor-number {
-    color: var(--accent);
-    font-size: 13px;
+.remote-center {
+    text-align: center;
+}
+
+.drone-icon {
+    font-size: 55px;
+
+    margin-bottom: 18px;
+}
+
+.arm-label {
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+.arm-button,
+.big-stop {
+    width: 120px;
+
+    height: 45px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
     font-weight: bold;
 }
 
-.motor-card h3 {
-    margin-top: 7px;
+.arm-button {
+    border:
+        1px solid rgba(24,232,137,0.3);
+
+    background:
+        rgba(24,232,137,0.08);
+
+    color: var(--green);
 }
 
-.motor-status {
+.arm-button.armed {
+    background:
+        var(--green);
+
+    color: #03120b;
+}
+
+.big-stop {
+    display: block;
+
+    margin: 12px auto 0;
+
+    border: none;
+
+    background:
+        var(--red);
+
+    color: white;
+}
+
+
+/* =====================================================
+   FLIGHT VALUES
+===================================================== */
+
+.flight-values {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    border-top:
+        1px solid var(--border);
+
+    padding-top: 20px;
+}
+
+.flight-values div {
+    text-align: center;
+}
+
+.flight-values span {
+    display: block;
+
+    color: var(--muted);
+
     font-size: 9px;
-    padding: 6px 9px;
-    border-radius: 7px;
+
+    letter-spacing: 2px;
 }
 
-.motor-status.off {
-    color: var(--danger);
-    background: rgba(255,49,87,0.1);
+.flight-values strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 20px;
+
+    color: var(--cyan);
 }
 
-.motor-status.on {
-    color: var(--success);
-    background: rgba(25,230,140,0.1);
+
+/* =====================================================
+   MOTOR TEST
+===================================================== */
+
+.section-title {
+    margin: 35px 0 15px;
+
+    color: var(--muted);
+
+    letter-spacing: 3px;
+
+    font-size: 10px;
+}
+
+.motor-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+.motor-card {
+    padding: 22px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background: var(--panel);
+}
+
+.motor-heading {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+}
+
+.motor-heading span {
+    color: var(--cyan);
+
+    font-weight: bold;
+}
+
+.motor-heading h3 {
+    margin-top: 6px;
+
+    font-size: 14px;
+}
+
+.motor-off,
+.motor-on {
+    padding: 5px 8px;
+
+    font-size: 9px;
+
+    border-radius: 6px;
+}
+
+.motor-off {
+    color: var(--red);
+
+    background:
+        rgba(255,49,88,0.1);
+}
+
+.motor-on {
+    color: var(--green);
+
+    background:
+        rgba(24,232,137,0.1);
 }
 
 .motor-speed {
-    margin: 30px 0;
-}
+    display: block;
 
-.motor-speed span {
-    font-size: 32px;
-    font-weight: bold;
-}
+    margin: 25px 0;
 
-.motor-speed small {
-    color: var(--muted);
+    font-size: 25px;
 }
 
 .motor-buttons {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 8px;
 }
 
 .motor-start,
 .motor-stop {
-    height: 40px;
+    height: 38px;
+
     border-radius: 9px;
+
     cursor: pointer;
 }
 
 .motor-start {
-    background: rgba(25,230,140,0.1);
-    border: 1px solid rgba(25,230,140,0.25);
-    color: var(--success);
+    background:
+        rgba(24,232,137,0.1);
+
+    border:
+        1px solid rgba(24,232,137,0.2);
+
+    color: var(--green);
 }
 
 .motor-stop {
-    background: rgba(255,49,87,0.1);
-    border: 1px solid rgba(255,49,87,0.25);
-    color: var(--danger);
+    background:
+        rgba(255,49,88,0.1);
+
+    border:
+        1px solid rgba(255,49,88,0.2);
+
+    color: var(--red);
 }
 
 
-/* ================= COMMAND ================= */
-
-.command-panel {
-    margin-top: 20px;
-}
-
-.command-input {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.command-input input {
-    flex: 1;
-    height: 48px;
-    padding: 0 15px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: #070a12;
-    color: white;
-}
-
-.command-input button {
-    width: 100px;
-    border: none;
-    border-radius: 10px;
-    background: var(--accent);
-    cursor: pointer;
-}
-
-.quick-commands {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.quick-commands button {
-    padding: 9px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #101522;
-    color: white;
-    cursor: pointer;
-}
-
-.quick-commands .quick-stop {
-    color: var(--danger);
-}
-
-
-/* ================= TELEMETRY ================= */
+/* =====================================================
+   TELEMETRY
+===================================================== */
 
 .telemetry-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
     gap: 20px;
 }
 
+.telemetry-card {
+    padding: 25px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background: var(--panel);
+}
+
 .telemetry-card span {
-    display: block;
     color: var(--muted);
-    font-size: 11px;
+
+    font-size: 10px;
 }
 
 .telemetry-card strong {
     display: block;
-    font-size: 30px;
+
     margin-top: 15px;
+
+    font-size: 28px;
 }
 
 
-/* ================= SETTINGS ================= */
+/* =====================================================
+   SETTINGS / LOGS / ABOUT
+===================================================== */
 
-.settings-card {
-    max-width: 800px;
+.settings-box,
+.logs-box,
+.about-box {
+    max-width: 850px;
+
+    padding: 25px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background: var(--panel);
 }
 
-.setting-row {
-    padding: 22px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
+.setting {
+    padding: 20px 0;
+
+    border-bottom:
+        1px solid var(--border);
 }
 
-.setting-row:last-child {
+.setting:last-child {
     border-bottom: none;
 }
 
-.setting-row p {
-    color: var(--muted);
+.setting strong {
+    display: block;
+}
+
+.setting span {
+    display: block;
+
     margin-top: 6px;
-    font-size: 13px;
-}
 
-
-/* ================= LOGS ================= */
-
-.log-container {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.log-entry {
-    display: flex;
-    gap: 20px;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.log-entry span {
-    color: var(--accent);
-    min-width: 70px;
-    font-size: 11px;
-}
-
-.log-entry small {
     color: var(--muted);
 }
 
+.logs-box {
+    min-height: 300px;
+}
 
-/* ================= ABOUT ================= */
+.log-row {
+    padding: 12px 0;
 
-.about-card {
-    max-width: 800px;
+    border-bottom:
+        1px solid var(--border);
+
+    font-size: 12px;
+}
+
+.log-row span {
+    color: var(--cyan);
+
+    margin-right: 10px;
+}
+
+.about-box {
     text-align: center;
+
     margin: auto;
 }
 
-.about-logo {
-    font-size: 60px;
+.big-logo {
+    font-size: 65px;
+
+    margin-bottom: 15px;
 }
 
-.about-card h1 {
-    margin: 20px 0;
-}
+.about-box p {
+    max-width: 600px;
 
-.about-card > p {
+    margin: 18px auto;
+
     color: var(--muted);
+
     line-height: 1.7;
 }
 
-.about-details {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 30px;
-}
 
-.about-details div {
-    padding: 20px;
-    background: #080c14;
-    border-radius: 12px;
-}
-
-.about-details span {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.about-details strong {
-    display: block;
-    margin-top: 8px;
-}
-
-
-/* ================= MOBILE ================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 1000px) {
 
@@ -697,49 +1008,45 @@ input[type="range"] {
         display: none;
     }
 
-    .main-content {
+    .main {
         margin-left: 75px;
     }
 
-    .control-grid {
+    .motor-grid {
         grid-template-columns: 1fr 1fr;
-    }
-
-    .master-card {
-        grid-column: span 2;
-        grid-row: auto;
     }
 
     .telemetry-grid {
         grid-template-columns: 1fr 1fr;
     }
+
 }
 
+@media (max-width: 750px) {
 
-@media (max-width: 650px) {
-
-    .topbar {
-        padding: 0 15px;
+    .joystick-area {
+        grid-template-columns: 1fr;
     }
 
-    .main-content {
+    .remote-center {
+        order: 2;
+    }
+
+    .motor-grid,
+    .telemetry-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flight-values {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .connection-indicator {
+        display: none;
+    }
+
+    .main {
         padding: 20px;
     }
 
-    .control-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .master-card {
-        grid-column: auto;
-    }
-
-    .telemetry-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .login-card {
-        width: calc(100% - 30px);
-        padding: 30px;
-    }
 }
