@@ -1,653 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANSH'S DRONE VAJRA</title>
+    <meta charset="UTF-8">
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #050810;
-    color: white;
-}
+    <title>ANSH'S DRONE VAJRA</title>
 
-.hidden {
-    display: none !important;
-}
-
-/* LOGIN */
-#loginPage {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background:
-        radial-gradient(circle at center, #102333 0%, #050810 55%);
-}
-
-.login-box {
-    width: 380px;
-    padding: 40px;
-    background: #0c121c;
-    border: 1px solid #263447;
-    border-radius: 22px;
-    text-align: center;
-    box-shadow: 0 0 60px rgba(0,229,255,.12);
-}
-
-.logo {
-    width: 80px;
-    height: 80px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    font-size: 40px;
-    background: linear-gradient(135deg,#00e5ff,#7c4dff);
-}
-
-.login-box h1 {
-    font-size: 42px;
-    letter-spacing: 6px;
-    margin: 20px 0 5px;
-}
-
-.login-box p {
-    color: #7f8a9e;
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 25px;
-}
-
-.login-box input {
-    width: 100%;
-    height: 52px;
-    margin: 7px 0;
-    padding: 0 15px;
-    border-radius: 10px;
-    border: 1px solid #263447;
-    outline: none;
-    background: #060a11;
-    color: white;
-}
-
-.login-box button {
-    width: 100%;
-    height: 52px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#00e5ff,#7c4dff);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#loginError {
-    color: #ff3158;
-    margin-top: 12px;
-}
-
-/* DASHBOARD */
-#dashboard {
-    min-height: 100vh;
-}
-
-.topbar {
-    height: 80px;
-    padding: 0 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #080d15;
-    border-bottom: 1px solid #1e2938;
-}
-
-.brand {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.brand-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg,#00e5ff,#7c4dff);
-}
-
-.brand h2 {
-    margin: 0;
-    font-size: 18px;
-    letter-spacing: 3px;
-}
-
-.brand span {
-    color: #7f8a9e;
-    font-size: 9px;
-    letter-spacing: 2px;
-}
-
-.connection-area {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.connection-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-}
-
-#connectionDot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ff3158;
-}
-
-#connectionDot.connected {
-    background: #18e889;
-    box-shadow: 0 0 12px #18e889;
-}
-
-.connect-btn {
-    min-width: 145px;
-    height: 44px;
-    padding: 0 18px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#00e5ff,#7c4dff);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.connect-btn:disabled {
-    opacity: .65;
-    cursor: wait;
-}
-
-/* SIDEBAR */
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 80px;
-    bottom: 0;
-    width: 210px;
-    padding: 20px 12px;
-    background: #070b12;
-    border-right: 1px solid #1e2938;
-}
-
-.nav-btn,
-.logout-btn {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 6px;
-    border: none;
-    border-radius: 10px;
-    background: transparent;
-    color: #7f8a9e;
-    text-align: left;
-    cursor: pointer;
-}
-
-.nav-btn.active,
-.nav-btn:hover {
-    background: rgba(0,229,255,.08);
-    color: white;
-}
-
-.logout-btn {
-    margin-top: 20px;
-    color: #ff3158;
-}
-
-/* MAIN */
-.main {
-    margin-left: 210px;
-    padding: 30px;
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-.heading {
-    margin-bottom: 25px;
-}
-
-.heading small {
-    color: #00e5ff;
-    font-size: 10px;
-    letter-spacing: 3px;
-}
-
-.heading h1 {
-    margin: 7px 0 0;
-    font-size: 34px;
-}
-
-/* BLE PANEL */
-.ble-panel {
-    max-width: 1100px;
-    padding: 22px;
-    margin-bottom: 20px;
-    border-radius: 16px;
-    border: 1px solid #263447;
-    background: #0c121c;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.ble-info {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-#largeDot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #ff3158;
-}
-
-#largeDot.connected {
-    background: #18e889;
-    box-shadow: 0 0 15px #18e889;
-}
-
-.ble-info strong {
-    display: block;
-}
-
-.ble-info span {
-    color: #7f8a9e;
-    font-size: 11px;
-    display: block;
-    margin-top: 5px;
-}
-
-.search-btn {
-    height: 45px;
-    padding: 0 20px;
-    border: none;
-    border-radius: 10px;
-    background: #162235;
-    color: #00e5ff;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* REMOTE */
-.remote {
-    max-width: 1100px;
-    padding: 28px;
-    background: #0c121c;
-    border: 1px solid #263447;
-    border-radius: 25px;
-}
-
-.remote-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #1e2938;
-    padding-bottom: 20px;
-}
-
-.remote-header span {
-    color: #00e5ff;
-    font-size: 11px;
-    letter-spacing: 2px;
-}
-
-.remote-header strong {
-    display: block;
-    color: #7f8a9e;
-    margin-top: 5px;
-    font-size: 10px;
-}
-
-.remote-status {
-    padding: 8px 12px;
-    color: #ff3158;
-    background: rgba(255,49,88,.1);
-    border-radius: 8px;
-    font-size: 10px;
-}
-
-.remote-status.armed {
-    color: #18e889;
-    background: rgba(24,232,137,.1);
-}
-
-.joysticks {
-    display: grid;
-    grid-template-columns: 1fr 160px 1fr;
-    gap: 35px;
-    align-items: center;
-    padding: 40px 20px;
-}
-
-.joystick-box {
-    text-align: center;
-}
-
-.joystick-title {
-    color: #7f8a9e;
-    font-size: 10px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-}
-
-.joystick {
-    position: relative;
-    width: 210px;
-    height: 210px;
-    margin: auto;
-    border-radius: 50%;
-    background: radial-gradient(circle,#1b2738,#080c13);
-    border: 2px solid rgba(0,229,255,.2);
-    touch-action: none;
-    user-select: none;
-}
-
-.joystick::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    background: rgba(255,255,255,.08);
-}
-
-.joystick::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: rgba(255,255,255,.08);
-}
-
-.stick {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-    background: linear-gradient(135deg,#00e5ff,#7c4dff);
-    box-shadow: 0 0 30px rgba(0,229,255,.25);
-}
-
-.axes {
-    width: 210px;
-    margin: 12px auto 0;
-    display: flex;
-    justify-content: space-between;
-    color: #7f8a9e;
-    font-size: 9px;
-}
-
-.center-controls {
-    text-align: center;
-}
-
-.drone {
-    font-size: 50px;
-    margin-bottom: 15px;
-}
-
-.arm-btn,
-.stop-btn {
-    width: 120px;
-    height: 44px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.arm-btn {
-    background: rgba(24,232,137,.1);
-    color: #18e889;
-    border: 1px solid rgba(24,232,137,.3);
-}
-
-.arm-btn.armed {
-    background: #18e889;
-    color: #04120c;
-}
-
-.stop-btn {
-    margin-top: 10px;
-    border: none;
-    background: #ff3158;
-    color: white;
-}
-
-.values {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    border-top: 1px solid #1e2938;
-    padding-top: 20px;
-}
-
-.values div {
-    text-align: center;
-}
-
-.values span {
-    color: #7f8a9e;
-    font-size: 9px;
-}
-
-.values strong {
-    display: block;
-    color: #00e5ff;
-    margin-top: 6px;
-    font-size: 20px;
-}
-
-/* MOTORS */
-.motor-title {
-    margin: 30px 0 15px;
-    color: #7f8a9e;
-    font-size: 10px;
-    letter-spacing: 3px;
-}
-
-.motor-grid {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 15px;
-}
-
-.motor-card {
-    padding: 20px;
-    border-radius: 16px;
-    background: #0c121c;
-    border: 1px solid #263447;
-}
-
-.motor-card-top {
-    display: flex;
-    justify-content: space-between;
-}
-
-.motor-card-top span {
-    color: #00e5ff;
-    font-weight: bold;
-}
-
-.motor-card-top h3 {
-    margin: 5px 0 0;
-    font-size: 14px;
-}
-
-.motor-off,
-.motor-on {
-    font-size: 9px;
-    padding: 5px 7px;
-    border-radius: 6px;
-}
-
-.motor-off {
-    color: #ff3158;
-    background: rgba(255,49,88,.1);
-}
-
-.motor-on {
-    color: #18e889;
-    background: rgba(24,232,137,.1);
-}
-
-.motor-speed {
-    display: block;
-    font-size: 24px;
-    margin: 22px 0;
-}
-
-.motor-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-}
-
-.motor-start,
-.motor-stop {
-    height: 38px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.motor-start {
-    background: rgba(24,232,137,.1);
-    border: 1px solid rgba(24,232,137,.2);
-    color: #18e889;
-}
-
-.motor-stop {
-    background: rgba(255,49,88,.1);
-    border: 1px solid rgba(255,49,88,.2);
-    color: #ff3158;
-}
-
-/* OTHER */
-.info-card {
-    max-width: 800px;
-    padding: 25px;
-    background: #0c121c;
-    border: 1px solid #263447;
-    border-radius: 16px;
-}
-
-.info-card p {
-    color: #7f8a9e;
-    line-height: 1.7;
-}
-
-@media(max-width:900px) {
-    .sidebar {
-        width: 70px;
-    }
-
-    .sidebar span {
-        display: none;
-    }
-
-    .main {
-        margin-left: 70px;
-    }
-
-    .motor-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .joysticks {
-        grid-template-columns: 1fr;
-    }
-
-    .center-controls {
-        order: 3;
-    }
-}
-
-@media(max-width:600px) {
-    .topbar {
-        padding: 0 12px;
-    }
-
-    .connection-status {
-        display: none;
-    }
-
-    .main {
-        padding: 18px;
-    }
-
-    .motor-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .values {
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-
-    .ble-panel {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+
 <!-- =====================================================
-LOGIN
+     LOGIN PAGE
 ===================================================== -->
 
-<section id="loginPage">
+<div id="loginPage" class="login-page">
 
-    <div class="login-box">
+    <div class="login-card">
 
-        <div class="logo">⚡</div>
+        <div class="logo">
+            ⚡
+        </div>
 
         <h1>VAJRA</h1>
 
-        <p>ANSH'S DRONE CONTROL SYSTEM</p>
+        <p class="login-subtitle">
+            ANSH'S DRONE CONTROL SYSTEM
+        </p>
+
 
         <input
             id="username"
             type="text"
             placeholder="Username"
+            autocomplete="off"
         >
+
 
         <input
             id="password"
@@ -655,1715 +50,869 @@ LOGIN
             placeholder="Password"
         >
 
-        <button id="loginBtn">
+
+        <button
+            id="loginButton"
+            type="button"
+        >
             ACCESS VAJRA
         </button>
+
 
         <div id="loginError"></div>
 
     </div>
 
-</section>
+</div>
+
 
 
 <!-- =====================================================
-DASHBOARD
+     DASHBOARD
 ===================================================== -->
 
-<section id="dashboard" class="hidden">
-
-<header class="topbar">
-
-    <div class="brand">
-
-        <div class="brand-icon">⚡</div>
-
-        <div>
-            <h2>VAJRA</h2>
-            <span>ANSH'S DRONE</span>
-        </div>
-
-    </div>
-
-
-    <div class="connection-area">
-
-        <div class="connection-status">
-
-            <span id="connectionDot"></span>
-
-            <span id="connectionText">
-                DISCONNECTED
-            </span>
-
-        </div>
-
-        <button
-            id="connectBtn"
-            class="connect-btn"
-            type="button"
-        >
-            CONNECT
-        </button>
-
-    </div>
-
-</header>
-
-
-<aside class="sidebar">
-
-    <button class="nav-btn active" data-page="controlPage">
-        🎮 <span>Control</span>
-    </button>
-
-    <button class="nav-btn" data-page="telemetryPage">
-        📡 <span>Telemetry</span>
-    </button>
-
-    <button class="nav-btn" data-page="settingsPage">
-        ⚙️ <span>Settings</span>
-    </button>
-
-    <button class="nav-btn" data-page="logsPage">
-        📋 <span>Logs</span>
-    </button>
-
-    <button class="nav-btn" data-page="aboutPage">
-        ℹ️ <span>About</span>
-    </button>
-
-    <button
-        id="logoutBtn"
-        class="logout-btn"
-        type="button"
-    >
-        🚪 <span>Logout</span>
-    </button>
-
-</aside>
-
-
-<main class="main">
-
-<!-- CONTROL -->
-
-<section
-    id="controlPage"
-    class="page active"
+<div
+    id="dashboard"
+    class="dashboard hidden"
 >
 
-<div class="heading">
 
-    <small>FLIGHT CONTROL</small>
+    <!-- =================================================
+         TOP BAR
+    ================================================== -->
 
-    <h1>Remote Controller</h1>
-
-</div>
+    <header class="topbar">
 
 
-<div class="ble-panel">
+        <div class="brand">
 
-    <div class="ble-info">
+            <div class="brand-icon">
+                ⚡
+            </div>
 
-        <div id="largeDot"></div>
+            <div>
 
-        <div>
+                <h2>VAJRA</h2>
 
-            <strong id="bleTitle">
-                DRONE NOT CONNECTED
-            </strong>
+                <span>
+                    ANSH'S DRONE
+                </span>
 
-            <span id="bleDescription">
-                Press the button to search for VAJRA
-            </span>
+            </div>
 
         </div>
 
-    </div>
 
 
-    <button
-        id="searchBtn"
-        class="search-btn"
-        type="button"
-    >
-        🔎 SEARCH FOR VAJRA
-    </button>
+        <!-- REAL BLE CONNECT BUTTON -->
 
-</div>
+        <div class="top-connection">
 
+            <div class="status-wrapper">
 
-<div class="remote">
+                <span id="connectionDot"></span>
 
-<div class="remote-header">
+                <span id="connectionText">
+                    DISCONNECTED
+                </span>
 
-    <div>
-
-        <span>VAJRA REMOTE</span>
-
-        <strong>
-            DUAL JOYSTICK CONTROLLER
-        </strong>
-
-    </div>
-
-    <div
-        id="remoteStatus"
-        class="remote-status"
-    >
-        DISCONNECTED
-    </div>
-
-</div>
+            </div>
 
 
-<div class="joysticks">
+            <button
+                id="connectButton"
+                class="connect-button"
+                type="button"
+            >
+                CONNECT
+            </button>
 
-
-<!-- LEFT -->
-
-<div class="joystick-box">
-
-    <div class="joystick-title">
-        LEFT JOYSTICK
-    </div>
-
-    <div
-        id="leftJoystick"
-        class="joystick"
-    >
-
-        <div
-            id="leftStick"
-            class="stick"
-        ></div>
-
-    </div>
-
-    <div class="axes">
-        <span>THROTTLE</span>
-        <span>YAW</span>
-    </div>
-
-</div>
-
-
-<!-- CENTER -->
-
-<div class="center-controls">
-
-    <div class="drone">🚁</div>
-
-    <button
-        id="armBtn"
-        class="arm-btn"
-        type="button"
-    >
-        ARM
-    </button>
-
-    <button
-        id="stopBtn"
-        class="stop-btn"
-        type="button"
-    >
-        STOP
-    </button>
-
-</div>
-
-
-<!-- RIGHT -->
-
-<div class="joystick-box">
-
-    <div class="joystick-title">
-        RIGHT JOYSTICK
-    </div>
-
-    <div
-        id="rightJoystick"
-        class="joystick"
-    >
-
-        <div
-            id="rightStick"
-            class="stick"
-        ></div>
-
-    </div>
-
-    <div class="axes">
-        <span>PITCH</span>
-        <span>ROLL</span>
-    </div>
-
-</div>
-
-</div>
-
-
-<div class="values">
-
-    <div>
-        <span>THROTTLE</span>
-        <strong id="throttleValue">0</strong>
-    </div>
-
-    <div>
-        <span>YAW</span>
-        <strong id="yawValue">0</strong>
-    </div>
-
-    <div>
-        <span>PITCH</span>
-        <strong id="pitchValue">0</strong>
-    </div>
-
-    <div>
-        <span>ROLL</span>
-        <strong id="rollValue">0</strong>
-    </div>
-
-</div>
-
-</div>
-
-
-<div class="motor-title">
-    MOTOR TEST
-</div>
-
-
-<div class="motor-grid">
-
-<div class="motor-card">
-    <div class="motor-card-top">
-        <div>
-            <span>M1</span>
-            <h3>Front Right</h3>
         </div>
-        <div id="m1Status" class="motor-off">OFF</div>
-    </div>
 
-    <strong id="m1Speed" class="motor-speed">
-        900 µs
-    </strong>
+    </header>
 
-    <div class="motor-buttons">
-        <button class="motor-start" onclick="motorOn('M1')">START</button>
-        <button class="motor-stop" onclick="motorOff('M1')">OFF</button>
-    </div>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <button
+            class="nav-button active"
+            data-page="controlPage"
+            type="button"
+        >
+            🎮
+            <span>Control</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="telemetryPage"
+            type="button"
+        >
+            📡
+            <span>Telemetry</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="settingsPage"
+            type="button"
+        >
+            ⚙️
+            <span>Settings</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="logsPage"
+            type="button"
+        >
+            📋
+            <span>Logs</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-page="aboutPage"
+            type="button"
+        >
+            ℹ️
+            <span>About</span>
+        </button>
+
+
+        <button
+            id="logoutButton"
+            class="logout-button"
+            type="button"
+        >
+            🚪
+            <span>Logout</span>
+        </button>
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             CONTROL PAGE
+        ================================================== -->
+
+        <section
+            id="controlPage"
+            class="page active"
+        >
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <small>
+                        FLIGHT CONTROL
+                    </small>
+
+                    <h1>
+                        Remote Controller
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 BLE CONNECTION PANEL
+            ================================================== -->
+
+            <div class="connection-panel">
+
+                <div class="connection-info">
+
+                    <span
+                        id="largeConnectionDot"
+                        class="large-dot"
+                    ></span>
+
+
+                    <div>
+
+                        <strong
+                            id="largeConnectionText"
+                        >
+                            DRONE NOT CONNECTED
+                        </strong>
+
+
+                        <span
+                            id="deviceText"
+                        >
+                            Press CONNECT to search for
+                            ANSH'S DRONE VAJRA
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="searchButton"
+                    class="search-button"
+                    type="button"
+                >
+                    🔎 SEARCH FOR VAJRA
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REMOTE CONTROLLER
+            ================================================== -->
+
+            <div class="remote">
+
+
+                <div class="remote-header">
+
+                    <div>
+
+                        <span>
+                            VAJRA REMOTE
+                        </span>
+
+                        <strong>
+                            DUAL JOYSTICK FLIGHT CONTROL
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        id="remoteStatus"
+                        class="remote-status"
+                    >
+                        DISCONNECTED
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     JOYSTICKS
+                ================================================== -->
+
+                <div class="joystick-area">
+
+
+                    <!-- LEFT JOYSTICK -->
+
+                    <div class="joystick-section">
+
+                        <div class="joystick-title">
+                            LEFT JOYSTICK
+                        </div>
+
+
+                        <div
+                            id="leftJoystick"
+                            class="joystick"
+                        >
+
+                            <div
+                                id="leftStick"
+                                class="stick"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="axis-labels">
+
+                            <span>
+                                THROTTLE
+                            </span>
+
+                            <span>
+                                YAW
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CENTER -->
+
+                    <div class="center-control">
+
+                        <div class="drone-icon">
+                            🚁
+                        </div>
+
+
+                        <div class="arm-label">
+                            FLIGHT SYSTEM
+                        </div>
+
+
+                        <button
+                            id="armButton"
+                            class="arm-button"
+                            type="button"
+                        >
+                            ARM
+                        </button>
+
+
+                        <button
+                            id="stopButton"
+                            class="stop-button"
+                            type="button"
+                        >
+                            STOP
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- RIGHT JOYSTICK -->
+
+                    <div class="joystick-section">
+
+                        <div class="joystick-title">
+                            RIGHT JOYSTICK
+                        </div>
+
+
+                        <div
+                            id="rightJoystick"
+                            class="joystick"
+                        >
+
+                            <div
+                                id="rightStick"
+                                class="stick"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="axis-labels">
+
+                            <span>
+                                PITCH
+                            </span>
+
+                            <span>
+                                ROLL
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     VALUES
+                ================================================== -->
+
+                <div class="flight-values">
+
+                    <div>
+                        <span>THROTTLE</span>
+                        <strong id="throttleValue">
+                            0
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>YAW</span>
+                        <strong id="yawValue">
+                            0
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>PITCH</span>
+                        <strong id="pitchValue">
+                            0
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>ROLL</span>
+                        <strong id="rollValue">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MOTOR TEST
+            ================================================== -->
+
+            <div class="section-heading">
+                4 MOTOR TEST
+            </div>
+
+
+            <div class="motor-grid">
+
+
+                <!-- M1 -->
+
+                <div class="motor-card">
+
+                    <div class="motor-top">
+
+                        <div>
+                            <span>M1</span>
+
+                            <h3>
+                                Front Right
+                            </h3>
+                        </div>
+
+
+                        <span
+                            id="m1Status"
+                            class="motor-off"
+                        >
+                            OFF
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="m1Speed"
+                        class="motor-speed"
+                    >
+                        900 µs
+                    </strong>
+
+
+                    <div class="motor-buttons">
+
+                        <button
+                            class="motor-start"
+                            data-motor="M1"
+                            type="button"
+                        >
+                            START
+                        </button>
+
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M1"
+                            type="button"
+                        >
+                            OFF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- M2 -->
+
+                <div class="motor-card">
+
+                    <div class="motor-top">
+
+                        <div>
+                            <span>M2</span>
+
+                            <h3>
+                                Rear Right
+                            </h3>
+                        </div>
+
+
+                        <span
+                            id="m2Status"
+                            class="motor-off"
+                        >
+                            OFF
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="m2Speed"
+                        class="motor-speed"
+                    >
+                        900 µs
+                    </strong>
+
+
+                    <div class="motor-buttons">
+
+                        <button
+                            class="motor-start"
+                            data-motor="M2"
+                            type="button"
+                        >
+                            START
+                        </button>
+
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M2"
+                            type="button"
+                        >
+                            OFF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- M3 -->
+
+                <div class="motor-card">
+
+                    <div class="motor-top">
+
+                        <div>
+                            <span>M3</span>
+
+                            <h3>
+                                Rear Left
+                            </h3>
+                        </div>
+
+
+                        <span
+                            id="m3Status"
+                            class="motor-off"
+                        >
+                            OFF
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="m3Speed"
+                        class="motor-speed"
+                    >
+                        900 µs
+                    </strong>
+
+
+                    <div class="motor-buttons">
+
+                        <button
+                            class="motor-start"
+                            data-motor="M3"
+                            type="button"
+                        >
+                            START
+                        </button>
+
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M3"
+                            type="button"
+                        >
+                            OFF
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- M4 -->
+
+                <div class="motor-card">
+
+                    <div class="motor-top">
+
+                        <div>
+                            <span>M4</span>
+
+                            <h3>
+                                Front Left
+                            </h3>
+                        </div>
+
+
+                        <span
+                            id="m4Status"
+                            class="motor-off"
+                        >
+                            OFF
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="m4Speed"
+                        class="motor-speed"
+                    >
+                        900 µs
+                    </strong>
+
+
+                    <div class="motor-buttons">
+
+                        <button
+                            class="motor-start"
+                            data-motor="M4"
+                            type="button"
+                        >
+                            START
+                        </button>
+
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M4"
+                            type="button"
+                        >
+                            OFF
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TELEMETRY
+        ================================================== -->
+
+        <section
+            id="telemetryPage"
+            class="page"
+        >
+
+            <div class="page-header">
+
+                <small>
+                    SYSTEM DATA
+                </small>
+
+                <h1>
+                    Telemetry
+                </h1>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <span>ROLL</span>
+
+                    <strong id="telemetryRoll">
+                        0.00°
+                    </strong>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <span>PITCH</span>
+
+                    <strong id="telemetryPitch">
+                        0.00°
+                    </strong>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <span>BLE</span>
+
+                    <strong id="telemetryBLE">
+                        OFFLINE
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SETTINGS
+        ================================================== -->
+
+        <section
+            id="settingsPage"
+            class="page"
+        >
+
+            <div class="page-header">
+
+                <small>
+                    CONFIGURATION
+                </small>
+
+                <h1>
+                    Settings
+                </h1>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <p>
+                    <strong>
+                        BLE DEVICE
+                    </strong>
+
+                    ANSH'S DRONE VAJRA
+                </p>
+
+
+                <p>
+                    <strong>
+                        STOP SIGNAL
+                    </strong>
+
+                    900 µs
+                </p>
+
+
+                <p>
+                    <strong>
+                        PWM FREQUENCY
+                    </strong>
+
+                    50 Hz
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOGS
+        ================================================== -->
+
+        <section
+            id="logsPage"
+            class="page"
+        >
+
+            <div class="page-header">
+
+                <small>
+                    SYSTEM ACTIVITY
+                </small>
+
+                <h1>
+                    Logs
+                </h1>
+
+            </div>
+
+
+            <div
+                id="logs"
+                class="logs"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
+
+        <section
+            id="aboutPage"
+            class="page"
+        >
+
+            <div class="info-box about">
+
+                <div class="big-logo">
+                    ⚡
+                </div>
+
+                <h1>
+                    ANSH'S DRONE VAJRA
+                </h1>
+
+                <p>
+                    ESP32-C3 based four-motor drone
+                    control system with BLE control
+                    and MPU6050 flight sensing.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
 </div>
 
 
-<div class="motor-card">
-    <div class="motor-card-top">
-        <div>
-            <span>M2</span>
-            <h3>Rear Right</h3>
-        </div>
-        <div id="m2Status" class="motor-off">OFF</div>
-    </div>
-
-    <strong id="m2Speed" class="motor-speed">
-        900 µs
-    </strong>
-
-    <div class="motor-buttons">
-        <button class="motor-start" onclick="motorOn('M2')">START</button>
-        <button class="motor-stop" onclick="motorOff('M2')">OFF</button>
-    </div>
-</div>
-
-
-<div class="motor-card">
-    <div class="motor-card-top">
-        <div>
-            <span>M3</span>
-            <h3>Rear Left</h3>
-        </div>
-        <div id="m3Status" class="motor-off">OFF</div>
-    </div>
-
-    <strong id="m3Speed" class="motor-speed">
-        900 µs
-    </strong>
-
-    <div class="motor-buttons">
-        <button class="motor-start" onclick="motorOn('M3')">START</button>
-        <button class="motor-stop" onclick="motorOff('M3')">OFF</button>
-    </div>
-</div>
-
-
-<div class="motor-card">
-    <div class="motor-card-top">
-        <div>
-            <span>M4</span>
-            <h3>Front Left</h3>
-        </div>
-        <div id="m4Status" class="motor-off">OFF</div>
-    </div>
-
-    <strong id="m4Speed" class="motor-speed">
-        900 µs
-    </strong>
-
-    <div class="motor-buttons">
-        <button class="motor-start" onclick="motorOn('M4')">START</button>
-        <button class="motor-stop" onclick="motorOff('M4')">OFF</button>
-    </div>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- TELEMETRY -->
-
-<section id="telemetryPage" class="page">
-
-    <div class="heading">
-        <small>SYSTEM DATA</small>
-        <h1>Telemetry</h1>
-    </div>
-
-    <div class="info-card">
-
-        <p>
-            ROLL:
-            <strong id="rollTelemetry">0.00°</strong>
-        </p>
-
-        <p>
-            PITCH:
-            <strong id="pitchTelemetry">0.00°</strong>
-        </p>
-
-        <p>
-            BLE:
-            <strong id="linkTelemetry">OFFLINE</strong>
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- SETTINGS -->
-
-<section id="settingsPage" class="page">
-
-    <div class="heading">
-        <small>CONFIGURATION</small>
-        <h1>Settings</h1>
-    </div>
-
-    <div class="info-card">
-        <p>BLE DEVICE: ANSH'S DRONE VAJRA</p>
-        <p>STOP SIGNAL: 900 µs</p>
-        <p>PWM FREQUENCY: 50 Hz</p>
-    </div>
-
-</section>
-
-
-<!-- LOGS -->
-
-<section id="logsPage" class="page">
-
-    <div class="heading">
-        <small>SYSTEM ACTIVITY</small>
-        <h1>Logs</h1>
-    </div>
-
-    <div
-        id="logs"
-        class="info-card"
-    ></div>
-
-</section>
-
-
-<!-- ABOUT -->
-
-<section id="aboutPage" class="page">
-
-    <div class="heading">
-        <small>VAJRA</small>
-        <h1>About</h1>
-    </div>
-
-    <div class="info-card">
-        <p>
-            ANSH'S DRONE VAJRA 🚁⚡
-        </p>
-
-        <p>
-            ESP32-C3 based four motor drone
-            control system with BLE control
-            and MPU6050 flight sensing.
-        </p>
-    </div>
-
-</section>
-
-</main>
-
-</section>
-
-
-<script>
-
-/* =====================================================
-   BLE SETTINGS
-===================================================== */
-
-const SERVICE_UUID =
-    "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
-
-const RX_UUID =
-    "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
-
-const TX_UUID =
-    "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
-
-const VAJRA_NAME =
-    "ANSH'S DRONE VAJRA";
-
-
-let device = null;
-let rxCharacteristic = null;
-let txCharacteristic = null;
-let connected = false;
-let armed = false;
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-document
-    .getElementById("loginBtn")
-    .addEventListener("click", function () {
-
-        const user =
-            document.getElementById("username").value.trim();
-
-        const pass =
-            document.getElementById("password").value;
-
-        if (
-            user === "VAJRA" &&
-            pass === "VAJRA"
-        ) {
-
-            document
-                .getElementById("loginPage")
-                .classList.add("hidden");
-
-            document
-                .getElementById("dashboard")
-                .classList.remove("hidden");
-
-            log("SYSTEM", "Dashboard opened");
-
-        } else {
-
-            document
-                .getElementById("loginError")
-                .textContent =
-                "Invalid username or password.";
-
-        }
-
-    });
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-document
-    .querySelectorAll(".nav-btn")
-    .forEach(function(button) {
-
-        button.addEventListener("click", function () {
-
-            document
-                .querySelectorAll(".nav-btn")
-                .forEach(function(b) {
-                    b.classList.remove("active");
-                });
-
-            button.classList.add("active");
-
-
-            document
-                .querySelectorAll(".page")
-                .forEach(function(page) {
-                    page.classList.remove("active");
-                });
-
-
-            document
-                .getElementById(
-                    button.dataset.page
-                )
-                .classList.add("active");
-
-        });
-
-    });
-
-
-/* =====================================================
-   CONNECT BUTTON
-===================================================== */
-
-document
-    .getElementById("connectBtn")
-    .addEventListener(
-        "click",
-        handleConnectButton
-    );
-
-
-document
-    .getElementById("searchBtn")
-    .addEventListener(
-        "click",
-        handleConnectButton
-    );
-
-
-async function handleConnectButton() {
-
-    if (connected) {
-
-        disconnectBLE();
-
-    } else {
-
-        connectBLE();
-
-    }
-
-}
-
-
-/* =====================================================
-   REAL BLUETOOTH SEARCH
-===================================================== */
-
-async function connectBLE() {
-
-    if (!navigator.bluetooth) {
-
-        alert(
-            "Web Bluetooth is not available.\n\nPlease use Google Chrome or Microsoft Edge on HTTPS."
-        );
-
-        return;
-
-    }
-
-
-    const connectBtn =
-        document.getElementById("connectBtn");
-
-    const searchBtn =
-        document.getElementById("searchBtn");
-
-
-    connectBtn.disabled = true;
-    searchBtn.disabled = true;
-
-
-    connectBtn.textContent =
-        "SEARCHING...";
-
-    searchBtn.textContent =
-        "🔎 SEARCHING FOR VAJRA...";
-
-
-    document
-        .getElementById("connectionText")
-        .textContent =
-        "SEARCHING...";
-
-
-    document
-        .getElementById("bleTitle")
-        .textContent =
-        "SEARCHING FOR VAJRA";
-
-
-    document
-        .getElementById("bleDescription")
-        .textContent =
-        "Select ANSH'S DRONE VAJRA in the Bluetooth window.";
-
-
-    log(
-        "BLE",
-        "Opening Bluetooth device chooser"
-    );
-
-
-    try {
-
-        /*
-           IMPORTANT:
-           This is the REAL browser Bluetooth
-           device picker.
-        */
-
-        device =
-            await navigator.bluetooth.requestDevice({
-
-                filters: [
-                    {
-                        name: VAJRA_NAME
-                    }
-                ],
-
-                optionalServices: [
-                    SERVICE_UUID
-                ]
-
-            });
-
-
-        log(
-            "BLE",
-            "Selected: " +
-            (device.name || VAJRA_NAME)
-        );
-
-
-        device.addEventListener(
-            "gattserverdisconnected",
-            disconnectedEvent
-        );
-
-
-        document
-            .getElementById("bleDescription")
-            .textContent =
-            "Connecting to " +
-            (device.name || VAJRA_NAME) +
-            "...";
-
-
-        const server =
-            await device.gatt.connect();
-
-
-        log(
-            "BLE",
-            "GATT connected"
-        );
-
-
-        const service =
-            await server.getPrimaryService(
-                SERVICE_UUID
-            );
-
-
-        rxCharacteristic =
-            await service.getCharacteristic(
-                RX_UUID
-            );
-
-
-        txCharacteristic =
-            await service.getCharacteristic(
-                TX_UUID
-            );
-
-
-        await txCharacteristic.startNotifications();
-
-
-        txCharacteristic.addEventListener(
-            "characteristicvaluechanged",
-            receiveTelemetry
-        );
-
-
-        connected = true;
-
-
-        updateConnection();
-
-
-        log(
-            "BLE",
-            "VAJRA connected successfully"
-        );
-
-
-        /*
-           Safety command immediately after
-           connecting.
-        */
-
-        await sendCommand("STOP");
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        connected = false;
-
-        updateConnection();
-
-
-        if (
-            error.name === "NotFoundError"
-        ) {
-
-            log(
-                "BLE",
-                "No device selected"
-            );
-
-        } else {
-
-            log(
-                "BLE ERROR",
-                error.message
-            );
-
-            alert(
-                "Bluetooth connection failed:\n\n" +
-                error.message
-            );
-
-        }
-
-    }
-
-
-    connectBtn.disabled = false;
-    searchBtn.disabled = false;
-
-}
-
-
-/* =====================================================
-   UPDATE CONNECTION
-===================================================== */
-
-function updateConnection() {
-
-    const dot =
-        document.getElementById(
-            "connectionDot"
-        );
-
-    const largeDot =
-        document.getElementById(
-            "largeDot"
-        );
-
-    const text =
-        document.getElementById(
-            "connectionText"
-        );
-
-    const connectBtn =
-        document.getElementById(
-            "connectBtn"
-        );
-
-    const searchBtn =
-        document.getElementById(
-            "searchBtn"
-        );
-
-    const title =
-        document.getElementById(
-            "bleTitle"
-        );
-
-    const description =
-        document.getElementById(
-            "bleDescription"
-        );
-
-    const remoteStatus =
-        document.getElementById(
-            "remoteStatus"
-        );
-
-    const link =
-        document.getElementById(
-            "linkTelemetry"
-        );
-
-
-    if (connected) {
-
-        dot.classList.add("connected");
-
-        largeDot.classList.add("connected");
-
-
-        text.textContent =
-            "CONNECTED";
-
-
-        connectBtn.textContent =
-            "DISCONNECT";
-
-
-        searchBtn.textContent =
-            "DISCONNECT VAJRA";
-
-
-        title.textContent =
-            "DRONE CONNECTED";
-
-
-        description.textContent =
-            device?.name ||
-            VAJRA_NAME;
-
-
-        remoteStatus.textContent =
-            "CONNECTED";
-
-
-        link.textContent =
-            "ONLINE";
-
-    } else {
-
-        dot.classList.remove("connected");
-
-        largeDot.classList.remove("connected");
-
-
-        text.textContent =
-            "DISCONNECTED";
-
-
-        connectBtn.textContent =
-            "CONNECT";
-
-
-        searchBtn.textContent =
-            "🔎 SEARCH FOR VAJRA";
-
-
-        title.textContent =
-            "DRONE NOT CONNECTED";
-
-
-        description.textContent =
-            "Press the button to search for VAJRA";
-
-
-        remoteStatus.textContent =
-            "DISCONNECTED";
-
-
-        link.textContent =
-            "OFFLINE";
-
-    }
-
-}
-
-
-/* =====================================================
-   DISCONNECT
-===================================================== */
-
-function disconnectBLE() {
-
-    try {
-
-        if (
-            device &&
-            device.gatt &&
-            device.gatt.connected
-        ) {
-
-            device.gatt.disconnect();
-
-        }
-
-    }
-
-    catch(error) {
-
-        console.log(error);
-
-    }
-
-
-    rxCharacteristic = null;
-    txCharacteristic = null;
-    connected = false;
-    armed = false;
-
-
-    updateConnection();
-
-
-    log(
-        "BLE",
-        "Disconnected"
-    );
-
-}
-
-
-/* =====================================================
-   DISCONNECT EVENT
-===================================================== */
-
-function disconnectedEvent() {
-
-    rxCharacteristic = null;
-    txCharacteristic = null;
-    connected = false;
-    armed = false;
-
-
-    updateConnection();
-
-
-    log(
-        "BLE",
-        "VAJRA connection lost"
-    );
-
-}
-
-
-/* =====================================================
-   SEND COMMAND
-===================================================== */
-
-async function sendCommand(command) {
-
-    if (!rxCharacteristic) {
-
-        log(
-            "COMMAND",
-            command + " — NOT CONNECTED"
-        );
-
-        return false;
-
-    }
-
-
-    try {
-
-        const data =
-            new TextEncoder().encode(
-                command + "\n"
-            );
-
-
-        await rxCharacteristic.writeValue(
-            data
-        );
-
-
-        log(
-            "TX",
-            command
-        );
-
-
-        return true;
-
-    }
-
-    catch(error) {
-
-        log(
-            "TX ERROR",
-            error.message
-        );
-
-        return false;
-
-    }
-
-}
-
-
-/* =====================================================
-   TELEMETRY
-===================================================== */
-
-function receiveTelemetry(event) {
-
-    const data =
-        new TextDecoder()
-            .decode(event.target.value)
-            .trim();
-
-
-    log(
-        "RX",
-        data
-    );
-
-
-    const roll =
-        data.match(
-            /ROLL\s*[=:]\s*(-?\d+(?:\.\d+)?)/i
-        );
-
-
-    const pitch =
-        data.match(
-            /PITCH\s*[=:]\s*(-?\d+(?:\.\d+)?)/i
-        );
-
-
-    if (roll) {
-
-        document
-            .getElementById(
-                "rollTelemetry"
-            )
-            .textContent =
-            Number(roll[1]).toFixed(2) + "°";
-
-    }
-
-
-    if (pitch) {
-
-        document
-            .getElementById(
-                "pitchTelemetry"
-            )
-            .textContent =
-            Number(pitch[1]).toFixed(2) + "°";
-
-    }
-
-}
-
-
-/* =====================================================
-   ARM
-===================================================== */
-
-document
-    .getElementById("armBtn")
-    .addEventListener("click", async function() {
-
-        if (!connected) {
-
-            alert(
-                "Connect VAJRA first."
-            );
-
-            return;
-
-        }
-
-
-        armed = !armed;
-
-
-        if (armed) {
-
-            await sendCommand("ARM");
-
-
-            this.textContent =
-                "ARMED";
-
-            this.classList.add("armed");
-
-
-            document
-                .getElementById("remoteStatus")
-                .textContent =
-                "ARMED";
-
-            document
-                .getElementById("remoteStatus")
-                .classList.add("armed");
-
-        } else {
-
-            await sendCommand("STOP");
-
-
-            this.textContent =
-                "ARM";
-
-            this.classList.remove("armed");
-
-
-            document
-                .getElementById("remoteStatus")
-                .textContent =
-                "CONNECTED";
-
-            document
-                .getElementById("remoteStatus")
-                .classList.remove("armed");
-
-        }
-
-    });
-
-
-/* =====================================================
-   STOP
-===================================================== */
-
-document
-    .getElementById("stopBtn")
-    .addEventListener(
-        "click",
-        stopAll
-    );
-
-
-async function stopAll() {
-
-    armed = false;
-
-    await sendCommand("STOP");
-
-
-    for (
-        let i = 1;
-        i <= 4;
-        i++
-    ) {
-
-        updateMotor(
-            "M" + i,
-            false,
-            900
-        );
-
-    }
-
-
-    const arm =
-        document.getElementById(
-            "armBtn"
-        );
-
-    arm.textContent = "ARM";
-
-    arm.classList.remove("armed");
-
-
-    document
-        .getElementById(
-            "remoteStatus"
-        )
-        .textContent =
-        connected
-            ? "CONNECTED"
-            : "DISCONNECTED";
-
-
-    document
-        .getElementById(
-            "remoteStatus"
-        )
-        .classList.remove("armed");
-
-}
-
-
-/* =====================================================
-   MOTOR CONTROL
-===================================================== */
-
-async function motorOn(motor) {
-
-    if (!connected) {
-
-        alert(
-            "Connect VAJRA first."
-        );
-
-        return;
-
-    }
-
-
-    await sendCommand(
-        "SPEED 1100"
-    );
-
-
-    await sendCommand(
-        motor + " ON"
-    );
-
-
-    updateMotor(
-        motor,
-        true,
-        1100
-    );
-
-}
-
-
-async function motorOff(motor) {
-
-    await sendCommand(
-        motor + " OFF"
-    );
-
-
-    updateMotor(
-        motor,
-        false,
-        900
-    );
-
-}
-
-
-function updateMotor(
-    motor,
-    on,
-    speed
-) {
-
-    const n =
-        motor.substring(1);
-
-
-    const status =
-        document.getElementById(
-            "m" + n + "Status"
-        );
-
-
-    const speedText =
-        document.getElementById(
-            "m" + n + "Speed"
-        );
-
-
-    if (on) {
-
-        status.textContent = "ON";
-
-        status.className = "motor-on";
-
-        speedText.textContent =
-            speed + " µs";
-
-    } else {
-
-        status.textContent = "OFF";
-
-        status.className = "motor-off";
-
-        speedText.textContent =
-            "900 µs";
-
-    }
-
-}
-
-
-/* =====================================================
-   DUAL JOYSTICK
-===================================================== */
-
-let throttle = 0;
-let yaw = 0;
-let pitch = 0;
-let roll = 0;
-
-let lastJoystickSend = 0;
-
-
-class Joystick {
-
-    constructor(
-        area,
-        stick,
-        callback
-    ) {
-
-        this.area = area;
-        this.stick = stick;
-        this.callback = callback;
-
-        this.active = false;
-
-        this.radius =
-            area.clientWidth / 2 - 36;
-
-
-        area.addEventListener(
-            "pointerdown",
-            e => {
-
-                this.active = true;
-
-                this.move(e);
-
-            }
-        );
-
-
-        window.addEventListener(
-            "pointermove",
-            e => {
-
-                if (this.active) {
-                    this.move(e);
-                }
-
-            }
-        );
-
-
-        window.addEventListener(
-            "pointerup",
-            () => {
-
-                if (!this.active)
-                    return;
-
-
-                this.active = false;
-
-
-                this.stick.style.transform =
-                    "translate(-50%,-50%)";
-
-
-                this.callback(
-                    0,
-                    0
-                );
-
-            }
-        );
-
-    }
-
-
-    move(event) {
-
-        const rect =
-            this.area.getBoundingClientRect();
-
-
-        let x =
-            event.clientX -
-            (rect.left + rect.width / 2);
-
-
-        let y =
-            event.clientY -
-            (rect.top + rect.height / 2);
-
-
-        const distance =
-            Math.sqrt(
-                x*x + y*y
-            );
-
-
-        if (
-            distance >
-            this.radius
-        ) {
-
-            const scale =
-                this.radius / distance;
-
-            x *= scale;
-            y *= scale;
-
-        }
-
-
-        const nx =
-            x / this.radius;
-
-        const ny =
-            y / this.radius;
-
-
-        this.stick.style.transform =
-            `translate(
-                calc(-50% + ${x}px),
-                calc(-50% + ${y}px)
-            )`;
-
-
-        this.callback(
-            nx,
-            ny
-        );
-
-    }
-
-}
-
-
-/* LEFT */
-
-new Joystick(
-
-    document.getElementById(
-        "leftJoystick"
-    ),
-
-    document.getElementById(
-        "leftStick"
-    ),
-
-    function(x,y) {
-
-        throttle =
-            Math.round(
-                ((-y + 1) / 2) * 100
-            );
-
-        yaw =
-            Math.round(
-                x * 100
-            );
-
-
-        document
-            .getElementById(
-                "throttleValue"
-            )
-            .textContent =
-            throttle;
-
-
-        document
-            .getElementById(
-                "yawValue"
-            )
-            .textContent =
-            yaw;
-
-
-        sendJoystick();
-
-    }
-
-);
-
-
-/* RIGHT */
-
-new Joystick(
-
-    document.getElementById(
-        "rightJoystick"
-    ),
-
-    document.getElementById(
-        "rightStick"
-    ),
-
-    function(x,y) {
-
-        roll =
-            Math.round(
-                x * 100
-            );
-
-        pitch =
-            Math.round(
-                -y * 100
-            );
-
-
-        document
-            .getElementById(
-                "rollValue"
-            )
-            .textContent =
-            roll;
-
-
-        document
-            .getElementById(
-                "pitchValue"
-            )
-            .textContent =
-            pitch;
-
-
-        sendJoystick();
-
-    }
-
-);
-
-
-/* =====================================================
-   JOYSTICK SEND
-===================================================== */
-
-function sendJoystick() {
-
-    if (!connected)
-        return;
-
-    if (!armed)
-        return;
-
-
-    const now =
-        Date.now();
-
-
-    if (
-        now - lastJoystickSend <
-        80
-    ) {
-
-        return;
-
-    }
-
-
-    lastJoystickSend = now;
-
-
-    sendCommand(
-        `JOYSTICK ${throttle} ${yaw} ${pitch} ${roll}`
-    );
-
-}
-
-
-/* =====================================================
-   LOG
-===================================================== */
-
-function log(
-    type,
-    message
-) {
-
-    const logs =
-        document.getElementById(
-            "logs"
-        );
-
-
-    if (!logs)
-        return;
-
-
-    const row =
-        document.createElement(
-            "div"
-        );
-
-
-    row.style.padding =
-        "10px 0";
-
-    row.style.borderBottom =
-        "1px solid #1e2938";
-
-
-    row.innerHTML =
-        `<span style="color:#00e5ff">
-            ${new Date().toLocaleTimeString()}
-        </span>
-        &nbsp;
-        <strong>${type}</strong>
-        &nbsp;
-        ${message}`;
-
-
-    logs.prepend(row);
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-document
-    .getElementById("logoutBtn")
-    .addEventListener(
-        "click",
-        async function() {
-
-            await stopAll();
-
-            disconnectBLE();
-
-
-            document
-                .getElementById(
-                    "dashboard"
-                )
-                .classList.add(
-                    "hidden"
-                );
-
-
-            document
-                .getElementById(
-                    "loginPage"
-                )
-                .classList.remove(
-                    "hidden"
-                );
-
-
-            document
-                .getElementById(
-                    "password"
-                )
-                .value = "";
-
-        }
-    );
-
-
-/* =====================================================
-   START
-===================================================== */
-
-updateConnection();
-
-log(
-    "SYSTEM",
-    "VAJRA controller ready"
-);
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
