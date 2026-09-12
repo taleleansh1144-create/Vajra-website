@@ -1,1001 +1,873 @@
 /* =========================================================
    ANSH'S DRONE VAJRA 🚁⚡
-   MAIN WEBSITE JAVASCRIPT
-========================================================= */
+   COMPLETE WEBSITE JAVASCRIPT
+   Matched to current index.html
+   ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-        console.log(
-            "================================"
-        );
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
 
-        console.log(
-            "VAJRA SCRIPT LOADED"
-        );
+    const loginScreen = document.getElementById("loginScreen");
+    const dashboard = document.getElementById("dashboard");
 
-        console.log(
-            "================================"
-        );
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginMessage = document.getElementById("loginMessage");
 
+    const logoutBtn = document.getElementById("logoutBtn");
 
-        /* =====================================================
-           GET HTML ELEMENTS
-        ===================================================== */
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const pages = document.querySelectorAll(".page");
 
-        const loginScreen =
-            document.getElementById(
-                "loginScreen"
-            );
+    const bleButton = document.getElementById("bleConnectBtn");
+    const bleStatus = document.getElementById("bleStatus");
+    const settingsBle = document.getElementById("settingsBle");
 
-        const dashboard =
-            document.getElementById(
-                "dashboard"
-            );
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const allMotorStop = document.getElementById("allMotorStop");
 
-        const username =
-            document.getElementById(
-                "username"
-            );
+    const armedText = document.getElementById("armedText");
+    const armedIndicator = document.getElementById("armedIndicator");
 
-        const password =
-            document.getElementById(
-                "password"
-            );
+    const joystick = document.getElementById("joystick");
+    const joystickStick = document.getElementById("joystickStick");
 
-        const loginBtn =
-            document.getElementById(
-                "loginBtn"
-            );
+    const throttleValue = document.getElementById("throttleValue");
+    const yawValue = document.getElementById("yawValue");
+    const pitchValue = document.getElementById("pitchValue");
+    const rollValue = document.getElementById("rollValue");
 
-        const loginMessage =
-            document.getElementById(
-                "loginMessage"
-            );
+    const logWindow = document.getElementById("logWindow");
+    const clearLogs = document.getElementById("clearLogs");
 
-        const logoutBtn =
-            document.getElementById(
-                "logoutBtn"
-            );
+    /* =====================================================
+       BLE
+       ===================================================== */
 
+    const SERVICE_UUID =
+        "12345678-1234-1234-1234-1234567890ab";
 
-        /* =====================================================
-           CHECK IMPORTANT ELEMENTS
-        ===================================================== */
+    const RX_UUID =
+        "12345678-1234-1234-1234-1234567890ac";
 
-        console.log(
-            "loginScreen:",
-            loginScreen
-        );
+    const TX_UUID =
+        "12345678-1234-1234-1234-1234567890ad";
 
-        console.log(
-            "dashboard:",
-            dashboard
-        );
+    const DEVICE_NAME =
+        "ANSH'S DRONE VAJRA";
 
-        console.log(
-            "username:",
-            username
-        );
+    let bleDevice = null;
+    let bleServer = null;
+    let bleService = null;
+    let bleRX = null;
+    let bleTX = null;
 
-        console.log(
-            "password:",
-            password
-        );
+    let armed = false;
+    let joystickActive = false;
 
-        console.log(
-            "loginBtn:",
-            loginBtn
-        );
+    /* =====================================================
+       SAFETY / STARTUP
+       ===================================================== */
 
+    if (dashboard) {
+        dashboard.style.display = "none";
+    }
 
-        /* =====================================================
-           INITIAL SCREEN
-        ===================================================== */
+    if (loginScreen) {
+        loginScreen.style.display = "flex";
+    }
 
-        if (loginScreen) {
+    if (username) {
+        username.focus();
+    }
 
-            loginScreen.style.display =
-                "flex";
+    /* =====================================================
+       LOGIN
+       ===================================================== */
 
-        }
+    function login() {
 
-        if (dashboard) {
+        const user = username.value.trim();
+        const pass = password.value.trim();
 
-            dashboard.style.display =
-                "none";
+        if (user === "VAJRA" && pass === "VAJRA") {
 
-        }
+            loginMessage.style.color = "#00ff9d";
+            loginMessage.textContent = "✓ ACCESS GRANTED";
 
+            console.log("VAJRA LOGIN SUCCESS");
 
-        /* =====================================================
-           LOGIN
-        ===================================================== */
+            setTimeout(() => {
 
-        function login() {
+                loginScreen.style.display = "none";
+                dashboard.style.display = "block";
 
-            console.log(
-                "LOGIN BUTTON CLICKED"
-            );
+                document.body.style.overflow = "auto";
 
-            const user =
-                username.value.trim();
+                addLog("LOGIN SUCCESS — VAJRA dashboard opened");
 
-            const pass =
-                password.value.trim();
-
-
-            console.log(
-                "Username:",
-                user
-            );
-
-            console.log(
-                "Password entered:",
-                pass.length > 0
-            );
-
-
-            if (
-                user === "VAJRA" &&
-                pass === "VAJRA"
-            ) {
-
-                console.log(
-                    "LOGIN CORRECT"
-                );
-
-
-                loginMessage.textContent =
-                    "✓ ACCESS GRANTED";
-
-                loginMessage.style.color =
-                    "#00ff9d";
-
-
-                /*
-                 * OPEN DASHBOARD
-                 */
-
-                loginScreen.style.display =
-                    "none";
-
-                dashboard.style.display =
-                    "block";
-
-
-                document.body.style.overflow =
-                    "auto";
-
-
-                addLog(
-                    "LOGIN SUCCESS"
-                );
-
-                addLog(
-                    "VAJRA CONTROL PANEL OPENED"
-                );
-
-
-            } else {
-
-                console.log(
-                    "LOGIN INCORRECT"
-                );
-
-
-                loginMessage.textContent =
-                    "✕ INVALID USERNAME OR PASSWORD";
-
-                loginMessage.style.color =
-                    "#ff3155";
-
-
-                password.value = "";
-
-                password.focus();
-
-            }
-
-        }
-
-
-        /* =====================================================
-           LOGIN BUTTON
-        ===================================================== */
-
-        if (loginBtn) {
-
-            loginBtn.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-
-                    login();
-
-                }
-            );
+            }, 350);
 
         } else {
 
-            console.error(
-                "ERROR: loginBtn NOT FOUND"
-            );
+            loginMessage.style.color = "#ff3155";
+            loginMessage.textContent =
+                "✕ INVALID USERNAME OR PASSWORD";
 
+            password.value = "";
+            password.focus();
         }
+    }
 
+    if (loginBtn) {
+        loginBtn.addEventListener("click", login);
+    }
 
-        /* =====================================================
-           ENTER KEY
-        ===================================================== */
+    if (username) {
+        username.addEventListener("keydown", (event) => {
 
-        if (username) {
-
-            username.addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (
-                        event.key ===
-                        "Enter"
-                    ) {
-
-                        password.focus();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        if (password) {
-
-            password.addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (
-                        event.key ===
-                        "Enter"
-                    ) {
-
-                        login();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           LOGOUT
-        ===================================================== */
-
-        if (logoutBtn) {
-
-            logoutBtn.addEventListener(
-                "click",
-                function () {
-
-                    disconnectBLE();
-
-                    loginScreen.style.display =
-                        "flex";
-
-                    dashboard.style.display =
-                        "none";
-
-                    username.value = "";
-
-                    password.value = "";
-
-                    loginMessage.textContent =
-                        "";
-
-                    username.focus();
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ===================================================== */
-
-        const navButtons =
-            document.querySelectorAll(
-                ".nav-btn"
-            );
-
-        const pages =
-            document.querySelectorAll(
-                ".page"
-            );
-
-
-        navButtons.forEach(
-            function (button) {
-
-                button.addEventListener(
-                    "click",
-                    function () {
-
-                        const pageName =
-                            button.dataset.page;
-
-
-                        navButtons.forEach(
-                            function (btn) {
-
-                                btn.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                        button.classList.add(
-                            "active"
-                        );
-
-
-                        pages.forEach(
-                            function (page) {
-
-                                page.classList.remove(
-                                    "active-page"
-                                );
-
-                            }
-                        );
-
-
-                        const page =
-                            document.getElementById(
-                                pageName +
-                                "Page"
-                            );
-
-
-                        if (page) {
-
-                            page.classList.add(
-                                "active-page"
-                            );
-
-                        }
-
-
-                        addLog(
-                            "OPENED " +
-                            pageName.toUpperCase()
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-        /* =====================================================
-           LOGS
-        ===================================================== */
-
-        const logWindow =
-            document.getElementById(
-                "logWindow"
-            );
-
-        const clearLogs =
-            document.getElementById(
-                "clearLogs"
-            );
-
-
-        function addLog(
-            message
-        ) {
-
-            if (!logWindow) {
-                return;
+            if (event.key === "Enter") {
+                password.focus();
             }
 
+        });
+    }
 
-            const line =
-                document.createElement(
-                    "div"
-                );
+    if (password) {
+        password.addEventListener("keydown", (event) => {
 
-
-            line.className =
-                "log-line";
-
-
-            const time =
-                new Date()
-                    .toLocaleTimeString();
-
-
-            const timeSpan =
-                document.createElement(
-                    "span"
-                );
-
-
-            timeSpan.textContent =
-                "[" +
-                time +
-                "]";
-
-
-            line.appendChild(
-                timeSpan
-            );
-
-
-            line.appendChild(
-                document.createTextNode(
-                    message
-                )
-            );
-
-
-            logWindow.appendChild(
-                line
-            );
-
-
-            logWindow.scrollTop =
-                logWindow.scrollHeight;
-
-        }
-
-
-        if (clearLogs) {
-
-            clearLogs.addEventListener(
-                "click",
-                function () {
-
-                    logWindow.innerHTML =
-                        "";
-
-                    addLog(
-                        "LOGS CLEARED"
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           BLE
-        ===================================================== */
-
-        const bleConnectBtn =
-            document.getElementById(
-                "bleConnectBtn"
-            );
-
-        const bleStatus =
-            document.getElementById(
-                "bleStatus"
-            );
-
-        const settingsBle =
-            document.getElementById(
-                "settingsBle"
-            );
-
-
-        const SERVICE_UUID =
-            "12345678-1234-1234-1234-1234567890ab";
-
-        const RX_UUID =
-            "12345678-1234-1234-1234-1234567890ac";
-
-        const TX_UUID =
-            "12345678-1234-1234-1234-1234567890ad";
-
-
-        let bleDevice = null;
-
-        let bleServer = null;
-
-        let bleService = null;
-
-        let bleRX = null;
-
-        let bleTX = null;
-
-        let bleConnected = false;
-
-
-        /* =====================================================
-           BLE BUTTON
-        ===================================================== */
-
-        if (bleConnectBtn) {
-
-            bleConnectBtn.addEventListener(
-                "click",
-                async function () {
-
-                    if (
-                        bleConnected
-                    ) {
-
-                        disconnectBLE();
-
-                    } else {
-
-                        await connectBLE();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           CONNECT BLE
-        ===================================================== */
-
-        async function connectBLE() {
-
-            if (
-                !navigator.bluetooth
-            ) {
-
-                alert(
-                    "Web Bluetooth is not supported.\n\nUse Google Chrome or Microsoft Edge."
-                );
-
-                return;
-
+            if (event.key === "Enter") {
+                login();
             }
 
+        });
+    }
 
-            try {
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
 
-                addLog(
-                    "SEARCHING FOR VAJRA BLE..."
-                );
+    if (logoutBtn) {
 
+        logoutBtn.addEventListener("click", () => {
 
-                bleDevice =
-                    await navigator.bluetooth.requestDevice(
-                        {
+            stopAll();
 
-                            filters: [
-                                {
-                                    name:
-                                        "ANSH'S DRONE VAJRA"
-                                }
-                            ],
+            loginScreen.style.display = "flex";
+            dashboard.style.display = "none";
 
-                            optionalServices: [
-                                SERVICE_UUID
-                            ]
+            username.value = "";
+            password.value = "";
 
-                        }
-                    );
+            loginMessage.textContent = "";
 
+            addLog("USER LOGGED OUT");
 
-                addLog(
-                    "VAJRA DEVICE FOUND"
-                );
+        });
 
+    }
 
-                bleDevice.addEventListener(
-                    "gattserverdisconnected",
-                    onBLEDisconnected
-                );
+    /* =====================================================
+       PAGE NAVIGATION
+       ===================================================== */
 
+    navButtons.forEach((button) => {
 
-                bleServer =
-                    await bleDevice.gatt.connect();
+        button.addEventListener("click", () => {
 
+            const pageName = button.dataset.page;
 
-                addLog(
-                    "GATT CONNECTED"
-                );
+            navButtons.forEach((btn) => {
+                btn.classList.remove("active");
+            });
 
+            button.classList.add("active");
 
-                bleService =
-                    await bleServer.getPrimaryService(
-                        SERVICE_UUID
-                    );
+            pages.forEach((page) => {
+                page.classList.remove("active-page");
+            });
 
+            const selectedPage =
+                document.getElementById(pageName + "Page");
 
-                addLog(
-                    "SERVICE FOUND"
-                );
-
-
-                bleRX =
-                    await bleService.getCharacteristic(
-                        RX_UUID
-                    );
-
-
-                addLog(
-                    "RX FOUND"
-                );
-
-
-                bleTX =
-                    await bleService.getCharacteristic(
-                        TX_UUID
-                    );
-
-
-                addLog(
-                    "TX FOUND"
-                );
-
-
-                if (
-                    bleTX.properties.notify
-                ) {
-
-                    await bleTX.startNotifications();
-
-
-                    bleTX.addEventListener(
-                        "characteristicvaluechanged",
-                        receiveTelemetry
-                    );
-
-
-                    addLog(
-                        "TELEMETRY ACTIVE"
-                    );
-
-                }
-
-
-                bleConnected =
-                    true;
-
-
-                updateBLEUI(
-                    true
-                );
-
-
-                addLog(
-                    "VAJRA CONNECTED"
-                );
-
-
-            } catch (
-                error
-            ) {
-
-                console.error(
-                    "BLE ERROR:",
-                    error
-                );
-
-
-                bleConnected =
-                    false;
-
-
-                updateBLEUI(
-                    false
-                );
-
-
-                if (
-                    error.name !==
-                    "NotFoundError"
-                ) {
-
-                    addLog(
-                        "BLE ERROR: " +
-                        error.message
-                    );
-
-                }
-
+            if (selectedPage) {
+                selectedPage.classList.add("active-page");
             }
 
-        }
+            addLog("PAGE OPENED → " + pageName.toUpperCase());
 
+        });
 
-        /* =====================================================
-           BLE DISCONNECT
-        ===================================================== */
+    });
 
-        function disconnectBLE() {
+    /* =====================================================
+       LOGGING
+       ===================================================== */
 
-            try {
+    function addLog(message) {
 
-                if (
-                    bleDevice &&
-                    bleDevice.gatt &&
-                    bleDevice.gatt.connected
-                ) {
+        if (!logWindow) return;
 
-                    bleDevice.gatt.disconnect();
+        const line = document.createElement("div");
 
-                }
+        line.className = "log-line";
 
-            } catch (
-                error
-            ) {
+        const time =
+            new Date().toLocaleTimeString();
 
-                console.error(
-                    error
-                );
+        line.innerHTML =
+            `<span>[${time}]</span> ${message}`;
 
-            }
+        logWindow.appendChild(line);
 
+        logWindow.scrollTop =
+            logWindow.scrollHeight;
+    }
 
-            bleDevice = null;
+    if (clearLogs) {
 
-            bleServer = null;
+        clearLogs.addEventListener("click", () => {
 
-            bleService = null;
+            logWindow.innerHTML = "";
 
-            bleRX = null;
+            addLog("LOGS CLEARED");
 
-            bleTX = null;
+        });
 
-            bleConnected =
-                false;
+    }
 
+    /* =====================================================
+       BLE STATUS
+       ===================================================== */
 
-            updateBLEUI(
-                false
-            );
+    function setBLEConnected(connected) {
 
-        }
+        if (connected) {
 
-
-        function onBLEDisconnected() {
-
-            bleConnected =
-                false;
-
-            bleServer = null;
-
-            bleService = null;
-
-            bleRX = null;
-
-            bleTX = null;
-
-
-            updateBLEUI(
-                false
-            );
-
-
-            addLog(
-                "BLE DISCONNECTED"
-            );
-
-        }
-
-
-        /* =====================================================
-           BLE UI
-        ===================================================== */
-
-        function updateBLEUI(
-            state
-        ) {
-
-            if (!bleStatus) {
-                return;
-            }
-
-
-            if (state) {
+            if (bleStatus) {
 
                 bleStatus.className =
                     "ble-status connected";
 
                 bleStatus.innerHTML =
                     "<span></span> BLE CONNECTED";
+            }
 
+            if (bleButton) {
 
-                bleConnectBtn.textContent =
-                    "DISCONNECT BLE";
+                bleButton.textContent =
+                    "CONNECTED";
 
+                bleButton.disabled = true;
+            }
 
-                if (settingsBle) {
+            if (settingsBle) {
+                settingsBle.textContent =
+                    "Connected";
+            }
 
-                    settingsBle.textContent =
-                        "Connected";
+        } else {
 
-                }
-
-            } else {
+            if (bleStatus) {
 
                 bleStatus.className =
                     "ble-status disconnected";
 
                 bleStatus.innerHTML =
                     "<span></span> BLE DISCONNECTED";
-
-
-                bleConnectBtn.textContent =
-                    "CONNECT BLE";
-
-
-                if (settingsBle) {
-
-                    settingsBle.textContent =
-                        "Disconnected";
-
-                }
-
             }
 
+            if (bleButton) {
+
+                bleButton.textContent =
+                    "CONNECT BLE";
+
+                bleButton.disabled = false;
+            }
+
+            if (settingsBle) {
+                settingsBle.textContent =
+                    "Disconnected";
+            }
+        }
+    }
+
+    /* =====================================================
+       BLE CONNECT
+       ===================================================== */
+
+    if (bleButton) {
+
+        bleButton.addEventListener("click", async () => {
+
+            if (!navigator.bluetooth) {
+
+                alert(
+                    "Web Bluetooth is not supported in this browser."
+                );
+
+                addLog(
+                    "ERROR → Web Bluetooth not supported"
+                );
+
+                return;
+            }
+
+            try {
+
+                addLog(
+                    "SEARCHING → " + DEVICE_NAME
+                );
+
+                bleDevice =
+                    await navigator.bluetooth.requestDevice({
+
+                        filters: [
+                            {
+                                name: DEVICE_NAME
+                            }
+                        ],
+
+                        optionalServices: [
+                            SERVICE_UUID
+                        ]
+
+                    });
+
+                addLog(
+                    "DEVICE FOUND → " +
+                    (bleDevice.name || DEVICE_NAME)
+                );
+
+                bleDevice.addEventListener(
+                    "gattserverdisconnected",
+                    onDisconnected
+                );
+
+                addLog("CONNECTING TO GATT...");
+
+                bleServer =
+                    await bleDevice.gatt.connect();
+
+                addLog("GATT CONNECTED");
+
+                bleService =
+                    await bleServer.getPrimaryService(
+                        SERVICE_UUID
+                    );
+
+                addLog("SERVICE FOUND");
+
+                bleRX =
+                    await bleService.getCharacteristic(
+                        RX_UUID
+                    );
+
+                addLog("RX CHARACTERISTIC FOUND");
+
+                bleTX =
+                    await bleService.getCharacteristic(
+                        TX_UUID
+                    );
+
+                addLog("TX CHARACTERISTIC FOUND");
+
+                /* Notifications */
+
+                if (
+                    bleTX.properties.notify ||
+                    bleTX.properties.indicate
+                ) {
+
+                    await bleTX.startNotifications();
+
+                    bleTX.addEventListener(
+                        "characteristicvaluechanged",
+                        handleTelemetry
+                    );
+
+                    addLog(
+                        "TELEMETRY NOTIFICATIONS ENABLED"
+                    );
+                }
+
+                setBLEConnected(true);
+
+                addLog("✓ VAJRA CONNECTED");
+
+            } catch (error) {
+
+                console.error(
+                    "BLE ERROR:",
+                    error
+                );
+
+                setBLEConnected(false);
+
+                addLog(
+                    "BLE ERROR → " +
+                    error.message
+                );
+            }
+
+        });
+
+    }
+
+    /* =====================================================
+       BLE DISCONNECTED
+       ===================================================== */
+
+    function onDisconnected() {
+
+        addLog("⚠ BLE DISCONNECTED");
+
+        setBLEConnected(false);
+
+        bleServer = null;
+        bleService = null;
+        bleRX = null;
+        bleTX = null;
+
+        armed = false;
+
+        if (armedText) {
+            armedText.textContent = "DISARMED";
         }
 
+        if (armedIndicator) {
+            armedIndicator.style.background =
+                "#ff3155";
 
-        /* =====================================================
-           SEND BLE COMMAND
-        ===================================================== */
+            armedIndicator.style.boxShadow =
+                "none";
+        }
+    }
 
-        async function sendCommand(
-            command
-        ) {
+    /* =====================================================
+       SEND BLE COMMAND
+       ===================================================== */
+
+    async function sendCommand(command) {
+
+        console.log(
+            "VAJRA COMMAND:",
+            command.trim()
+        );
+
+        addLog(
+            "TX → " +
+            command.trim()
+        );
+
+        if (!bleRX) {
+
+            addLog(
+                "⚠ BLE NOT CONNECTED — COMMAND NOT SENT"
+            );
+
+            return false;
+        }
+
+        try {
+
+            const encoder =
+                new TextEncoder();
+
+            const data =
+                encoder.encode(command);
+
+            /*
+             * Use response write when supported.
+             * Fall back to normal write for compatibility.
+             */
+
+            if (
+                typeof bleRX.writeValueWithResponse ===
+                "function"
+            ) {
+
+                await bleRX.writeValueWithResponse(
+                    data
+                );
+
+            } else {
+
+                await bleRX.writeValue(data);
+            }
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "SEND ERROR:",
+                error
+            );
+
+            addLog(
+                "TX ERROR → " +
+                error.message
+            );
+
+            return false;
+        }
+    }
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    if (startBtn) {
+
+        startBtn.addEventListener("click", () => {
 
             if (!bleRX) {
 
                 addLog(
-                    "COMMAND BLOCKED — BLE DISCONNECTED"
+                    "⚠ CONNECT BLE BEFORE START"
                 );
 
                 return;
-
             }
 
+            armed = true;
 
-            try {
-
-                const message =
-                    command.endsWith(
-                        "\n"
-                    )
-                        ? command
-                        : command + "\n";
-
-
-                const data =
-                    new TextEncoder()
-                        .encode(
-                            message
-                        );
-
-
-                if (
-                    bleRX.writeValueWithoutResponse
-                ) {
-
-                    await bleRX.writeValueWithoutResponse(
-                        data
-                    );
-
-                } else {
-
-                    await bleRX.writeValue(
-                        data
-                    );
-
-                }
-
-
-                console.log(
-                    "VAJRA TX:",
-                    message.trim()
-                );
-
-
-            } catch (
-                error
-            ) {
-
-                console.error(
-                    "TX ERROR:",
-                    error
-                );
-
-
-                addLog(
-                    "TX ERROR: " +
-                    error.message
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           START / STOP
-        ===================================================== */
-
-        const startBtn =
-            document.getElementById(
-                "startBtn"
-            );
-
-        const stopBtn =
-            document.getElementById(
-                "stopBtn"
-            );
-
-        const allMotorStop =
-            document.getElementById(
-                "allMotorStop"
-            );
-
-        const armedText =
-            document.getElementById(
-                "armedText"
-            );
-
-        const armedIndicator =
-            document.getElementById(
-                "armedIndicator"
-            );
-
-
-        function updateArmed(
-            state
-        ) {
-
-            if (
-                !armedText ||
-                !armedIndicator
-            ) {
-
-                return;
-
-            }
-
-
-            if (state) {
+            if (armedText) {
 
                 armedText.textContent =
                     "ARMED";
 
                 armedText.style.color =
                     "#00ff9d";
+            }
+
+            if (armedIndicator) {
 
                 armedIndicator.style.background =
                     "#00ff9d";
 
                 armedIndicator.style.boxShadow =
                     "0 0 15px #00ff9d";
+            }
 
-            } else {
+            sendCommand(
+                "VAJRA:START\n"
+            );
 
-                armedText.textContent =
-                    "DISARMED";
+            addLog("MOTORS ARMED");
 
-                armedText.style.color =
-                    "#ff3155";
+        });
 
-                armedIndicat
+    }
+
+    /* =====================================================
+       STOP ALL
+       ===================================================== */
+
+    if (stopBtn) {
+        stopBtn.addEventListener(
+            "click",
+            stopAll
+        );
+    }
+
+    if (allMotorStop) {
+        allMotorStop.addEventListener(
+            "click",
+            stopAll
+        );
+    }
+
+    function stopAll() {
+
+        armed = false;
+
+        if (armedText) {
+
+            armedText.textContent =
+                "DISARMED";
+
+            armedText.style.color =
+                "#ff3155";
+        }
+
+        if (armedIndicator) {
+
+            armedIndicator.style.background =
+                "#ff3155";
+
+            armedIndicator.style.boxShadow =
+                "none";
+        }
+
+        sendCommand(
+            "VAJRA:STOP\n"
+        );
+
+        setMotorValue("M1", 900);
+        setMotorValue("M2", 900);
+        setMotorValue("M3", 900);
+        setMotorValue("M4", 900);
+
+        resetJoystick();
+
+        addLog(
+            "ALL MOTORS STOPPED"
+        );
+    }
+
+    /* =====================================================
+       MOTOR CONTROL
+       ===================================================== */
+
+    const motorInfo = {
+
+        M1: {
+            slider: "m1Slider",
+            value: "m1Value"
+        },
+
+        M2: {
+            slider: "m2Slider",
+            value: "m2Value"
+        },
+
+        M3: {
+            slider: "m3Slider",
+            value: "m3Value"
+        },
+
+        M4: {
+            slider: "m4Slider",
+            value: "m4Value"
+        }
+
+    };
+
+    function setMotorValue(
+        motor,
+        pulse
+    ) {
+
+        pulse =
+            Math.max(
+                900,
+                Math.min(
+                    2000,
+                    Number(pulse)
+                )
+            );
+
+        const info =
+            motorInfo[motor];
+
+        if (!info) return;
+
+        const slider =
+            document.getElementById(
+                info.slider
+            );
+
+        const value =
+            document.getElementById(
+                info.value
+            );
+
+        if (slider) {
+            slider.value = pulse;
+        }
+
+        if (value) {
+            value.textContent = pulse;
+        }
+    }
+
+    Object.keys(motorInfo).forEach(
+        (motor) => {
+
+            const info =
+                motorInfo[motor];
+
+            const slider =
+                document.getElementById(
+                    info.slider
+                );
+
+            if (!slider) return;
+
+            slider.addEventListener(
+                "input",
+                () => {
+
+                    const pulse =
+                        Number(slider.value);
+
+                    setMotorValue(
+                        motor,
+                        pulse
+                    );
+
+                    sendCommand(
+                        `VAJRA:${motor} ${pulse}us\n`
+                    );
+                }
+            );
+
+        }
+    );
+
+    /* =====================================================
+       INDIVIDUAL MOTOR START BUTTONS
+       ===================================================== */
+
+    document
+        .querySelectorAll(".motor-start")
+        .forEach((button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const motor =
+                        button.dataset.motor;
+
+                    if (!motor) return;
+
+                    const info =
+                        motorInfo[motor];
+
+                    const slider =
+                        document.getElementById(
+                            info.slider
+                        );
+
+                    let pulse = 1000;
+
+                    if (slider) {
+                        pulse =
+                            Number(slider.value);
+
+                        if (pulse < 1000) {
+                            pulse = 1000;
+                        }
+                    }
+
+                    setMotorValue(
+                        motor,
+                        pulse
+                    );
+
+                    sendCommand(
+                        `VAJRA:${motor} ${pulse}us\n`
+                    );
+
+                    addLog(
+                        `${motor} → ${pulse} µs`
+                    );
+
+                }
+            );
+
+        });
+
+    /* =====================================================
+       JOYSTICK
+       ===================================================== */
+
+    if (joystick && joystickStick) {
+
+        joystickStick.style.left = "50%";
+        joystickStick.style.top = "50%";
+
+        joystickStick.addEventListener(
+            "pointerdown",
+            (event) => {
+
+                event.preventDefault();
+
+                joystickActive = true;
+
+                joystickStick.setPointerCapture(
+                    event.pointerId
+                );
+
+                moveJoystick(
+                    event.clientX,
+                    event.clientY
+                );
+            }
+        );
+
+        joystickStick.addEventListener(
+            "pointermove",
+            (event) => {
+
+                if (!joystickActive) return;
+
+                event.preventDefault();
+
+                moveJoystick(
+                    event.clientX,
+                    event.clientY
+                );
+            }
+        );
+
+        joystickStick.addEventListener(
+            "pointerup",
+            (event) => {
+
+                joystickActive = false;
+
+                try {
+                    joystickStick.releasePointerCapture(
+                        event.pointerId
+                    );
+                } catch (e) {}
+
+                resetJoystick();
+            }
+        );
+
+        joystickStick.addEventListener(
+            "pointercancel",
+            () => {
+
+                joystickActive = false;
+
+                resetJoystick();
+            }
+        );
+
+    }
+
+    /* =====================================================
+       MOVE JOYSTICK
+       ===================================================== */
+
+    function moveJoystick(
+        x,
+        y
+    ) {
+
+        if (!joystick || !joystickStick) {
+            return;
+        }
+
+        const rect =
+            joystick.getBoundingClientRect();
+
+        const centerX =
+            rect.left +
+            rect.width / 2;
+
+        const centerY =
+            rect.top +
+            re
+       
