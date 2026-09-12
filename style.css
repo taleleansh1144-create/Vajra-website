@@ -1,1366 +1,1195 @@
-/* =========================================================
-   ANSH'S DRONE VAJRA 🚁⚡
-   FUTURISTIC GROUND CONTROL UI
-   FULL CSS
-   ========================================================= */
-
-
-/* =========================================================
-   GLOBAL
-   ========================================================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html {
-    width: 100%;
-    min-height: 100%;
-    scroll-behavior: smooth;
+:root {
+    --bg: #050811;
+    --bg2: #09101d;
+    --card: rgba(12, 20, 35, 0.82);
+    --border: rgba(0, 220, 255, 0.22);
+    --cyan: #00eaff;
+    --blue: #268cff;
+    --green: #00ff9d;
+    --red: #ff3155;
+    --yellow: #ffd84a;
+    --text: #eefaff;
+    --muted: #7e93a9;
 }
 
 body {
-    width: 100%;
-    min-height: 100vh;
-
-    background:
-        radial-gradient(
-            circle at 15% 10%,
-            rgba(0, 234, 255, 0.08),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(139, 92, 255, 0.08),
-            transparent 30%
-        ),
-        #03050a;
-
-    color: #f4f8ff;
-
-    font-family: "Orbitron", sans-serif;
-
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
     overflow-x: hidden;
 }
 
 button,
 input {
-    font-family: inherit;
+    font: inherit;
 }
 
 button {
     cursor: pointer;
 }
 
-button:focus,
-input:focus {
-    outline: none;
-}
 
-.hidden {
-    display: none !important;
-}
-
-
-/* =========================================================
-   VARIABLES
-   ========================================================= */
-
-:root {
-
-    --background: #03050a;
-
-    --panel:
-        rgba(10, 16, 28, 0.82);
-
-    --panel-light:
-        rgba(20, 28, 45, 0.70);
-
-    --cyan: #00eaff;
-
-    --cyan-light: #65f8ff;
-
-    --blue: #387cff;
-
-    --purple: #8b5cff;
-
-    --green: #00ff9d;
-
-    --red: #ff3158;
-
-    --yellow: #ffd84d;
-
-    --white: #ffffff;
-
-    --text: #f4f8ff;
-
-    --muted: #78849d;
-
-    --dark-muted: #46516a;
-
-    --border:
-        rgba(255, 255, 255, 0.08);
-
-    --cyan-border:
-        rgba(0, 234, 255, 0.20);
-}
-
-
-/* =========================================================
-   LOGIN SCREEN
-   ========================================================= */
+/* =====================================================
+   LOGIN
+===================================================== */
 
 .login-screen {
-
-    position: relative;
-
-    width: 100%;
-    min-height: 100vh;
-
+    position: fixed;
+    inset: 0;
     display: flex;
-
-    align-items: center;
     justify-content: center;
-
+    align-items: center;
     overflow: hidden;
-
-    isolation: isolate;
-
     background:
-        radial-gradient(
-            circle at 50% 45%,
-            rgba(0, 234, 255, 0.12),
-            transparent 18%
-        ),
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(56, 124, 255, 0.10),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(139, 92, 255, 0.10),
-            transparent 30%
-        ),
-        #03050a;
+        radial-gradient(circle at center,
+        rgba(0, 234, 255, .10),
+        transparent 45%),
+        #03060d;
+    z-index: 1000;
 }
 
-
-/* =========================================================
-   LOGIN GRID
-   ========================================================= */
-
 .login-grid {
-
     position: absolute;
-
     inset: 0;
-
     z-index: 0;
-
     pointer-events: none;
 
     background-image:
-        linear-gradient(
-            rgba(0, 234, 255, 0.035) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0, 234, 255, 0.035) 1px,
-            transparent 1px
-        );
+        linear-gradient(rgba(0,234,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,.07) 1px, transparent 1px);
 
-    background-size: 42px 42px;
+    background-size: 50px 50px;
 
-    mask-image:
-        linear-gradient(
-            to bottom,
-            transparent,
-            black 20%,
-            black 80%,
-            transparent
-        );
-
-    animation:
-        gridMove 12s linear infinite;
+    animation: gridMove 12s linear infinite;
 }
 
 @keyframes gridMove {
-
     from {
-        background-position:
-            0 0,
-            0 0;
+        transform: translateY(0);
     }
 
     to {
-        background-position:
-            0 42px,
-            42px 0;
+        transform: translateY(50px);
     }
 }
 
-
-/* =========================================================
-   LOGIN RADAR RINGS
-   ========================================================= */
-
-.login-screen::before {
-
-    content: "";
-
+.radar {
     position: absolute;
-
-    width: 520px;
-    height: 520px;
-
+    border: 1px solid rgba(0,234,255,.15);
     border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.08);
-
-    box-shadow:
-        0 0 80px
-        rgba(0, 234, 255, 0.04),
-
-        inset 0 0 80px
-        rgba(0, 234, 255, 0.03);
-
-    z-index: 0;
-
     pointer-events: none;
-
-    animation:
-        radarSpin 18s linear infinite;
 }
 
-.login-screen::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 700px;
-    height: 700px;
-
-    border-radius: 50%;
-
-    border:
-        1px dashed
-        rgba(0, 234, 255, 0.04);
-
-    z-index: 0;
-
-    pointer-events: none;
-
-    animation:
-        radarSpinReverse 25s linear infinite;
+.radar1 {
+    width: 600px;
+    height: 600px;
 }
 
-@keyframes radarSpin {
-
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+.radar2 {
+    width: 900px;
+    height: 900px;
 }
 
-@keyframes radarSpinReverse {
-
-    from {
-        transform: rotate(360deg);
-    }
-
-    to {
-        transform: rotate(0deg);
-    }
+.radar3 {
+    width: 1200px;
+    height: 1200px;
 }
-
-
-/* =========================================================
-   LOGIN CARD
-   ========================================================= */
 
 .login-card {
-
     position: relative;
-
     z-index: 5;
 
-    width: min(455px, 92vw);
-
+    width: min(440px, 92%);
     padding: 42px;
 
-    text-align: center;
+    border: 1px solid rgba(0,234,255,.35);
+    border-radius: 28px;
 
-    border-radius: 30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(12, 22, 38, 0.95),
-            rgba(3, 7, 14, 0.98)
-        );
-
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.22);
+    background: rgba(7, 14, 26, .88);
 
     box-shadow:
-
-        0 0 0 1px
-        rgba(0, 234, 255, 0.03),
-
-        0 25px 100px
-        rgba(0, 0, 0, 0.65),
-
-        0 0 80px
-        rgba(0, 234, 255, 0.08),
-
-        inset 0 1px
-        rgba(255, 255, 255, 0.08);
+        0 0 60px rgba(0,234,255,.10),
+        inset 0 0 40px rgba(0,234,255,.025);
 
     backdrop-filter: blur(25px);
 }
 
-
-/* glowing top line */
-
-.login-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 10%;
-
-    width: 80%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--cyan),
-            white,
-            var(--cyan),
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px var(--cyan);
-
-    border-radius: 50%;
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
+.logo-icon {
+    width: 60px;
+    height: 60px;
 
-/* =========================================================
-   LOGIN LOGO
-   ========================================================= */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.brand-symbol {
+    border-radius: 18px;
 
-    position: relative;
+    background: rgba(0,234,255,.08);
+    border: 1px solid rgba(0,234,255,.3);
 
-    width: 88px;
-    height: 88px;
+    font-size: 30px;
 
-    margin:
-        0 auto 20px;
+    box-shadow: 0 0 25px rgba(0,234,255,.15);
+}
 
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 25px;
-
+.brand-logo h1 {
     color: var(--cyan);
-
-    font-size: 42px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0, 234, 255, 0.16),
-            rgba(0, 234, 255, 0.02)
-        );
-
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.35);
-
-    box-shadow:
-
-        0 0 35px
-        rgba(0, 234, 255, 0.20),
-
-        inset 0 0 25px
-        rgba(0, 234, 255, 0.08);
-
-    animation:
-        iconPulse 2.5s ease-in-out infinite;
+    letter-spacing: 6px;
 }
 
-@keyframes iconPulse {
-
-    0%,
-    100% {
-
-        box-shadow:
-
-            0 0 25px
-            rgba(0, 234, 255, 0.14),
-
-            inset 0 0 20px
-            rgba(0, 234, 255, 0.05);
-    }
-
-    50% {
-
-        box-shadow:
-
-            0 0 50px
-            rgba(0, 234, 255, 0.30),
-
-            inset 0 0 30px
-            rgba(0, 234, 255, 0.10);
-    }
+.brand-logo span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
 }
 
-
-/* =========================================================
-   LOGIN TITLE
-   ========================================================= */
-
-.brand-title {
-
-    font-size:
-        clamp(42px, 12vw, 58px);
-
-    font-weight: 900;
-
-    letter-spacing: 10px;
-
-    color: white;
-
-    text-shadow:
-
-        0 0 15px
-        rgba(0, 234, 255, 0.35),
-
-        0 0 40px
-        rgba(0, 234, 255, 0.10);
-}
-
-.brand-subtitle {
-
-    margin-top: 6px;
-
-    color: #74829b;
-
-    font-size: 8px;
-
-    letter-spacing: 3px;
-}
-
-
-/* =========================================================
-   SYSTEM READY
-   ========================================================= */
-
-.status-line {
-
-    margin:
-        25px auto;
-
-    padding:
-        10px 14px;
-
-    width: fit-content;
-
-    border:
-        1px solid
-        rgba(0, 255, 157, 0.15);
-
-    border-radius: 30px;
-
-    background:
-        rgba(0, 255, 157, 0.035);
+.login-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
     color: var(--green);
-
-    font-size: 8px;
-
+    font-size: 11px;
     letter-spacing: 2px;
 
-    box-shadow:
-        0 0 20px
-        rgba(0, 255, 157, 0.04);
+    margin-bottom: 20px;
 }
 
-.status-dot {
-
-    display: inline-block;
-
+.status-dot,
+.online-dot {
     width: 8px;
     height: 8px;
 
-    margin-right: 7px;
+    display: inline-block;
 
     border-radius: 50%;
-
     background: var(--green);
 
-    box-shadow:
-        0 0 15px var(--green);
+    box-shadow: 0 0 15px var(--green);
 }
 
+.login-card h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
 
-/* =========================================================
-   LOGIN INPUT
-   ========================================================= */
+.login-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+}
 
 .input-box {
-
     position: relative;
-
     z-index: 10;
 
-    margin-top: 13px;
-
-    padding:
-        15px 16px;
-
     display: flex;
-
     align-items: center;
+    gap: 12px;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.08);
+    margin-bottom: 14px;
 
-    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 14px;
 
-    background:
-        rgba(255, 255, 255, 0.025);
+    background: rgba(255,255,255,.035);
 
-    transition:
-
-        border-color 0.25s,
-
-        box-shadow 0.25s,
-
-        transform 0.25s;
-}
-
-.input-box:hover {
-
-    border-color:
-        rgba(0, 234, 255, 0.20);
-
-    transform:
-        translateY(-1px);
+    transition: .25s;
 }
 
 .input-box:focus-within {
-
-    border-color:
-        rgba(0, 234, 255, 0.55);
-
-    box-shadow:
-
-        0 0 0 3px
-        rgba(0, 234, 255, 0.05),
-
-        0 0 25px
-        rgba(0, 234, 255, 0.08);
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,234,255,.12);
 }
 
 .input-box span {
-
-    width: 50px;
-
-    color: var(--cyan);
-
-    font-size: 8px;
-
-    letter-spacing: 2px;
-
-    text-align: left;
+    margin-left: 16px;
 }
 
 .input-box input {
-
     width: 100%;
-
-    min-width: 0;
-
-    border: none;
-
-    outline: none;
-
-    background: transparent;
+    padding: 17px 15px 17px 0;
 
     color: white;
+    background: transparent;
 
-    font-family:
-        "Orbitron",
-        sans-serif;
-
-    font-size: 12px;
-
-    letter-spacing: 1px;
+    border: 0;
+    outline: 0;
 
     pointer-events: auto;
 }
 
 .input-box input::placeholder {
-
-    color: #4f5d75;
+    color: #536579;
+    letter-spacing: 2px;
 }
 
-
-/* =========================================================
-   LOGIN BUTTON
-   ========================================================= */
-
 .login-button {
-
     position: relative;
-
     z-index: 10;
 
     width: 100%;
+    padding: 17px;
 
-    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    padding: 16px;
+    border: 1px solid var(--cyan);
+    border-radius: 14px;
 
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.45);
+    color: #001219;
+    background: var(--cyan);
 
-    border-radius: 13px;
-
-    color: #001117;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--cyan),
-            var(--cyan-light)
-        );
-
-    font-family:
-        "Orbitron",
-        sans-serif;
-
-    font-size: 10px;
-
-    font-weight: 900;
-
+    font-weight: 800;
     letter-spacing: 2px;
 
-    cursor: pointer;
-
-    pointer-events: auto;
-
-    box-shadow:
-        0 0 25px
-        rgba(0, 234, 255, 0.20);
-
-    transition:
-
-        transform 0.2s,
-
-        box-shadow 0.2s,
-
-        filter 0.2s;
+    transition: .25s;
 }
 
 .login-button:hover {
-
-    transform:
-        translateY(-2px);
-
-    filter:
-        brightness(1.08);
-
-    box-shadow:
-        0 0 40px
-        rgba(0, 234, 255, 0.40);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0,234,255,.35);
 }
 
 .login-button:active {
-
-    transform:
-        translateY(1px);
+    transform: scale(.98);
 }
 
-
-/* =========================================================
-   LOGIN ERROR
-   ========================================================= */
-
-.login-error {
-
-    min-height: 18px;
-
-    margin-top: 12px;
-
+.login-message {
+    min-height: 22px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 12px;
     color: var(--red);
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
 }
-
-
-/* =========================================================
-   LOGIN FOOTER
-   ========================================================= */
 
 .login-footer {
+    margin-top: 25px;
+    color: #536579;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
 
-    margin-top: 23px;
-
-    color: #3d4a61;
-
-    font-size: 7px;
-
-    letter-spacing: 2px;
+.login-footer span {
+    color: var(--cyan);
+    margin: 0 7px;
 }
 
 
-/* =========================================================
-   MAIN APPLICATION
-   ========================================================= */
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
-.app {
-
+.dashboard {
+    display: none;
     min-height: 100vh;
-
-    padding-bottom: 42px;
+    background:
+        radial-gradient(circle at 80% 10%, rgba(0,234,255,.07), transparent 30%),
+        var(--bg);
 }
 
 
-/* =========================================================
-   TOP BAR
-   ========================================================= */
+/* TOP BAR */
 
 .topbar {
-
-    height: 76px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding:
-        0 25px;
-
-    position: sticky;
-
-    top: 0;
-
+    position: fixed;
     z-index: 50;
+    top: 0;
+    left: 0;
+    right: 0;
 
-    background:
-        rgba(5, 7, 13, 0.88);
-
-    border-bottom:
-        1px solid
-        var(--border);
-
-    backdrop-filter:
-        blur(20px);
-}
-
-
-/* =========================================================
-   LOGO AREA
-   ========================================================= */
-
-.logo-area {
+    height: 72px;
 
     display: flex;
-
     align-items: center;
+    justify-content: space-between;
 
-    gap: 12px;
+    padding: 0 25px;
 
-    width: 250px;
+    background: rgba(3,8,16,.90);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
 }
 
-.logo-icon {
+.top-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
+.mini-logo {
     width: 42px;
     height: 42px;
 
     display: grid;
-
     place-items: center;
-
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.25);
 
     border-radius: 12px;
 
-    color: var(--cyan);
-
-    box-shadow:
-        0 0 25px
-        rgba(0, 234, 255, 0.10);
+    border: 1px solid var(--border);
+    background: rgba(0,234,255,.08);
 }
 
-.logo-name {
-
-    font-size: 19px;
-
-    font-weight: 900;
-
+.top-brand strong {
+    display: block;
+    color: var(--cyan);
     letter-spacing: 3px;
 }
 
-.logo-small {
-
+.top-brand small {
     color: var(--muted);
-
-    font-size: 7px;
-
+    font-size: 9px;
     letter-spacing: 2px;
-
-    margin-top: 2px;
 }
 
-
-/* =========================================================
-   BLE STATUS
-   ========================================================= */
-
-.flight-status {
-
-    margin-left: auto;
-
+.top-center {
     display: flex;
-
     align-items: center;
-
-    margin-right: 25px;
-}
-
-.connection-dot {
-
-    display: inline-block;
-
-    width: 8px;
-    height: 8px;
-
-    margin-right: 7px;
-
-    border-radius: 50%;
-
-    background: var(--green);
-
-    box-shadow:
-        0 0 15px var(--green);
-}
-
-.connection-dot.disconnected {
-
-    background: var(--red);
-
-    box-shadow:
-        0 0 15px var(--red);
-}
-
-#connectionText {
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-}
-
-#deviceText {
-
-    color: var(--muted);
-
-    font-size: 7px;
-}
-
-
-/* =========================================================
-   CONNECT BUTTON
-   ========================================================= */
-
-.connect-button {
-
-    padding:
-        12px 18px;
-
-    border:
-        1px solid
-        rgba(0, 234, 255, 0.35);
-
-    border-radius: 10px;
-
-    background:
-        rgba(0, 234, 255, 0.08);
-
-    color: var(--cyan);
-
-    font-size: 9px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    transition: 0.2s;
-}
-
-.connect-button:hover {
-
-    background:
-        rgba(0, 234, 255, 0.16);
-
-    box-shadow:
-        0 0 25px
-        rgba(0, 234, 255, 0.12);
-}
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.sidebar {
-
-    position: fixed;
-
-    left: 0;
-
-    top: 76px;
-
-    bottom: 42px;
-
-    width: 215px;
-
-    padding:
-        25px 14px;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(7, 11, 20, 0.96),
-            rgba(5, 7, 13, 0.94)
-        );
-
-    border-right:
-        1px solid
-        var(--border);
-
-    z-index: 40;
-}
-
-
-/* =========================================================
-   NAV BUTTON
-   ========================================================= */
-
-.nav-button {
-
-    width: 100%;
-
-    margin-bottom: 7px;
-
-    padding: 14px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    border:
-        1px solid
-        transparent;
-
-    border-radius: 11px;
-
-    color: #78849d;
-
-    background:
-        transparent;
-
-    text-align: left;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    transition: 0.2s;
-}
-
-.nav-button span {
-
-    width: 20px;
-
-    color: var(--cyan);
-
-    font-size: 16px;
-}
-
-.nav-button:hover,
-.nav-button.active {
-
-    color: white;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0, 234, 255, 0.10),
-            transparent
-        );
-
-    border-color:
-        rgba(0, 234, 255, 0.10);
-
-    box-shadow:
-        inset 3px 0 var(--cyan);
-}
-
-
-/* =========================================================
-   SIDEBAR BOTTOM
-   ========================================================= */
-
-.sidebar-bottom {
-
-    position: absolute;
-
-    bottom: 20px;
-
-    left: 14px;
-
-    right: 14px;
-}
-
-.system-mini {
+    gap: 8px;
 
     color: var(--green);
-
-    font-size: 7px;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 15px;
-}
-
-.mini-dot {
-
-    display: inline-block;
-
-    width: 6px;
-    height: 6px;
-
-    margin-right: 6px;
-
-    border-radius: 50%;
-
-    background: var(--green);
-
-    box-shadow:
-        0 0 10px var(--green);
-}
-
-.logout-button {
-
-    width: 100%;
-
-    padding: 11px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.07);
-
-    border-radius: 8px;
-
-    background:
-        rgba(255, 255, 255, 0.02);
-
-    color: #6f7890;
-
-    font-size: 8px;
-}
-
-
-/* =========================================================
-   MAIN CONTENT
-   ========================================================= */
-
-.main-content {
-
-    margin-left: 215px;
-
-    padding: 35px;
-
-    min-height:
-        calc(100vh - 118px);
-}
-
-
-/* =========================================================
-   PAGES
-   ========================================================= */
-
-.page {
-
-    display: none;
-}
-
-.page.active-page {
-
-    display: block;
-
-    animation:
-        pageIn 0.35s ease;
-}
-
-@keyframes pageIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(8px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-}
-
-
-/* =========================================================
-   PAGE HEADING
-   ========================================================= */
-
-.page-heading {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-start;
-
-    margin-bottom: 30px;
-}
-
-.eyebrow {
-
-    color: var(--cyan);
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    font-weight: 700;
-}
-
-.page-heading h1 {
-
-    margin-top: 8px;
-
-    font-size:
-        clamp(25px, 3vw, 42px);
-
+    font-size: 11px;
     letter-spacing: 2px;
 }
 
-.page-heading h1 span {
-
-    color: var(--cyan);
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.page-heading p {
+.ble-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-    color: var(--muted);
-
-    font-size: 9px;
-
-    margin-top: 8px;
-}
-
-
-/* =========================================================
-   GLASS CARD
-   ========================================================= */
-
-.glass-card {
-
-    position: relative;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.055),
-            rgba(255, 255, 255, 0.015)
-        );
-
-    border:
-        1px solid
-        var(--border);
+    padding: 8px 12px;
 
     border-radius: 20px;
 
-    box-shadow:
-
-        0 20px 60px
-        rgba(0, 0, 0, 0.30),
-
-        inset 0 1px
-        rgba(255, 255, 255, 0.04);
-
-    backdrop-filter:
-        blur(18px);
-
-    overflow: hidden;
+    font-size: 10px;
+    letter-spacing: 1px;
 }
 
-.glass-card::before {
+.ble-status span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
 
-    content: "";
+.ble-status.disconnected {
+    color: var(--red);
+    background: rgba(255,49,85,.08);
+}
 
-    position: absolute;
+.ble-status.disconnected span {
+    background: var(--red);
+}
 
-    top: 0;
+.ble-status.connected {
+    color: var(--green);
+    background: rgba(0,255,157,.08);
+}
 
+.ble-status.connected span {
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+}
+
+.ble-button {
+    border: 1px solid var(--cyan);
+    background: rgba(0,234,255,.08);
+    color: var(--cyan);
+
+    padding: 10px 14px;
+    border-radius: 10px;
+
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.logout-button {
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+
+    color: white;
+    background: rgba(255,255,255,.04);
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    z-index: 40;
+
+    top: 72px;
+    bottom: 34px;
     left: 0;
 
+    width: 220px;
+
+    padding: 25px 15px;
+
+    background: rgba(4,9,17,.92);
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-title {
+    color: white;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 4px;
+    padding: 10px 15px 25px;
+}
+
+.sidebar-title span {
+    display: block;
+    color: var(--cyan);
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+.nav-btn {
     width: 100%;
 
-    height: 1px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--cyan),
-            transparent
-        );
+    padding: 14px 15px;
+    margin-bottom: 6px;
 
-    opacity: 0.4;
+    border: 1px solid transparent;
+    border-radius: 12px;
+
+    color: var(--muted);
+    background: transparent;
+
+    text-align: left;
+
+    transition: .2s;
+}
+
+.nav-btn span {
+    width: 25px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    color: var(--cyan);
+    background: rgba(0,234,255,.07);
+    border-color: rgba(0,234,255,.15);
+}
+
+.nav-btn.active {
+    box-shadow: inset 3px 0 var(--cyan);
+}
+
+.sidebar-bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    right: 15px;
+}
+
+.system-box {
+    padding: 12px;
+
+    border: 1px solid rgba(0,255,157,.15);
+    border-radius: 10px;
+
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.system-box strong {
+    display: block;
+    color: var(--green);
+    margin-top: 4px;
+}
+
+.small-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+    background: var(--green);
+
+    margin-right: 5px;
 }
 
 
-/* =========================================================
-   CARD HEADER
-   ========================================================= */
+/* MAIN */
 
-.card-header {
+.main-content {
+    margin-left: 220px;
+    padding: 105px 30px 70px;
+}
 
+.page {
+    display: none;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.page.active-page {
+    display: block;
+}
+
+.page-heading {
     display: flex;
-
+    align-items: flex-end;
     justify-content: space-between;
-
-    align-items: flex-start;
 
     margin-bottom: 25px;
 }
 
-.card-label {
-
+.eyebrow {
     color: var(--cyan);
-
-    font-size: 10px;
-
+    font-size: 9px;
     letter-spacing: 3px;
-
-    font-weight: 700;
 }
 
-.card-header h2 {
+.page-heading h1 {
+    font-size: 34px;
+    margin-top: 5px;
+}
 
-    margin-top: 7px;
+.page-heading p {
+    color: var(--muted);
+    margin-top: 6px;
+}
 
-    font-size: 17px;
+.flight-state {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.flight-state span:first-child {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--red);
+}
+
+
+/* QUICK */
+
+.quick-control {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.start-btn,
+.stop-btn {
+    padding: 13px 25px;
+
+    border-radius: 12px;
+
+    font-weight: 800;
     letter-spacing: 1px;
 }
 
+.start-btn {
+    color: #00150d;
+    background: var(--green);
+    border: 1px solid var(--green);
+}
 
-/* =========================================================
-   CONTROL GRID
-   ========================================================= */
+.stop-btn {
+    color: white;
+    background: rgba(255,49,85,.12);
+    border: 1px solid var(--red);
+}
+
+
+/* CARDS */
+
+.glass-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+
+    backdrop-filter: blur(20px);
+}
 
 .control-grid {
-
     display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns: 1.15fr .85fr;
     gap: 18px;
 }
 
-.attitude-card,
 .joystick-card,
-.motor-card,
-.quick-card {
-
+.attitude-card,
+.motors-card {
     padding: 22px;
 }
 
-
-/* =========================================================
-   ARM PANEL
-   ========================================================= */
-
-.arm-panel {
-
+.card-header {
     display: flex;
-
+    justify-content: space-between;
     align-items: center;
 
-    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.arm-status {
+.card-label {
+    color: var(--cyan);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
 
-    padding:
-        10px 14px;
+.card-header h2 {
+    margin-top: 5px;
+}
 
-    border:
-        1px solid
-        var(--border);
+.live-badge {
+    color: var(--green);
+    font-size: 9px;
+    border: 1px solid rgba(0,255,157,.3);
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+
+/* JOYSTICK */
+
+.joystick-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 300px;
+}
+
+.joystick {
+    position: relative;
+
+    width: 260px;
+    height: 260px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+        rgba(0,234,255,.13),
+        rgba(0,234,255,.02) 65%);
+
+    border: 1px solid rgba(0,234,255,.3);
+
+    touch-action: none;
+}
+
+.joystick-ring {
+    position: absolute;
+    inset: 15%;
+
+    border: 1px solid rgba(0,234,255,.15);
+    border-radius: 50%;
+}
+
+.ring2 {
+    inset: 30%;
+}
+
+.ring3 {
+    inset: 44%;
+}
+
+.joystick-stick {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 72px;
+    height: 72px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    color: white;
+
+    background:
+        radial-gradient(circle at 35% 30%, #53f7ff, #006d9c);
+
+    border: 2px solid var(--cyan);
+
+    box-shadow:
+        0 0 30px rgba(0,234,255,.5);
+
+    cursor: grab;
+    z-index: 10;
+}
+
+.joystick-stick:active {
+    cursor: grabbing;
+}
+
+.joystick-values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.joystick-values div {
+    padding: 10px;
 
     border-radius: 10px;
 
-    font-size: 8px;
-
-    color: #78849d;
+    background: rgba(255,255,255,.03);
+    text-align: center;
 }
 
-#armIndicator {
+.joystick-values span {
+    display: block;
+    color: var(--muted);
+    font-size: 8px;
+}
 
+.joystick-values strong {
+    color: var(--cyan);
+    font-size: 15px;
+}
+
+
+/* ATTITUDE */
+
+.attitude-display {
+    height: 300px;
+
+    display: grid;
+    place-items: center;
+
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 15px;
+
+    background: #050a12;
+}
+
+.horizon {
+    position: relative;
+
+    width: 230px;
+    height: 230px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+    border: 2px solid rgba(0,234,255,.5);
+
+    background: #09111d;
+}
+
+.horizon-sky {
+    position: absolute;
+    inset: 0 0 50%;
+
+    background: #087fa3;
+}
+
+.horizon-ground {
+    position: absolute;
+    inset: 50% 0 0;
+
+    background: #3d3020;
+}
+
+.horizon-line {
+    position: absolute;
+
+    top: 50%;
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background: white;
+}
+
+.pitch-line {
+    position: absolute;
+    left: 35%;
+    width: 30%;
+
+    height: 2px;
+
+    background: white;
+}
+
+.pitch1 {
+    top: 35%;
+}
+
+.pitch2 {
+    top: 65%;
+}
+
+.pitch3 {
+    top: 25%;
+}
+
+.attitude-cross {
+    position: absolute;
+
+    font-size: 40px;
+    color: var(--yellow);
+
+    text-shadow: 0 0 15px var(--yellow);
+}
+
+.attitude-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.attitude-data div {
+    padding: 12px;
+
+    background: rgba(255,255,255,.03);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.attitude-data span {
+    display: block;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+.attitude-data strong {
+    color: var(--cyan);
+}
+
+
+/* MOTORS */
+
+.motors-card {
+    margin-top: 18px;
+}
+
+.motor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.motor-card {
+    padding: 17px;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.motor-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.motor-number {
+    color: var(--cyan);
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.motor-location {
+    color: var(--muted);
+    font-size: 7px;
+    text-align: right;
+}
+
+.motor-value {
+    margin: 15px 0;
+
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.motor-value strong {
+    font-size: 25px;
+}
+
+.motor-value span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.motor-card input[type="range"] {
+    width: 100%;
+    accent-color: var(--cyan);
+}
+
+.motor-start {
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px;
+
+    border-radius: 9px;
+
+    color: var(--cyan);
+    background: rgba(0,234,255,.06);
+    border: 1px solid rgba(0,234,255,.2);
+
+    font-size: 9px;
+}
+
+.small-danger {
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    color: var(--red);
+    background: rgba(255,49,85,.06);
+
+    border: 1px solid rgba(255,49,85,.25);
+
+    font-size: 9px;
+}
+
+
+/* TELEMETRY */
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+
+.telemetry-card {
+    padding: 22px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--card);
+}
+
+.telemetry-card span {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.telemetry-card strong {
+    display: block;
+
+    margin-top: 10px;
+
+    color: var(--cyan);
+    font-size: 25px;
+}
+
+.pid-card {
+    margin-top: 20px;
+    padding: 22px;
+}
+
+.pid-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.pid-grid div {
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.03);
+}
+
+.pid-grid span {
+    color: var(--muted);
+    font-size: 8px;
+}
+
+.pid-grid strong {
+    display: block;
+    color: var(--cyan);
+    margin-top: 5px;
+}
+
+
+/* SETTINGS */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.setting-card {
+    padding: 22px;
+}
+
+.setting-card h2 {
+    margin-bottom: 20px;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.setting-row span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.setting-row strong {
+    color: var(--cyan);
+    font-size: 10px;
+    text-align: right;
+}
+
+
+/* LOGS */
+
+.log-window {
+    min-height: 400px;
+    padding: 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: #02050a;
+
+    font-family: monospace;
+    font-size: 12px;
+
+    overflow-y: auto;
+}
+
+.log-line {
+    margin-bottom: 10px;
+    color: #a9bac9;
+}
+
+.log-line span {
+    color: var(--cyan);
+}
+
+
+/* ABOUT */
+
+.about-hero {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.about-logo {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.about-hero h1 {
+    color: var(--cyan);
+    letter-spacing: 4px;
+}
+
+.about-hero p {
+    max-width: 650px;
+    margin: 15px auto;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.about-card {
+    padding: 25px;
+}
+
+.about-card h2 {
+    color: var(--cyan);
+    margin-bottom: 12px;
+}
+
+.about-card p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+
+/* BOTTOM BAR */
+
+.bottom-bar {
+    position: fixed;
+    z-index: 60;
+
+    bottom: 0;
+    left: 220px;
+    right: 0;
+
+    height: 34px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 20px;
+
+    color: #64778a;
+    background: rgba(2,5,10,.95);
+
+    border-top: 1px solid var(--border);
+
+    font-size: 8px;
+    letter-spacing: 1.5px;
+}
+
+.bottom-bar i {
     display: inline-block;
 
     width: 6px;
@@ -1369,39 +1198,101 @@ input:focus {
     margin-right: 5px;
 
     border-radius: 50%;
-
-    background: #555;
-}
-
-#armIndicator.armed {
-
     background: var(--green);
-
-    box-shadow:
-        0 0 15px var(--green);
 }
 
-.arm-button {
 
-    padding:
-        12px 17px;
+/* RESPONSIVE */
 
-    color: var(--green);
+@media(max-width: 1000px) {
 
-    border:
-        1px solid
-        rgba(0, 255, 157, 0.25);
+    .sidebar {
+        width: 75px;
+    }
 
-    border-radius: 10px;
+    .sidebar-title {
+        text-align: center;
+        font-size: 0;
+    }
 
-    background:
-        rgba(0, 255, 157, 0.06);
+    .sidebar-title:first-letter {
+        font-size: 20px;
+    }
 
-    font-size: 8px;
+    .sidebar-title span,
+    .nav-btn label,
+    .system-box {
+        display: none;
+    }
 
-    font-weight: 800;
+    .nav-btn {
+        justify-content: center;
+    }
+
+    .main-content {
+        margin-left: 75px;
+    }
+
+    .bottom-bar {
+        left: 75px;
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .motor-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .telemetry-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .settings-grid,
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.emergency-button {
+@media(max-width: 650px) {
 
- 
+    .top-center {
+        display: none;
+    }
+
+    .ble-status {
+        display: none;
+    }
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .main-content {
+        padding: 95px 12px 60px;
+    }
+
+    .page-heading h1 {
+        font-size: 26px;
+    }
+
+    .motor-grid,
+    .telemetry-grid,
+    .pid-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .joystick {
+        width: 220px;
+        height: 220px;
+    }
+
+    .joystick-area {
+        height: 250px;
+    }
+
+    .bottom-bar {
+        font-size: 6px;
+    }
+}
