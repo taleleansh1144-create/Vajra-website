@@ -1,11 +1,13 @@
 // ============================================================
 // ANSH'S DRONE VAJRA
 // WEBSITE CONTROL SCRIPT
+// BLE + BUTTONS + JOYSTICKS
 // ============================================================
 
-// ===============================
+
+// ============================================================
 // LOGIN
-// ===============================
+// ============================================================
 
 const loginPage = document.getElementById("loginPage");
 const dashboard = document.getElementById("dashboard");
@@ -16,41 +18,50 @@ const password = document.getElementById("password");
 const loginButton = document.getElementById("loginButton");
 const loginError = document.getElementById("loginError");
 
-loginButton.addEventListener("click", function () {
+if (loginButton) {
+    loginButton.addEventListener("click", function () {
 
-    if (
-        username.value.trim() === "VAJRA" &&
-        password.value === "VAJRA"
-    ) {
+        if (
+            username.value.trim() === "VAJRA" &&
+            password.value === "VAJRA"
+        ) {
 
-        loginError.textContent = "";
+            loginError.textContent = "";
 
-        loginPage.classList.add("hidden");
-        dashboard.classList.remove("hidden");
+            loginPage.classList.add("hidden");
+            dashboard.classList.remove("hidden");
 
-        console.log("VAJRA LOGIN OK");
+            console.log("VAJRA LOGIN OK");
 
-    } else {
+        } else {
 
-        loginError.textContent =
-            "Invalid username or password.";
+            loginError.textContent =
+                "Invalid username or password.";
 
-    }
+        }
 
-});
-
-password.addEventListener("keydown", function (event) {
-
-    if (event.key === "Enter") {
-        loginButton.click();
-    }
-
-});
+    });
+}
 
 
-// ===============================
+if (password) {
+
+    password.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            loginButton.click();
+
+        }
+
+    });
+
+}
+
+
+// ============================================================
 // BLE UUIDS
-// ===============================
+// ============================================================
 
 const SERVICE_UUID =
     "12345678-1234-1234-1234-1234567890ab";
@@ -62,9 +73,9 @@ const TX_UUID =
     "12345678-1234-1234-1234-1234567890ad";
 
 
-// ===============================
+// ============================================================
 // BLE VARIABLES
-// ===============================
+// ============================================================
 
 let device = null;
 let server = null;
@@ -75,9 +86,63 @@ let connected = false;
 let armed = false;
 
 
-// ===============================
+// ============================================================
+// BLE WRITE QUEUE
+// Prevents GATT operation already in progress
+// ============================================================
+
+let bleQueue = Promise.resolve();
+
+function queueBLEWrite(data) {
+
+    bleQueue = bleQueue.then(async function () {
+
+        if (!rx) {
+
+            throw new Error(
+                "RX characteristic not available"
+            );
+
+        }
+
+        if (
+            typeof rx.writeValueWithoutResponse ===
+            "function"
+        ) {
+
+            await rx.writeValueWithoutResponse(data);
+
+        } else {
+
+            await rx.writeValue(data);
+
+        }
+
+
+        await new Promise(function (resolve) {
+
+            setTimeout(resolve, 8);
+
+        });
+
+    }).catch(function (error) {
+
+        console.error(
+            "BLE QUEUE ERROR:",
+            error
+        );
+
+    });
+
+
+    return bleQueue;
+
+}
+
+
+// ============================================================
 // BUTTONS
-// ===============================
+// ============================================================
 
 const connectButton =
     document.getElementById("connectButton");
@@ -92,55 +157,69 @@ const stopButton =
     document.getElementById("stopButton");
 
 
-// ===============================
-// CONNECT
-// ===============================
+// ============================================================
+// CONNECT BUTTON
+// ============================================================
 
-connectButton.addEventListener(
-    "click",
-    async function () {
+if (connectButton) {
 
-        if (connected) {
+    connectButton.addEventListener(
+        "click",
+        async function () {
 
-            disconnectVAJRA();
+            if (connected) {
 
-        } else {
+                disconnectVAJRA();
 
-            connectVAJRA();
+            } else {
 
-        }
+                await connectVAJRA();
 
-    }
-);
-
-
-searchButton.addEventListener(
-    "click",
-    async function () {
-
-        if (connected) {
-
-            disconnectVAJRA();
-
-        } else {
-
-            connectVAJRA();
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
-// ===============================
+// ============================================================
+// SEARCH BUTTON
+// ============================================================
+
+if (searchButton) {
+
+    searchButton.addEventListener(
+        "click",
+        async function () {
+
+            if (connected) {
+
+                disconnectVAJRA();
+
+            } else {
+
+                await connectVAJRA();
+
+            }
+
+        }
+    );
+
+}
+
+
+// ============================================================
 // CONNECT VAJRA
-// ===============================
+// ============================================================
 
 async function connectVAJRA() {
 
     try {
 
-        console.log("Searching Bluetooth...");
+        console.log(
+            "Searching for ANSH'S DRONE VAJRA..."
+        );
 
 
         device =
@@ -156,24 +235,19 @@ async function connectVAJRA() {
 
 
         console.log(
-            "FOUND:",
+            "Selected:",
             device.name
         );
 
 
         device.addEventListener(
             "gattserverdisconnected",
-            function () {
+            handleDisconnect
+        );
 
-                connected = false;
 
-                updateConnection();
-
-                console.log(
-                    "VAJRA DISCONNECTED"
-                );
-
-            }
+        console.log(
+            "Connecting..."
         );
 
 
@@ -182,7 +256,7 @@ async function connectVAJRA() {
 
 
         console.log(
-            "GATT CONNECTED"
+            "GATT connected"
         );
 
 
@@ -192,16 +266,31 @@ async function connectVAJRA() {
             );
 
 
+        console.log(
+            "Service found"
+        );
+
+
         rx =
             await service.getCharacteristic(
                 RX_UUID
             );
 
 
+        console.log(
+            "RX ready"
+        );
+
+
         tx =
             await service.getCharacteristic(
                 TX_UUID
             );
+
+
+        console.log(
+            "TX ready"
+        );
 
 
         connected = true;
@@ -212,7 +301,7 @@ async function connectVAJRA() {
 
 
         console.log(
-            "VAJRA CONNECTED SUCCESSFULLY"
+            "VAJRA CONNECTED"
         );
 
     }
@@ -223,7 +312,10 @@ async function connectVAJRA() {
             error
         );
 
+
         connected = false;
+        armed = false;
+
 
         updateConnection();
 
@@ -232,11 +324,42 @@ async function connectVAJRA() {
 }
 
 
-// ===============================
-// DISCONNECT
-// ===============================
+// ============================================================
+// DISCONNECT EVENT
+// ============================================================
+
+function handleDisconnect() {
+
+    console.log(
+        "VAJRA DISCONNECTED"
+    );
+
+
+    connected = false;
+    armed = false;
+
+
+    rx = null;
+    tx = null;
+    server = null;
+
+
+    stopJoystick();
+
+
+    updateConnection();
+
+}
+
+
+// ============================================================
+// DISCONNECT VAJRA
+// ============================================================
 
 function disconnectVAJRA() {
+
+    stopJoystick();
+
 
     try {
 
@@ -253,7 +376,9 @@ function disconnectVAJRA() {
     }
     catch (error) {
 
-        console.log(error);
+        console.log(
+            error
+        );
 
     }
 
@@ -262,6 +387,7 @@ function disconnectVAJRA() {
     server = null;
     rx = null;
     tx = null;
+
 
     connected = false;
     armed = false;
@@ -272,9 +398,9 @@ function disconnectVAJRA() {
 }
 
 
-// ===============================
+// ============================================================
 // CONNECTION DISPLAY
-// ===============================
+// ============================================================
 
 function updateConnection() {
 
@@ -283,30 +409,36 @@ function updateConnection() {
             "connectionText"
         );
 
+
     const dot =
         document.getElementById(
             "connectionDot"
         );
+
 
     const largeText =
         document.getElementById(
             "largeConnectionText"
         );
 
+
     const largeDot =
         document.getElementById(
             "largeConnectionDot"
         );
+
 
     const deviceText =
         document.getElementById(
             "deviceText"
         );
 
+
     const status =
         document.getElementById(
             "remoteStatus"
         );
+
 
     const ble =
         document.getElementById(
@@ -320,38 +452,46 @@ function updateConnection() {
             text.textContent =
                 "CONNECTED";
 
+
         if (dot)
             dot.classList.add(
                 "connected"
             );
+
 
         if (largeDot)
             largeDot.classList.add(
                 "connected"
             );
 
+
         if (largeText)
             largeText.textContent =
                 "DRONE CONNECTED";
 
+
         if (deviceText)
             deviceText.textContent =
-                device.name ||
+                device?.name ||
                 "ANSH'S DRONE VAJRA";
+
 
         if (connectButton)
             connectButton.textContent =
                 "DISCONNECT";
 
+
         if (searchButton)
             searchButton.textContent =
                 "DISCONNECT VAJRA";
+
 
         if (status)
             status.textContent =
                 armed
                     ? "ARMED"
                     : "CONNECTED";
+
 
         if (ble)
             ble.textContent =
@@ -364,35 +504,43 @@ function updateConnection() {
             text.textContent =
                 "DISCONNECTED";
 
+
         if (dot)
             dot.classList.remove(
                 "connected"
             );
+
 
         if (largeDot)
             largeDot.classList.remove(
                 "connected"
             );
 
+
         if (largeText)
             largeText.textContent =
                 "DRONE NOT CONNECTED";
+
 
         if (deviceText)
             deviceText.textContent =
                 "Press SEARCH FOR BLUETOOTH";
 
+
         if (connectButton)
             connectButton.textContent =
                 "CONNECT";
+
 
         if (searchButton)
             searchButton.textContent =
                 "SEARCH BLUETOOTH";
 
+
         if (status)
             status.textContent =
                 "DISCONNECTED";
+
 
         if (ble)
             ble.textContent =
@@ -403,16 +551,19 @@ function updateConnection() {
 }
 
 
-// ===============================
-// SEND COMMAND
-// ===============================
+// ============================================================
+// SEND VAJRA COMMAND
+//
+// IMPORTANT:
+// Automatically adds "VAJRA:"
+// ============================================================
 
 async function sendCommand(command) {
 
-    if (!rx) {
+    if (!connected || !rx) {
 
         console.log(
-            "NOT CONNECTED"
+            "VAJRA NOT CONNECTED"
         );
 
         return false;
@@ -420,34 +571,26 @@ async function sendCommand(command) {
     }
 
 
+    const fullCommand =
+        "VAJRA:" + command;
+
+
     try {
 
         const data =
             new TextEncoder().encode(
-                command + "\n"
+                fullCommand
             );
 
 
-        if (
-            typeof rx.writeValueWithoutResponse ===
-            "function"
-        ) {
-
-            await rx.writeValueWithoutResponse(
-                data
-            );
-
-        }
-        else {
-
-            await rx.writeValue(data);
-
-        }
+        await queueBLEWrite(
+            data
+        );
 
 
         console.log(
-            "TX:",
-            command
+            "VAJRA COMMAND SENT:",
+            fullCommand
         );
 
 
@@ -461,6 +604,7 @@ async function sendCommand(command) {
             error
         );
 
+
         return false;
 
     }
@@ -468,228 +612,260 @@ async function sendCommand(command) {
 }
 
 
-// ===============================
-// ARM
-// ===============================
+// ============================================================
+// ARM BUTTON
+// ============================================================
 
-armButton.addEventListener(
-    "click",
-    async function () {
+if (armButton) {
 
-        if (!connected) {
+    armButton.addEventListener(
+        "click",
+        async function () {
 
-            alert(
-                "Connect VAJRA first."
-            );
+            if (!connected) {
 
-            return;
+                alert(
+                    "Connect VAJRA first."
+                );
+
+                return;
+
+            }
+
+
+            if (!armed) {
+
+                const success =
+                    await sendCommand(
+                        "ARM"
+                    );
+
+
+                if (success) {
+
+                    armed = true;
+
+
+                    armButton.textContent =
+                        "ARMED";
+
+
+                    armButton.classList.add(
+                        "armed"
+                    );
+
+
+                    startJoystick();
+
+
+                    updateConnection();
+
+                }
+
+            }
+            else {
+
+                await stopAll();
+
+            }
 
         }
+    );
+
+}
 
 
-        if (!armed) {
+// ============================================================
+// STOP BUTTON
+// ============================================================
 
-            await sendCommand(
-                "ARM"
-            );
+if (stopButton) {
 
-            armed = true;
+    stopButton.addEventListener(
+        "click",
+        stopAll
+    );
 
-            armButton.textContent =
-                "ARMED";
-
-            armButton.classList.add(
-                "armed"
-            );
-
-            updateConnection();
-
-        }
-        else {
-
-            await stopAll();
-
-        }
-
-    }
-);
-
-
-// ===============================
-// STOP
-// ===============================
-
-stopButton.addEventListener(
-    "click",
-    stopAll
-);
+}
 
 
 async function stopAll() {
 
     armed = false;
 
+
+    stopJoystick();
+
+
     await sendCommand(
         "STOP"
     );
 
-    armButton.textContent =
-        "ARM";
 
-    armButton.classList.remove(
-        "armed"
-    );
+    if (armButton) {
+
+        armButton.textContent =
+            "ARM";
+
+
+        armButton.classList.remove(
+            "armed"
+        );
+
+    }
+
 
     updateConnection();
 
 }
 
 
-// ===============================
+// ============================================================
 // MOTOR START BUTTONS
-// ===============================
+// ============================================================
 
 document
-    .querySelectorAll(
-        ".motor-start"
-    )
-    .forEach(
-        function (button) {
+    .querySelectorAll(".motor-start")
+    .forEach(function (button) {
 
-            button.addEventListener(
-                "click",
-                async function () {
+        button.addEventListener(
+            "click",
+            async function () {
 
-                    const motor =
-                        button.dataset.motor;
+                if (!connected) {
 
+                    alert(
+                        "Connect VAJRA first."
+                    );
 
-                    if (!connected) {
+                    return;
 
-                        alert(
-                            "Connect VAJRA first."
-                        );
-
-                        return;
-
-                    }
+                }
 
 
+                const motor =
+                    button.dataset.motor;
+
+
+                const success =
                     await sendCommand(
                         motor + " START"
                     );
 
 
-                    const number =
-                        motor.replace(
-                            "M",
-                            ""
-                        );
+                if (!success)
+                    return;
 
 
-                    const speed =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Speed"
-                        );
-
-                    const status =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Status"
-                        );
+                const number =
+                    motor.replace(
+                        "M",
+                        ""
+                    );
 
 
-                    if (speed)
-                        speed.textContent =
-                            "2000 µs";
+                const speed =
+                    document.getElementById(
+                        "m" +
+                        number +
+                        "Speed"
+                    );
 
 
-                    if (status)
-                        status.textContent =
-                            "ON";
-
-                }
-            );
-
-        }
-    );
+                const status =
+                    document.getElementById(
+                        "m" +
+                        number +
+                        "Status"
+                    );
 
 
-// ===============================
+                if (speed)
+                    speed.textContent =
+                        "2000 µs";
+
+
+                if (status)
+                    status.textContent =
+                        "ON";
+
+            }
+        );
+
+    });
+
+
+// ============================================================
 // MOTOR STOP BUTTONS
-// ===============================
+// ============================================================
 
 document
-    .querySelectorAll(
-        ".motor-stop"
-    )
-    .forEach(
-        function (button) {
+    .querySelectorAll(".motor-stop")
+    .forEach(function (button) {
 
-            button.addEventListener(
-                "click",
-                async function () {
+        button.addEventListener(
+            "click",
+            async function () {
 
-                    const motor =
-                        button.dataset.motor;
+                if (!connected)
+                    return;
 
 
-                    if (!connected) {
-
-                        return;
-
-                    }
+                const motor =
+                    button.dataset.motor;
 
 
+                const success =
                     await sendCommand(
                         motor + " STOP"
                     );
 
 
-                    const number =
-                        motor.replace(
-                            "M",
-                            ""
-                        );
+                if (!success)
+                    return;
 
 
-                    const speed =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Speed"
-                        );
-
-                    const status =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Status"
-                        );
+                const number =
+                    motor.replace(
+                        "M",
+                        ""
+                    );
 
 
-                    if (speed)
-                        speed.textContent =
-                            "900 µs";
+                const speed =
+                    document.getElementById(
+                        "m" +
+                        number +
+                        "Speed"
+                    );
 
 
-                    if (status)
-                        status.textContent =
-                            "OFF";
-
-                }
-            );
-
-        }
-    );
+                const status =
+                    document.getElementById(
+                        "m" +
+                        number +
+                        "Status"
+                    );
 
 
-// ===============================
+                if (speed)
+                    speed.textContent =
+                        "900 µs";
+
+
+                if (status)
+                    status.textContent =
+                        "OFF";
+
+            }
+        );
+
+    });
+
+
+// ============================================================
 // JOYSTICK VALUES
-// ===============================
+// ============================================================
 
 let throttle = 0;
 let yaw = 0;
@@ -699,9 +875,9 @@ let roll = 0;
 let joystickTimer = null;
 
 
-// ===============================
-// JOYSTICK FUNCTION
-// ===============================
+// ============================================================
+// CREATE JOYSTICK
+// ============================================================
 
 function createJoystick(
     area,
@@ -726,9 +902,11 @@ function createJoystick(
 
             active = true;
 
+
             area.setPointerCapture(
                 event.pointerId
             );
+
 
             move(event);
 
@@ -743,6 +921,7 @@ function createJoystick(
             if (!active)
                 return;
 
+
             move(event);
 
         }
@@ -755,8 +934,10 @@ function createJoystick(
 
             active = false;
 
+
             stick.style.transform =
                 "translate(-50%, -50%)";
+
 
             callback(
                 0,
@@ -773,8 +954,10 @@ function createJoystick(
 
             active = false;
 
+
             stick.style.transform =
                 "translate(-50%, -50%)";
+
 
             callback(
                 0,
@@ -829,6 +1012,7 @@ function createJoystick(
                 radius /
                 distance;
 
+
             x *= scale;
             y *= scale;
 
@@ -853,11 +1037,13 @@ function createJoystick(
 }
 
 
-// ===============================
+// ============================================================
 // LEFT JOYSTICK
-// ===============================
+// THROTTLE + YAW
+// ============================================================
 
 createJoystick(
+
     document.getElementById(
         "leftJoystick"
     ),
@@ -881,14 +1067,17 @@ createJoystick(
             );
 
     }
+
 );
 
 
-// ===============================
+// ============================================================
 // RIGHT JOYSTICK
-// ===============================
+// PITCH + ROLL
+// ============================================================
 
 createJoystick(
+
     document.getElementById(
         "rightJoystick"
     ),
@@ -911,12 +1100,13 @@ createJoystick(
             );
 
     }
+
 );
 
 
-// ===============================
+// ============================================================
 // JOYSTICK LOOP
-// ===============================
+// ============================================================
 
 function startJoystick() {
 
@@ -930,10 +1120,11 @@ function startJoystick() {
 
                 if (
                     connected &&
-                    armed
+                    armed &&
+                    rx
                 ) {
 
-                    sendCommand(
+                    const command =
                         "JOY," +
                         throttle +
                         "," +
@@ -941,25 +1132,36 @@ function startJoystick() {
                         "," +
                         pitch +
                         "," +
-                        roll
+                        roll;
+
+
+                    sendCommand(
+                        command
                     );
 
                 }
 
             },
-            20
+            60
         );
 
 }
 
 
+// ============================================================
+// STOP JOYSTICK
+// ============================================================
+
 function stopJoystick() {
 
-    if (joystickTimer !== null) {
+    if (
+        joystickTimer !== null
+    ) {
 
         clearInterval(
             joystickTimer
         );
+
 
         joystickTimer = null;
 
@@ -968,29 +1170,12 @@ function stopJoystick() {
 }
 
 
-// Start joystick loop
-// only after ARM
-
-armButton.addEventListener(
-    "click",
-    function () {
-
-        if (armed) {
-            startJoystick();
-        }
-        else {
-            stopJoystick();
-        }
-
-    }
-);
-
-
-// ===============================
+// ============================================================
 // INITIAL STATE
-// ===============================
+// ============================================================
 
 updateConnection();
+
 
 console.log(
     "VAJRA JavaScript loaded successfully."
