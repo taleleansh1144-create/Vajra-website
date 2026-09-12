@@ -1,136 +1,670 @@
-<div class="pid-panel">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <h2>ROLL PID</h2>
+    <title>ANSH'S DRONE VAJRA 🚁⚡</title>
 
-    <div class="pid-row">
-        <span>P</span>
-        <strong id="rollP">0.00</strong>
-    </div>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    <div class="pid-row">
-        <span>I</span>
-        <strong id="rollI">0.00</strong>
-    </div>
+<body>
 
-    <div class="pid-row">
-        <span>D</span>
-        <strong id="rollD">0.00</strong>
-    </div>
+<!-- =========================================================
+     LOGIN PAGE
+========================================================= -->
 
-    <div class="pid-row total">
-        <span>TOTAL</span>
-        <strong id="rollPID">0.00</strong>
-    </div>
+<div id="loginPage" class="page">
 
-</div>
+    <div class="login-card">
 
+        <div class="logo">
+            🚁⚡
+        </div>
 
-<div class="pid-panel">
+        <h1>VAJRA</h1>
+        <p class="subtitle">ANSH'S DRONE CONTROL SYSTEM</p>
 
-    <h2>PITCH PID</h2>
+        <div class="input-group">
+            <label>USERNAME</label>
+            <input
+                type="text"
+                id="username"
+                autocomplete="off"
+                placeholder="Enter username"
+            >
+        </div>
 
-    <div class="pid-row">
-        <span>P</span>
-        <strong id="pitchP">0.00</strong>
-    </div>
+        <div class="input-group">
+            <label>PASSWORD</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+            >
+        </div>
 
-    <div class="pid-row">
-        <span>I</span>
-        <strong id="pitchI">0.00</strong>
-    </div>
+        <button
+            id="loginBtn"
+            class="primary-btn"
+        >
+            ENTER VAJRA
+        </button>
 
-    <div class="pid-row">
-        <span>D</span>
-        <strong id="pitchD">0.00</strong>
-    </div>
+        <p id="loginMessage" class="login-message"></p>
 
-    <div class="pid-row total">
-        <span>TOTAL</span>
-        <strong id="pitchPID">0.00</strong>
-    </div>
-
-</div>
-
-
-<div class="imu-panel">
-
-    <h2>ATTITUDE</h2>
-
-    <div>
-        <span>ROLL</span>
-        <strong id="telemetryRoll">
-            0.00°
-        </strong>
-    </div>
-
-    <div>
-        <span>PITCH</span>
-        <strong id="telemetryPitch">
-            0.00°
-        </strong>
     </div>
 
 </div>
 
 
-<div class="gyro-panel">
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
 
-    <h2>GYROSCOPE</h2>
+<div id="dashboard" class="dashboard hidden">
 
-    <div>
-        <span>GX</span>
-        <strong id="telemetryGyroX">
-            0.0
-        </strong>
-    </div>
+    <!-- TOP BAR -->
+    <header class="topbar">
 
-    <div>
-        <span>GY</span>
-        <strong id="telemetryGyroY">
-            0.0
-        </strong>
-    </div>
+        <div class="brand">
+            <span class="brand-icon">🚁</span>
 
-    <div>
-        <span>GZ</span>
-        <strong id="telemetryGyroZ">
-            0.0
-        </strong>
-    </div>
+            <div>
+                <h2>VAJRA</h2>
+                <span>ANSH'S DRONE</span>
+            </div>
+        </div>
+
+        <div class="connection-area">
+
+            <div
+                id="connectionIndicator"
+                class="status disconnected"
+            >
+                <span class="status-dot"></span>
+                <span id="connectionText">DISCONNECTED</span>
+            </div>
+
+            <button
+                id="bluetoothBtn"
+                class="bluetooth-btn"
+            >
+                CONNECT BLUETOOTH
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="navigation">
+
+        <button
+            class="nav-btn active"
+            data-page="controlPage"
+        >
+            🎮 CONTROL
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="telemetryPage"
+        >
+            📡 TELEMETRY
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="settingsPage"
+        >
+            ⚙ SETTINGS
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="logsPage"
+        >
+            📜 LOGS
+        </button>
+
+        <button
+            class="nav-btn"
+            data-page="aboutPage"
+        >
+            ℹ ABOUT
+        </button>
+
+    </nav>
+
+
+    <main class="content">
+
+        <!-- =================================================
+             CONTROL PAGE
+        ================================================= -->
+
+        <section
+            id="controlPage"
+            class="app-page active-page"
+        >
+
+            <div class="page-title">
+                <h1>Drone Control</h1>
+                <p>Easy to control</p>
+            </div>
+
+
+            <!-- ARM / STOP -->
+
+            <div class="main-controls">
+
+                <button
+                    id="startBtn"
+                    class="control-start"
+                >
+                    START
+                </button>
+
+                <button
+                    id="stopBtn"
+                    class="control-stop"
+                >
+                    STOP
+                </button>
+
+            </div>
+
+
+            <!-- JOYSTICKS -->
+
+            <div class="joystick-area">
+
+                <!-- LEFT JOYSTICK -->
+
+                <div class="joystick-box">
+
+                    <h3>THROTTLE / YAW</h3>
+
+                    <div
+                        id="leftJoystick"
+                        class="joystick"
+                    >
+
+                        <div
+                            id="leftStick"
+                            class="stick"
+                        ></div>
+
+                    </div>
+
+                    <div class="joystick-values">
+
+                        <div>
+                            <span>THROTTLE</span>
+                            <strong id="throttleValue">0</strong>
+                        </div>
+
+                        <div>
+                            <span>YAW</span>
+                            <strong id="yawValue">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT JOYSTICK -->
+
+                <div class="joystick-box">
+
+                    <h3>PITCH / ROLL</h3>
+
+                    <div
+                        id="rightJoystick"
+                        class="joystick"
+                    >
+
+                        <div
+                            id="rightStick"
+                            class="stick"
+                        ></div>
+
+                    </div>
+
+                    <div class="joystick-values">
+
+                        <div>
+                            <span>PITCH</span>
+                            <strong id="pitchValue">0</strong>
+                        </div>
+
+                        <div>
+                            <span>ROLL</span>
+                            <strong id="rollValue">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOTOR CONTROLS -->
+
+            <div class="section-card">
+
+                <h2>MOTOR CONTROL</h2>
+
+                <div class="motor-grid">
+
+                    <div class="motor-card">
+                        <h3>M1</h3>
+                        <div
+                            id="motor1Display"
+                            class="motor-value"
+                        >
+                            900 µs
+                        </div>
+
+                        <button
+                            class="motor-start"
+                            data-motor="M1"
+                        >
+                            START
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M1"
+                        >
+                            STOP
+                        </button>
+                    </div>
+
+
+                    <div class="motor-card">
+                        <h3>M2</h3>
+                        <div
+                            id="motor2Display"
+                            class="motor-value"
+                        >
+                            900 µs
+                        </div>
+
+                        <button
+                            class="motor-start"
+                            data-motor="M2"
+                        >
+                            START
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M2"
+                        >
+                            STOP
+                        </button>
+                    </div>
+
+
+                    <div class="motor-card">
+                        <h3>M3</h3>
+                        <div
+                            id="motor3Display"
+                            class="motor-value"
+                        >
+                            900 µs
+                        </div>
+
+                        <button
+                            class="motor-start"
+                            data-motor="M3"
+                        >
+                            START
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M3"
+                        >
+                            STOP
+                        </button>
+                    </div>
+
+
+                    <div class="motor-card">
+                        <h3>M4</h3>
+                        <div
+                            id="motor4Display"
+                            class="motor-value"
+                        >
+                            900 µs
+                        </div>
+
+                        <button
+                            class="motor-start"
+                            data-motor="M4"
+                        >
+                            START
+                        </button>
+
+                        <button
+                            class="motor-stop"
+                            data-motor="M4"
+                        >
+                            STOP
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TELEMETRY PAGE
+        ================================================= -->
+
+        <section
+            id="telemetryPage"
+            class="app-page"
+        >
+
+            <div class="page-title">
+                <h1>Live Telemetry</h1>
+                <p>Flight Controller Data</p>
+            </div>
+
+
+            <div class="telemetry-grid">
+
+                <!-- ROLL PID -->
+
+                <div class="telemetry-card">
+
+                    <h2>ROLL PID</h2>
+
+                    <div class="pid-line">
+                        <span>P</span>
+                        <strong id="rollP">0.00</strong>
+                    </div>
+
+                    <div class="pid-line">
+                        <span>I</span>
+                        <strong id="rollI">0.00</strong>
+                    </div>
+
+                    <div class="pid-line">
+                        <span>D</span>
+                        <strong id="rollD">0.00</strong>
+                    </div>
+
+                    <div class="pid-total">
+                        <span>TOTAL</span>
+                        <strong id="rollPID">0.00</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- PITCH PID -->
+
+                <div class="telemetry-card">
+
+                    <h2>PITCH PID</h2>
+
+                    <div class="pid-line">
+                        <span>P</span>
+                        <strong id="pitchP">0.00</strong>
+                    </div>
+
+                    <div class="pid-line">
+                        <span>I</span>
+                        <strong id="pitchI">0.00</strong>
+                    </div>
+
+                    <div class="pid-line">
+                        <span>D</span>
+                        <strong id="pitchD">0.00</strong>
+                    </div>
+
+                    <div class="pid-total">
+                        <span>TOTAL</span>
+                        <strong id="pitchPID">0.00</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- ATTITUDE -->
+
+                <div class="telemetry-card">
+
+                    <h2>ATTITUDE</h2>
+
+                    <div class="large-reading">
+                        <span>ROLL</span>
+                        <strong>
+                            <span id="telemetryRoll">0.00</span>°
+                        </strong>
+                    </div>
+
+                    <div class="large-reading">
+                        <span>PITCH</span>
+                        <strong>
+                            <span id="telemetryPitch">0.00</span>°
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <!-- GYROSCOPE -->
+
+                <div class="telemetry-card">
+
+                    <h2>GYROSCOPE</h2>
+
+                    <div class="sensor-line">
+                        <span>GX</span>
+                        <strong id="telemetryGyroX">0.0</strong>
+                    </div>
+
+                    <div class="sensor-line">
+                        <span>GY</span>
+                        <strong id="telemetryGyroY">0.0</strong>
+                    </div>
+
+                    <div class="sensor-line">
+                        <span>GZ</span>
+                        <strong id="telemetryGyroZ">0.0</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- MOTORS -->
+
+                <div class="telemetry-card motor-telemetry">
+
+                    <h2>MOTOR OUTPUT</h2>
+
+                    <div class="sensor-line">
+                        <span>M1</span>
+                        <strong>
+                            <span id="telemetryM1">900</span> µs
+                        </strong>
+                    </div>
+
+                    <div class="sensor-line">
+                        <span>M2</span>
+                        <strong>
+                            <span id="telemetryM2">900</span> µs
+                        </strong>
+                    </div>
+
+                    <div class="sensor-line">
+                        <span>M3</span>
+                        <strong>
+                            <span id="telemetryM3">900</span> µs
+                        </strong>
+                    </div>
+
+                    <div class="sensor-line">
+                        <span>M4</span>
+                        <strong>
+                            <span id="telemetryM4">900</span> µs
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SETTINGS
+        ================================================= -->
+
+        <section
+            id="settingsPage"
+            class="app-page"
+        >
+
+            <div class="page-title">
+                <h1>Settings</h1>
+                <p>VAJRA system settings</p>
+            </div>
+
+            <div class="section-card">
+
+                <h2>Bluetooth</h2>
+
+                <div class="setting-row">
+                    <span>Device Name</span>
+                    <strong>ANSH'S DRONE VAJRA</strong>
+                </div>
+
+                <div class="setting-row">
+                    <span>Service UUID</span>
+                    <strong>
+                        12345678-1234-1234-1234-1234567890ab
+                    </strong>
+                </div>
+
+                <button
+                    id="settingsBluetoothBtn"
+                    class="primary-btn"
+                >
+                    CONNECT BLUETOOTH
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGS
+        ================================================= -->
+
+        <section
+            id="logsPage"
+            class="app-page"
+        >
+
+            <div class="page-title">
+                <h1>System Logs</h1>
+                <p>VAJRA communication log</p>
+            </div>
+
+            <div
+                id="logContainer"
+                class="log-container"
+            >
+
+                <div class="log-entry">
+                    [SYSTEM] VAJRA website ready
+                </div>
+
+            </div>
+
+            <button
+                id="clearLogsBtn"
+                class="secondary-btn"
+            >
+                CLEAR LOGS
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             ABOUT
+        ================================================= -->
+
+        <section
+            id="aboutPage"
+            class="app-page"
+        >
+
+            <div class="about-card">
+
+                <div class="about-logo">
+                    🚁⚡
+                </div>
+
+                <h1>ANSH'S DRONE VAJRA</h1>
+
+                <p>
+                    A custom ESP32-C3 based quadcopter
+                    control and telemetry system.
+                </p>
+
+                <div class="about-info">
+
+                    <div>
+                        <span>FLIGHT CONTROLLER</span>
+                        <strong>ESP32-C3</strong>
+                    </div>
+
+                    <div>
+                        <span>MAIN CONTROLLER</span>
+                        <strong>ESP32-C3</strong>
+                    </div>
+
+                    <div>
+                        <span>IMU</span>
+                        <strong>MPU6050</strong>
+                    </div>
+
+                    <div>
+                        <span>COMMUNICATION</span>
+                        <strong>BLE + UART</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
 
 
-<div class="motor-telemetry">
+<script src="script.js"></script>
 
-    <h2>MOTOR OUTPUT</h2>
-
-    <div>
-        <span>M1</span>
-        <strong id="telemetryM1">
-            900 µs
-        </strong>
-    </div>
-
-    <div>
-        <span>M2</span>
-        <strong id="telemetryM2">
-            900 µs
-        </strong>
-    </div>
-
-    <div>
-        <span>M3</span>
-        <strong id="telemetryM3">
-            900 µs
-        </strong>
-    </div>
-
-    <div>
-        <span>M4</span>
-        <strong id="telemetryM4">
-            900 µs
-        </strong>
-    </div>
-
-</div>
+</body>
+</html>
