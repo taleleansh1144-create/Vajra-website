@@ -4,116 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>VAJRA | Drone Ground Control</title>
+    <title>ANSH'S DRONE VAJRA</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- =====================================================
+     LOGIN SCREEN
+===================================================== -->
 
-<section id="loginScreen" class="screen login-screen">
+<div id="loginScreen" class="login-screen">
 
     <div class="login-grid"></div>
 
+    <div class="radar radar1"></div>
+    <div class="radar radar2"></div>
+    <div class="radar radar3"></div>
+
     <div class="login-card">
 
-        <div class="brand-symbol">
-            ⚡
+        <div class="brand-logo">
+            <div class="logo-icon">🚁</div>
+            <div>
+                <h1>VAJRA</h1>
+                <span>ANSH'S DRONE SYSTEM</span>
+            </div>
         </div>
 
-        <div class="brand-title">
-            VAJRA
-        </div>
-
-        <div class="brand-subtitle">
-            ANSH'S DRONE CONTROL SYSTEM
-        </div>
-
-        <div class="status-line">
+        <div class="login-status">
             <span class="status-dot"></span>
             SYSTEM READY
         </div>
 
+        <h2>SECURE ACCESS</h2>
+
+        <p class="login-subtitle">
+            Enter your VAJRA credentials to continue
+        </p>
+
         <div class="input-box">
-            <span>USER</span>
-            <input id="username" type="text" placeholder="USERNAME">
+            <span>👤</span>
+            <input
+                type="text"
+                id="username"
+                placeholder="USERNAME"
+                autocomplete="off"
+            >
         </div>
 
         <div class="input-box">
-            <span>KEY</span>
-            <input id="password" type="password" placeholder="PASSWORD">
+            <span>🔐</span>
+            <input
+                type="password"
+                id="password"
+                placeholder="PASSWORD"
+            >
         </div>
 
-        <button class="login-button" onclick="login()">
-            ENTER VAJRA
-            <span>→</span>
+        <button id="loginBtn" class="login-button">
+            <span>ENTER VAJRA</span>
+            <b>➜</b>
         </button>
 
-        <div id="loginError" class="login-error"></div>
+        <div id="loginMessage" class="login-message"></div>
 
         <div class="login-footer">
-            VAJRA GROUND CONTROL v2.0
+            VAJRA FLIGHT CONTROL SYSTEM
+            <span>•</span>
+            v2.0
         </div>
 
     </div>
+</div>
 
-</section>
 
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
-<!-- ================= APP ================= -->
-
-<section id="app" class="app hidden">
+<div id="dashboard" class="dashboard">
 
     <!-- TOP BAR -->
 
     <header class="topbar">
 
-        <div class="logo-area">
+        <div class="top-brand">
 
-            <div class="logo-icon">
-                ⚡
-            </div>
+            <div class="mini-logo">🚁</div>
 
             <div>
-                <div class="logo-name">
-                    VAJRA
-                </div>
-
-                <div class="logo-small">
-                    ANSH'S DRONE
-                </div>
+                <strong>VAJRA</strong>
+                <small>FLIGHT CONTROL</small>
             </div>
 
         </div>
 
-
-        <div class="flight-status">
-
-            <div id="bleDot" class="connection-dot disconnected"></div>
-
-            <div>
-                <div id="connectionText">
-                    DISCONNECTED
-                </div>
-
-                <small id="deviceText">
-                    BLE LINK OFFLINE
-                </small>
-            </div>
-
+        <div class="top-center">
+            <span class="online-dot"></span>
+            <span id="systemStatus">SYSTEM ONLINE</span>
         </div>
 
+        <div class="top-actions">
 
-        <button id="connectBtn" class="connect-button" onclick="connectBLE()">
-            CONNECT VAJRA
-        </button>
+            <div id="bleStatus" class="ble-status disconnected">
+                <span></span>
+                BLE DISCONNECTED
+            </div>
+
+            <button id="bleConnectBtn" class="ble-button">
+                CONNECT BLE
+            </button>
+
+            <button id="logoutBtn" class="logout-button">
+                ⏻
+            </button>
+
+        </div>
 
     </header>
 
@@ -122,98 +130,150 @@
 
     <aside class="sidebar">
 
-        <button class="nav-button active" onclick="showPage('control', this)">
-            <span>⌁</span>
-            CONTROL
+        <div class="sidebar-title">
+            VAJRA
+            <span>CONTROL</span>
+        </div>
+
+        <button class="nav-btn active" data-page="control">
+            <span>🎮</span>
+            <label>Control</label>
         </button>
 
-        <button class="nav-button" onclick="showPage('telemetry', this)">
-            <span>◉</span>
-            TELEMETRY
+        <button class="nav-btn" data-page="telemetry">
+            <span>📡</span>
+            <label>Telemetry</label>
         </button>
 
-        <button class="nav-button" onclick="showPage('settings', this)">
-            <span>⚙</span>
-            SETTINGS
+        <button class="nav-btn" data-page="settings">
+            <span>⚙️</span>
+            <label>Settings</label>
         </button>
 
-        <button class="nav-button" onclick="showPage('logs', this)">
-            <span>▤</span>
-            LOGS
+        <button class="nav-btn" data-page="logs">
+            <span>📋</span>
+            <label>Logs</label>
         </button>
 
-        <button class="nav-button" onclick="showPage('about', this)">
-            <span>ⓘ</span>
-            ABOUT
+        <button class="nav-btn" data-page="about">
+            <span>ℹ️</span>
+            <label>About</label>
         </button>
-
 
         <div class="sidebar-bottom">
 
-            <div class="system-mini">
-                <span class="mini-dot"></span>
-                SYSTEM ONLINE
+            <div class="system-box">
+                <span class="small-dot"></span>
+                SYSTEM
+                <strong>READY</strong>
             </div>
-
-            <button class="logout-button" onclick="logout()">
-                LOCK SYSTEM
-            </button>
 
         </div>
 
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- MAIN CONTENT -->
 
     <main class="main-content">
 
 
-        <!-- ================= CONTROL ================= -->
+        <!-- =================================================
+             CONTROL PAGE
+        ================================================== -->
 
         <section id="controlPage" class="page active-page">
 
             <div class="page-heading">
 
                 <div>
-                    <div class="eyebrow">
-                        FLIGHT CONTROL / 01
-                    </div>
-
-                    <h1>
-                        VAJRA
-                        <span>CONTROL</span>
-                    </h1>
-
-                    <p>
-                        Advanced drone command interface
-                    </p>
+                    <span class="eyebrow">FLIGHT CONTROL</span>
+                    <h1>Control Panel</h1>
+                    <p>Easy to control • Precision flight interface</p>
                 </div>
 
-
-                <div class="arm-panel">
-
-                    <div class="arm-status">
-                        <span id="armIndicator"></span>
-                        <span id="armText">DISARMED</span>
-                    </div>
-
-                    <button id="armButton" class="arm-button" onclick="toggleArm()">
-                        ARM VAJRA
-                    </button>
-
-                    <button class="emergency-button" onclick="emergencyStop()">
-                        EMERGENCY STOP
-                    </button>
-
+                <div class="flight-state">
+                    <span id="armedIndicator"></span>
+                    <span id="armedText">DISARMED</span>
                 </div>
 
             </div>
 
 
-            <!-- HUD -->
+            <!-- QUICK CONTROL -->
+
+            <div class="quick-control">
+
+                <button id="startBtn" class="start-btn">
+                    ▶ START
+                </button>
+
+                <button id="stopBtn" class="stop-btn">
+                    ■ STOP
+                </button>
+
+            </div>
+
+
+            <!-- MAIN CONTROL GRID -->
 
             <div class="control-grid">
+
+
+                <!-- JOYSTICK -->
+
+                <div class="glass-card joystick-card">
+
+                    <div class="card-header">
+                        <div>
+                            <span class="card-label">FLIGHT INPUT</span>
+                            <h2>Joystick</h2>
+                        </div>
+
+                        <span class="live-badge">LIVE</span>
+                    </div>
+
+                    <div class="joystick-area">
+
+                        <div id="joystick" class="joystick">
+
+                            <div class="joystick-ring ring1"></div>
+                            <div class="joystick-ring ring2"></div>
+                            <div class="joystick-ring ring3"></div>
+
+                            <div id="joystickStick" class="joystick-stick">
+                                <span>✦</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="joystick-values">
+
+                        <div>
+                            <span>THROTTLE</span>
+                            <strong id="throttleValue">0</strong>
+                        </div>
+
+                        <div>
+                            <span>YAW</span>
+                            <strong id="yawValue">0</strong>
+                        </div>
+
+                        <div>
+                            <span>PITCH</span>
+                            <strong id="pitchValue">0</strong>
+                        </div>
+
+                        <div>
+                            <span>ROLL</span>
+                            <strong id="rollValue">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
 
 
                 <!-- ATTITUDE -->
@@ -222,289 +282,198 @@
 
                     <div class="card-header">
                         <div>
-                            <span class="card-label">FLIGHT ATTITUDE</span>
-                            <h2>HUD</h2>
+                            <span class="card-label">IMU</span>
+                            <h2>Attitude</h2>
                         </div>
-
-                        <span class="live-badge">
-                            ● LIVE
-                        </span>
                     </div>
 
+                    <div class="attitude-display">
 
-                    <div class="attitude">
+                        <div class="horizon">
 
-                        <div class="sky"></div>
+                            <div class="horizon-sky"></div>
+                            <div class="horizon-ground"></div>
 
-                        <div class="horizon"></div>
+                            <div class="horizon-line"></div>
 
-                        <div class="pitch-line line1">+20°</div>
-                        <div class="pitch-line line2">+10°</div>
-                        <div class="pitch-line line3">-10°</div>
-                        <div class="pitch-line line4">-20°</div>
+                            <div class="pitch-line pitch1"></div>
+                            <div class="pitch-line pitch2"></div>
+                            <div class="pitch-line pitch3"></div>
 
-                        <div class="aircraft">
+                        </div>
 
-                            <div class="wing left-wing"></div>
-                            <div class="nose"></div>
-                            <div class="wing right-wing"></div>
-
+                        <div class="attitude-cross">
+                            +
                         </div>
 
                     </div>
 
-
-                    <div class="attitude-values">
+                    <div class="attitude-data">
 
                         <div>
                             <span>ROLL</span>
-                            <strong id="rollValue">0.00°</strong>
+                            <strong id="rollTelemetry">0.00°</strong>
                         </div>
 
                         <div>
                             <span>PITCH</span>
-                            <strong id="pitchValue">0.00°</strong>
-                        </div>
-
-                        <div>
-                            <span>YAW</span>
-                            <strong id="yawValue">0.00°</strong>
+                            <strong id="pitchTelemetry">0.00°</strong>
                         </div>
 
                     </div>
 
                 </div>
 
+            </div>
 
-                <!-- JOYSTICK -->
 
-                <div class="glass-card joystick-card">
+            <!-- MOTORS -->
 
-                    <div class="card-header">
+            <div class="glass-card motors-card">
 
-                        <div>
-                            <span class="card-label">FLIGHT COMMAND</span>
-                            <h2>JOYSTICK</h2>
-                        </div>
+                <div class="card-header">
 
-                        <span id="joyState" class="joy-state">
-                            READY
-                        </span>
-
+                    <div>
+                        <span class="card-label">ESC OUTPUT</span>
+                        <h2>Motor Control</h2>
                     </div>
 
-
-                    <div class="joystick-wrapper">
-
-                        <div class="joystick-ring">
-
-                            <div class="joy-cross horizontal"></div>
-                            <div class="joy-cross vertical"></div>
-
-                            <div id="joystick" class="joystick">
-                                <div class="joy-core">
-                                    VAJRA
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="joystick-values">
-
-                        <div>
-                            <span>THROTTLE</span>
-                            <strong id="throttleValue">0%</strong>
-                        </div>
-
-                        <div>
-                            <span>YAW</span>
-                            <strong id="yawJoyValue">0%</strong>
-                        </div>
-
-                        <div>
-                            <span>PITCH</span>
-                            <strong id="pitchJoyValue">0%</strong>
-                        </div>
-
-                        <div>
-                            <span>ROLL</span>
-                            <strong id="rollJoyValue">0%</strong>
-                        </div>
-
-                    </div>
+                    <button id="allMotorStop" class="small-danger">
+                        ALL STOP
+                    </button>
 
                 </div>
 
 
-                <!-- MOTOR PANEL -->
+                <div class="motor-grid">
 
-                <div class="glass-card motor-card">
 
-                    <div class="card-header">
+                    <div class="motor-card">
 
-                        <div>
-                            <span class="card-label">PROPULSION</span>
-                            <h2>MOTOR ARRAY</h2>
+                        <div class="motor-top">
+                            <span class="motor-number">M1</span>
+                            <span class="motor-location">FRONT RIGHT</span>
                         </div>
 
-                        <span class="motor-status">
-                            M1 — M4
-                        </span>
-
-                    </div>
-
-
-                    <div class="motor-grid">
-
-                        <div class="motor-box" id="motorBox1">
-                            <div class="motor-top">
-                                <span>M1</span>
-                                <span>FRONT RIGHT</span>
-                            </div>
-
-                            <div class="motor-value">
-                                <span id="m1Value">900</span>
-                                <small>µs</small>
-                            </div>
-
-                            <div class="motor-bar">
-                                <div id="m1Bar"></div>
-                            </div>
+                        <div class="motor-value">
+                            <strong id="m1Value">900</strong>
+                            <span>µs</span>
                         </div>
 
+                        <input
+                            id="m1Slider"
+                            type="range"
+                            min="900"
+                            max="2000"
+                            value="900"
+                        >
 
-                        <div class="motor-box" id="motorBox2">
-                            <div class="motor-top">
-                                <span>M2</span>
-                                <span>REAR RIGHT</span>
-                            </div>
-
-                            <div class="motor-value">
-                                <span id="m2Value">900</span>
-                                <small>µs</small>
-                            </div>
-
-                            <div class="motor-bar">
-                                <div id="m2Bar"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="motor-box" id="motorBox3">
-                            <div class="motor-top">
-                                <span>M3</span>
-                                <span>REAR LEFT</span>
-                            </div>
-
-                            <div class="motor-value">
-                                <span id="m3Value">900</span>
-                                <small>µs</small>
-                            </div>
-
-                            <div class="motor-bar">
-                                <div id="m3Bar"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="motor-box" id="motorBox4">
-                            <div class="motor-top">
-                                <span>M4</span>
-                                <span>FRONT LEFT</span>
-                            </div>
-
-                            <div class="motor-value">
-                                <span id="m4Value">900</span>
-                                <small>µs</small>
-                            </div>
-
-                            <div class="motor-bar">
-                                <div id="m4Bar"></div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- QUICK COMMAND -->
-
-                <div class="glass-card quick-card">
-
-                    <div class="card-header">
-                        <div>
-                            <span class="card-label">MANUAL OVERRIDE</span>
-                            <h2>QUICK COMMAND</h2>
-                        </div>
-                    </div>
-
-
-                    <div class="quick-buttons">
-
-                        <button onclick="motorCommand(1, 'START')">
-                            M1 START
-                        </button>
-
-                        <button onclick="motorCommand(2, 'START')">
-                            M2 START
-                        </button>
-
-                        <button onclick="motorCommand(3, 'START')">
-                            M3 START
-                        </button>
-
-                        <button onclick="motorCommand(4, 'START')">
-                            M4 START
+                        <button class="motor-start" data-motor="M1">
+                            START M1
                         </button>
 
                     </div>
 
 
-                    <div class="quick-buttons second-row">
+                    <div class="motor-card">
 
-                        <button onclick="motorCommand(1, 'STOP')">
-                            M1 STOP
+                        <div class="motor-top">
+                            <span class="motor-number">M2</span>
+                            <span class="motor-location">REAR RIGHT</span>
+                        </div>
+
+                        <div class="motor-value">
+                            <strong id="m2Value">900</strong>
+                            <span>µs</span>
+                        </div>
+
+                        <input
+                            id="m2Slider"
+                            type="range"
+                            min="900"
+                            max="2000"
+                            value="900"
+                        >
+
+                        <button class="motor-start" data-motor="M2">
+                            START M2
                         </button>
 
-                        <button onclick="motorCommand(2, 'STOP')">
-                            M2 STOP
+                    </div>
+
+
+                    <div class="motor-card">
+
+                        <div class="motor-top">
+                            <span class="motor-number">M3</span>
+                            <span class="motor-location">REAR LEFT</span>
+                        </div>
+
+                        <div class="motor-value">
+                            <strong id="m3Value">900</strong>
+                            <span>µs</span>
+                        </div>
+
+                        <input
+                            id="m3Slider"
+                            type="range"
+                            min="900"
+                            max="2000"
+                            value="900"
+                        >
+
+                        <button class="motor-start" data-motor="M3">
+                            START M3
                         </button>
 
-                        <button onclick="motorCommand(3, 'STOP')">
-                            M3 STOP
-                        </button>
+                    </div>
 
-                        <button onclick="motorCommand(4, 'STOP')">
-                            M4 STOP
+
+                    <div class="motor-card">
+
+                        <div class="motor-top">
+                            <span class="motor-number">M4</span>
+                            <span class="motor-location">FRONT LEFT</span>
+                        </div>
+
+                        <div class="motor-value">
+                            <strong id="m4Value">900</strong>
+                            <span>µs</span>
+                        </div>
+
+                        <input
+                            id="m4Slider"
+                            type="range"
+                            min="900"
+                            max="2000"
+                            value="900"
+                        >
+
+                        <button class="motor-start" data-motor="M4">
+                            START M4
                         </button>
 
                     </div>
 
                 </div>
-
 
             </div>
 
         </section>
 
 
-        <!-- ================= TELEMETRY ================= -->
+        <!-- =================================================
+             TELEMETRY PAGE
+        ================================================== -->
 
         <section id="telemetryPage" class="page">
 
             <div class="page-heading">
 
                 <div>
-                    <div class="eyebrow">
-                        SENSOR DATA / 02
-                    </div>
-
-                    <h1>LIVE <span>TELEMETRY</span></h1>
-                    <p>Real-time flight controller data</p>
+                    <span class="eyebrow">FLIGHT DATA</span>
+                    <h1>Telemetry</h1>
+                    <p>Live VAJRA sensor and motor data</p>
                 </div>
 
             </div>
@@ -512,29 +481,49 @@
 
             <div class="telemetry-grid">
 
-                <div class="telemetry-big">
+                <div class="telemetry-card">
                     <span>ROLL</span>
                     <strong id="telRoll">0.00°</strong>
                 </div>
 
-                <div class="telemetry-big">
+                <div class="telemetry-card">
                     <span>PITCH</span>
                     <strong id="telPitch">0.00°</strong>
                 </div>
 
-                <div class="telemetry-big">
+                <div class="telemetry-card">
                     <span>GYRO X</span>
-                    <strong id="telGX">0.00</strong>
+                    <strong id="telGx">0.00</strong>
                 </div>
 
-                <div class="telemetry-big">
+                <div class="telemetry-card">
                     <span>GYRO Y</span>
-                    <strong id="telGY">0.00</strong>
+                    <strong id="telGy">0.00</strong>
                 </div>
 
-                <div class="telemetry-big">
+                <div class="telemetry-card">
                     <span>GYRO Z</span>
-                    <strong id="telGZ">0.00</strong>
+                    <strong id="telGz">0.00</strong>
+                </div>
+
+                <div class="telemetry-card">
+                    <span>M1</span>
+                    <strong id="telM1">900</strong>
+                </div>
+
+                <div class="telemetry-card">
+                    <span>M2</span>
+                    <strong id="telM2">900</strong>
+                </div>
+
+                <div class="telemetry-card">
+                    <span>M3</span>
+                    <strong id="telM3">900</strong>
+                </div>
+
+                <div class="telemetry-card">
+                    <span>M4</span>
+                    <strong id="telM4">900</strong>
                 </div>
 
             </div>
@@ -545,10 +534,9 @@
                 <div class="card-header">
                     <div>
                         <span class="card-label">STABILIZATION</span>
-                        <h2>PID MONITOR</h2>
+                        <h2>PID Data</h2>
                     </div>
                 </div>
-
 
                 <div class="pid-grid">
 
@@ -599,75 +587,80 @@
         </section>
 
 
-        <!-- ================= SETTINGS ================= -->
+        <!-- =================================================
+             SETTINGS
+        ================================================== -->
 
         <section id="settingsPage" class="page">
 
             <div class="page-heading">
 
                 <div>
-                    <div class="eyebrow">SYSTEM / 03</div>
-                    <h1>VAJRA <span>SETTINGS</span></h1>
-                    <p>Ground-control configuration</p>
+                    <span class="eyebrow">SYSTEM CONFIGURATION</span>
+                    <h1>Settings</h1>
+                    <p>Configure your VAJRA system</p>
                 </div>
 
             </div>
-
 
             <div class="settings-grid">
 
                 <div class="glass-card setting-card">
 
-                    <span class="card-label">BLUETOOTH</span>
+                    <h2>BLE Configuration</h2>
 
-                    <h2>BLE DEVICE</h2>
-
-                    <div class="setting-value">
-                        ANSH'S DRONE VAJRA
+                    <div class="setting-row">
+                        <span>Device Name</span>
+                        <strong>ANSH'S DRONE VAJRA</strong>
                     </div>
 
-                    <button class="settings-button" onclick="connectBLE()">
-                        CONNECT DEVICE
-                    </button>
+                    <div class="setting-row">
+                        <span>Connection</span>
+                        <strong id="settingsBle">Disconnected</strong>
+                    </div>
 
                 </div>
 
 
                 <div class="glass-card setting-card">
 
-                    <span class="card-label">CONTROL</span>
+                    <h2>Flight Controller</h2>
 
-                    <h2>CONTROL MODE</h2>
-
-                    <div class="setting-value">
-                        JOYSTICK
+                    <div class="setting-row">
+                        <span>MPU6050</span>
+                        <strong>GPIO 8 / GPIO 9</strong>
                     </div>
 
-                    <button class="settings-button" onclick="resetJoystick()">
-                        CENTER JOYSTICK
-                    </button>
+                    <div class="setting-row">
+                        <span>UART</span>
+                        <strong>TX 6 / RX 7</strong>
+                    </div>
 
                 </div>
 
 
                 <div class="glass-card setting-card">
 
-                    <span class="card-label">SAFETY</span>
+                    <h2>Motor Mapping</h2>
 
-                    <h2>MOTOR LIMIT</h2>
+                    <div class="setting-row">
+                        <span>M1</span>
+                        <strong>GPIO 2</strong>
+                    </div>
 
-                    <input
-                        id="motorLimit"
-                        type="range"
-                        min="900"
-                        max="1300"
-                        value="1200"
-                        oninput="updateLimit(this.value)"
-                    >
+                    <div class="setting-row">
+                        <span>M2</span>
+                        <strong>GPIO 3</strong>
+                    </div>
 
-                    <div class="range-value">
-                        <span>MAX PWM</span>
-                        <strong id="limitValue">1200 µs</strong>
+                    <div class="setting-row">
+                        <span>M3</span>
+                        <strong>GPIO 4</strong>
+                    </div>
+
+                    <div class="setting-row">
+                        <span>M4</span>
+                        <strong>GPIO 5</strong>
                     </div>
 
                 </div>
@@ -677,56 +670,58 @@
         </section>
 
 
-        <!-- ================= LOGS ================= -->
+        <!-- =================================================
+             LOGS
+        ================================================== -->
 
         <section id="logsPage" class="page">
 
             <div class="page-heading">
 
                 <div>
-                    <div class="eyebrow">SYSTEM EVENTS / 04</div>
-                    <h1>FLIGHT <span>LOGS</span></h1>
-                    <p>VAJRA command and connection history</p>
+                    <span class="eyebrow">SYSTEM EVENTS</span>
+                    <h1>Logs</h1>
+                    <p>VAJRA communication and system activity</p>
                 </div>
 
-                <button class="clear-button" onclick="clearLogs()">
+                <button id="clearLogs" class="small-danger">
                     CLEAR LOGS
                 </button>
 
             </div>
 
+            <div id="logWindow" class="log-window">
 
-            <div class="glass-card logs-card">
+                <div class="log-line">
+                    <span>[SYSTEM]</span>
+                    VAJRA dashboard initialized
+                </div>
 
-                <div id="logs"></div>
+                <div class="log-line">
+                    <span>[SYSTEM]</span>
+                    Waiting for BLE connection...
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- ================= ABOUT ================= -->
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
 
         <section id="aboutPage" class="page">
 
             <div class="about-hero">
 
-                <div class="about-logo">
-                    ⚡
-                </div>
+                <div class="about-logo">🚁⚡</div>
 
-                <div class="eyebrow">
-                    PROJECT VAJRA
-                </div>
-
-                <h1>
-                    ANSH'S DRONE
-                    <span>VAJRA</span>
-                </h1>
+                <h1>ANSH'S DRONE VAJRA</h1>
 
                 <p>
-                    A custom ESP32-C3 based quadcopter control system
-                    with BLE ground control and real-time telemetry.
+                    Advanced quadcopter flight control interface
+                    built for the VAJRA project.
                 </p>
 
             </div>
@@ -734,12 +729,8 @@
 
             <div class="about-grid">
 
-                <div class="glass-card">
-                    <span class="card-label">FLIGHT COMPUTER</span>
-                    <h2>ESP32-C3</h2>
-                    <p>Dedicated flight controller architecture.</p>
-                </div>
-
-                <div class="glass-card">
-                    <span class="card-label">COMMUNICATION</span>
-        
+                <div class="glass-card about-card">
+                    <h2>🚁 VAJRA</h2>
+                    <p>
+                        A custom quadcopter control system using
+                        ESP3
