@@ -1,101 +1,28 @@
-// ============================================================
-// ANSH'S DRONE VAJRA
-// WEBSITE CONTROL SCRIPT
-//
+/* =========================================================
+   ANSH'S DRONE VAJRA 🚁⚡
+   JAVASCRIPT
+========================================================= */
+
+// ==========================================================
 // LOGIN
-// BLE
-// MOTOR CONTROL
-// JOYSTICKS
-// MPU6050 TELEMETRY
-// PID TELEMETRY
-// ============================================================
+// ==========================================================
+
+const VALID_USERNAME = "VAJRA";
+const VALID_PASSWORD = "VAJRA";
+
+const loginPage = document.getElementById("loginPage");
+const dashboard = document.getElementById("dashboard");
+
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+
+const loginBtn = document.getElementById("loginBtn");
+const loginMessage = document.getElementById("loginMessage");
 
 
-// ============================================================
-// LOGIN
-// ============================================================
-
-const loginPage =
-    document.getElementById("loginPage");
-
-const dashboard =
-    document.getElementById("dashboard");
-
-const username =
-    document.getElementById("username");
-
-const password =
-    document.getElementById("password");
-
-const loginButton =
-    document.getElementById("loginButton");
-
-const loginError =
-    document.getElementById("loginError");
-
-
-if (loginButton) {
-
-    loginButton.addEventListener(
-        "click",
-        function () {
-
-            if (
-                username.value.trim() === "VAJRA" &&
-                password.value === "VAJRA"
-            ) {
-
-                loginError.textContent = "";
-
-                loginPage.classList.add(
-                    "hidden"
-                );
-
-                dashboard.classList.remove(
-                    "hidden"
-                );
-
-                console.log(
-                    "VAJRA LOGIN OK"
-                );
-
-            }
-            else {
-
-                loginError.textContent =
-                    "Invalid username or password.";
-
-            }
-
-        }
-    );
-
-}
-
-
-if (password) {
-
-    password.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                loginButton.click();
-
-            }
-
-        }
-    );
-
-}
-
-
-// ============================================================
-// BLE UUIDS
-// ============================================================
+// ==========================================================
+// BLE UUIDs
+// ==========================================================
 
 const SERVICE_UUID =
     "12345678-1234-1234-1234-1234567890ab";
@@ -106,212 +33,297 @@ const RX_UUID =
 const TX_UUID =
     "12345678-1234-1234-1234-1234567890ad";
 
+const VAJRA_DEVICE_NAME =
+    "ANSH'S DRONE VAJRA";
 
-// ============================================================
+
+// ==========================================================
 // BLE VARIABLES
-// ============================================================
+// ==========================================================
 
-let device = null;
-let server = null;
-let rx = null;
-let tx = null;
+let vajraDevice = null;
+let vajraServer = null;
+let vajraService = null;
 
-let connected = false;
-let armed = false;
+let vajraRx = null;
+let vajraTx = null;
 
-
-// ============================================================
-// BLE QUEUE
-// ============================================================
-
-let bleQueue =
-    Promise.resolve();
+let bluetoothConnected = false;
 
 
-// ============================================================
-// BUTTONS
-// ============================================================
+// ==========================================================
+// BLE WRITE QUEUE
+// Prevents "GATT operation already in progress"
+// ==========================================================
 
-const connectButton =
-    document.getElementById(
-        "connectButton"
-    );
-
-const searchButton =
-    document.getElementById(
-        "searchButton"
-    );
-
-const armButton =
-    document.getElementById(
-        "armButton"
-    );
-
-const stopButton =
-    document.getElementById(
-        "stopButton"
-    );
+let writeQueue = Promise.resolve();
 
 
-// ============================================================
-// BLE WRITE
-// ============================================================
+// ==========================================================
+// LOGGING
+// ==========================================================
 
-function queueBLEWrite(data) {
-
-    bleQueue =
-        bleQueue.then(
-            async function () {
-
-                if (
-                    !rx
-                ) {
-
-                    throw new Error(
-                        "RX characteristic unavailable"
-                    );
-
-                }
+const logContainer =
+    document.getElementById("logContainer");
 
 
-                if (
-                    !device ||
-                    !device.gatt ||
-                    !device.gatt.connected
-                ) {
+function addLog(message) {
 
-                    throw new Error(
-                        "GATT server disconnected"
-                    );
+    if (!logContainer) {
+        return;
+    }
 
-                }
+    const entry =
+        document.createElement("div");
 
+    entry.className = "log-entry";
 
-                if (
-                    typeof rx.writeValueWithoutResponse ===
-                    "function"
-                ) {
+    const time =
+        new Date().toLocaleTimeString();
 
-                    await rx.writeValueWithoutResponse(
-                        data
-                    );
+    entry.textContent =
+        `[${time}] ${message}`;
 
-                }
-                else {
+    logContainer.appendChild(entry);
 
-                    await rx.writeValue(
-                        data
-                    );
+    logContainer.scrollTop =
+        logContainer.scrollHeight;
 
-                }
+    console.log(message);
+}
 
 
-                await new Promise(
-                    function (resolve) {
+// ==========================================================
+// LOGIN
+// ==========================================================
 
-                        setTimeout(
-                            resolve,
-                            10
-                        );
+loginBtn.addEventListener("click", login);
 
-                    }
-                );
 
-            }
-        )
-        .catch(
-            function (error) {
+passwordInput.addEventListener("keydown", function(event) {
 
-                console.error(
-                    "BLE QUEUE ERROR:",
-                    error
-                );
+    if (event.key === "Enter") {
+        login();
+    }
 
-            }
+});
+
+
+usernameInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        passwordInput.focus();
+    }
+
+});
+
+
+function login() {
+
+    const username =
+        usernameInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+    if (
+        username === VALID_USERNAME &&
+        password === VALID_PASSWORD
+    ) {
+
+        loginMessage.textContent = "";
+
+        loginPage.classList.add("hidden");
+
+        dashboard.classList.remove("hidden");
+
+        addLog("Login successful");
+
+    } else {
+
+        loginMessage.textContent =
+            "Invalid username or password.";
+
+    }
+
+}
+
+
+// ==========================================================
+// PAGE NAVIGATION
+// ==========================================================
+
+const navButtons =
+    document.querySelectorAll(".nav-btn");
+
+const appPages =
+    document.querySelectorAll(".app-page");
+
+
+navButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const pageId =
+            button.dataset.page;
+
+        navButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        appPages.forEach(page => {
+            page.classList.remove("active-page");
+        });
+
+        button.classList.add("active");
+
+        const selectedPage =
+            document.getElementById(pageId);
+
+        if (selectedPage) {
+            selectedPage.classList.add("active-page");
+        }
+
+    });
+
+});
+
+
+// ==========================================================
+// CONNECTION UI
+// ==========================================================
+
+const bluetoothBtn =
+    document.getElementById("bluetoothBtn");
+
+const settingsBluetoothBtn =
+    document.getElementById("settingsBluetoothBtn");
+
+const connectionIndicator =
+    document.getElementById("connectionIndicator");
+
+const connectionText =
+    document.getElementById("connectionText");
+
+
+function setConnectionStatus(connected) {
+
+    bluetoothConnected = connected;
+
+    if (connected) {
+
+        connectionIndicator.classList.remove(
+            "disconnected"
         );
 
+        connectionIndicator.classList.add(
+            "connected"
+        );
 
-    return bleQueue;
+        connectionText.textContent =
+            "CONNECTED";
 
+        bluetoothBtn.textContent =
+            "DISCONNECT BLUETOOTH";
+
+    } else {
+
+        connectionIndicator.classList.remove(
+            "connected"
+        );
+
+        connectionIndicator.classList.add(
+            "disconnected"
+        );
+
+        connectionText.textContent =
+            "DISCONNECTED";
+
+        bluetoothBtn.textContent =
+            "CONNECT BLUETOOTH";
+    }
 }
 
 
-// ============================================================
-// CONNECT BUTTON
-// ============================================================
+// ==========================================================
+// CONNECT BUTTONS
+// ==========================================================
 
-if (connectButton) {
+bluetoothBtn.addEventListener(
+    "click",
+    async () => {
 
-    connectButton.addEventListener(
-        "click",
-        async function () {
+        if (bluetoothConnected) {
 
-            if (
-                connected
-            ) {
+            disconnectVAJRA();
 
-                disconnectVAJRA();
+        } else {
 
-            }
-            else {
-
-                await connectVAJRA();
-
-            }
+            await connectVAJRA();
 
         }
-    );
+    }
+);
 
-}
 
+settingsBluetoothBtn.addEventListener(
+    "click",
+    async () => {
 
-// ============================================================
-// SEARCH BUTTON
-// ============================================================
+        if (bluetoothConnected) {
 
-if (searchButton) {
+            disconnectVAJRA();
 
-    searchButton.addEventListener(
-        "click",
-        async function () {
+        } else {
 
-            if (
-                connected
-            ) {
-
-                disconnectVAJRA();
-
-            }
-            else {
-
-                await connectVAJRA();
-
-            }
+            await connectVAJRA();
 
         }
-    );
+    }
+);
 
-}
 
-
-// ============================================================
-// CONNECT
-// ============================================================
+// ==========================================================
+// CONNECT TO VAJRA
+// ==========================================================
 
 async function connectVAJRA() {
 
     try {
 
-        console.log(
-            "Searching for ANSH'S DRONE VAJRA..."
+        if (!navigator.bluetooth) {
+
+            addLog(
+                "ERROR: Web Bluetooth is not supported by this browser."
+            );
+
+            alert(
+                "Web Bluetooth is not supported here. Use Chrome or Edge on HTTPS."
+            );
+
+            return;
+        }
+
+
+        addLog(
+            "Searching for " +
+            VAJRA_DEVICE_NAME +
+            "..."
         );
 
 
-        device =
+        // ==================================================
+        // DEVICE SELECTION
+        // ==================================================
+
+        vajraDevice =
             await navigator.bluetooth.requestDevice({
 
-                acceptAllDevices:
-                    true,
+                filters: [
+                    {
+                        name: VAJRA_DEVICE_NAME
+                    }
+                ],
 
                 optionalServices: [
                     SERVICE_UUID
@@ -320,1127 +332,550 @@ async function connectVAJRA() {
             });
 
 
-        console.log(
-            "Selected:",
-            device.name
+        if (!vajraDevice) {
+
+            addLog(
+                "No Bluetooth device selected."
+            );
+
+            return;
+        }
+
+
+        addLog(
+            "Selected: " +
+            (vajraDevice.name || "Unknown")
         );
 
 
-        device.addEventListener(
+        vajraDevice.addEventListener(
             "gattserverdisconnected",
             handleDisconnect
         );
 
 
-        console.log(
-            "Connecting..."
-        );
+        // ==================================================
+        // CONNECT GATT
+        // ==================================================
+
+        addLog("Connecting...");
+
+        vajraServer =
+            await vajraDevice.gatt.connect();
+
+        addLog("GATT connected");
 
 
-        server =
-            await device.gatt.connect();
+        // ==================================================
+        // SERVICE
+        // ==================================================
 
-
-        console.log(
-            "GATT connected"
-        );
-
-
-        const service =
-            await server.getPrimaryService(
+        vajraService =
+            await vajraServer.getPrimaryService(
                 SERVICE_UUID
             );
 
-
-        console.log(
-            "Service found"
-        );
+        addLog("Service found");
 
 
-        rx =
-            await service.getCharacteristic(
+        // ==================================================
+        // RX
+        // ==================================================
+
+        vajraRx =
+            await vajraService.getCharacteristic(
                 RX_UUID
             );
 
-
-        console.log(
-            "RX ready"
-        );
+        addLog("RX ready");
 
 
-        tx =
-            await service.getCharacteristic(
+        // ==================================================
+        // TX
+        // ==================================================
+
+        vajraTx =
+            await vajraService.getCharacteristic(
                 TX_UUID
             );
 
+        addLog("TX ready");
 
-        console.log(
-            "TX ready"
+
+        // ==================================================
+        // ENABLE NOTIFICATIONS
+        // ==================================================
+
+        await vajraTx.startNotifications();
+
+        vajraTx.addEventListener(
+            "characteristicvaluechanged",
+            handleTelemetry
         );
 
 
-        // ----------------------------------------------------
-        // Enable telemetry notifications
-        // ----------------------------------------------------
+        setConnectionStatus(true);
 
-        try {
-
-            await tx.startNotifications();
-
-            tx.addEventListener(
-                "characteristicvaluechanged",
-                handleTelemetry
-            );
-
-            console.log(
-                "Telemetry notifications enabled"
-            );
-
-        }
-        catch (error) {
-
-            console.warn(
-                "Telemetry notification error:",
-                error
-            );
-
-        }
-
-
-        connected = true;
-        armed = false;
-
-
-        updateConnection();
-
-
-        console.log(
-            "VAJRA CONNECTED"
-        );
+        addLog("VAJRA CONNECTED");
 
     }
     catch (error) {
 
-        console.error(
-            "BLE ERROR:",
-            error
+        console.error(error);
+
+        addLog(
+            "BLE ERROR: " +
+            error.message
         );
 
-
-        connected = false;
-        armed = false;
-
-
-        updateConnection();
-
+        setConnectionStatus(false);
     }
 
 }
 
 
-// ============================================================
-// DISCONNECT EVENT
-// ============================================================
-
-function handleDisconnect() {
-
-    console.log(
-        "VAJRA DISCONNECTED"
-    );
-
-
-    connected = false;
-    armed = false;
-
-
-    rx = null;
-    tx = null;
-    server = null;
-
-
-    stopJoystick();
-
-
-    updateConnection();
-
-}
-
-
-// ============================================================
+// ==========================================================
 // DISCONNECT
-// ============================================================
+// ==========================================================
 
 function disconnectVAJRA() {
 
-    stopJoystick();
-
-
     try {
 
         if (
-            device &&
-            device.gatt &&
-            device.gatt.connected
+            vajraTx &&
+            typeof vajraTx.removeEventListener ===
+            "function"
         ) {
 
-            device.gatt.disconnect();
+            vajraTx.removeEventListener(
+                "characteristicvaluechanged",
+                handleTelemetry
+            );
+        }
 
+
+        if (
+            vajraDevice &&
+            vajraDevice.gatt.connected
+        ) {
+
+            vajraDevice.gatt.disconnect();
         }
 
     }
     catch (error) {
 
-        console.log(
-            "DISCONNECT ERROR:",
-            error
-        );
+        console.error(error);
 
     }
 
 
-    device = null;
-    server = null;
-    rx = null;
-    tx = null;
+    vajraRx = null;
+    vajraTx = null;
+    vajraService = null;
+    vajraServer = null;
 
+    setConnectionStatus(false);
 
-    connected = false;
-    armed = false;
-
-
-    updateConnection();
-
+    addLog("VAJRA disconnected");
 }
 
 
-// ============================================================
-// CONNECTION DISPLAY
-// ============================================================
+// ==========================================================
+// GATT DISCONNECTED
+// ==========================================================
 
-function updateConnection() {
+function handleDisconnect() {
 
-    const text =
-        document.getElementById(
-            "connectionText"
-        );
+    setConnectionStatus(false);
 
-    const dot =
-        document.getElementById(
-            "connectionDot"
-        );
-
-    const largeText =
-        document.getElementById(
-            "largeConnectionText"
-        );
-
-    const largeDot =
-        document.getElementById(
-            "largeConnectionDot"
-        );
-
-    const deviceText =
-        document.getElementById(
-            "deviceText"
-        );
-
-    const status =
-        document.getElementById(
-            "remoteStatus"
-        );
-
-    const ble =
-        document.getElementById(
-            "telemetryBLE"
-        );
-
-
-    if (
-        connected
-    ) {
-
-        if (text)
-            text.textContent =
-                "CONNECTED";
-
-
-        if (dot)
-            dot.classList.add(
-                "connected"
-            );
-
-
-        if (largeDot)
-            largeDot.classList.add(
-                "connected"
-            );
-
-
-        if (largeText)
-            largeText.textContent =
-                "DRONE CONNECTED";
-
-
-        if (deviceText)
-            deviceText.textContent =
-                device && device.name
-                    ? device.name
-                    : "ANSH'S DRONE VAJRA";
-
-
-        if (connectButton)
-            connectButton.textContent =
-                "DISCONNECT";
-
-
-        if (searchButton)
-            searchButton.textContent =
-                "DISCONNECT VAJRA";
-
-
-        if (status)
-            status.textContent =
-                armed
-                    ? "ARMED"
-                    : "CONNECTED";
-
-
-        if (ble)
-            ble.textContent =
-                "ONLINE";
-
-    }
-    else {
-
-        if (text)
-            text.textContent =
-                "DISCONNECTED";
-
-
-        if (dot)
-            dot.classList.remove(
-                "connected"
-            );
-
-
-        if (largeDot)
-            largeDot.classList.remove(
-                "connected"
-            );
-
-
-        if (largeText)
-            largeText.textContent =
-                "DRONE NOT CONNECTED";
-
-
-        if (deviceText)
-            deviceText.textContent =
-                "Press SEARCH FOR BLUETOOTH";
-
-
-        if (connectButton)
-            connectButton.textContent =
-                "CONNECT";
-
-
-        if (searchButton)
-            searchButton.textContent =
-                "SEARCH BLUETOOTH";
-
-
-        if (status)
-            status.textContent =
-                "DISCONNECTED";
-
-
-        if (ble)
-            ble.textContent =
-                "OFFLINE";
-
-    }
-
+    addLog(
+        "Bluetooth connection lost."
+    );
 }
 
 
-// ============================================================
-// SEND COMMAND
-//
-// Example:
-// sendCommand("START")
-//
-// Actual BLE message:
-//
-// VAJRA:START\n
-// ============================================================
+// ==========================================================
+// SAFE BLE WRITE
+// ==========================================================
 
-async function sendCommand(command) {
+function sendCommand(command) {
 
-    if (
-        !connected ||
-        !rx
-    ) {
+    if (!vajraRx) {
 
-        console.error(
-            "VAJRA NOT CONNECTED"
+        addLog(
+            "Command blocked: Bluetooth not connected."
         );
 
-        return false;
-
+        return;
     }
 
 
-    const fullCommand =
-        "VAJRA:" +
-        command +
-        "\n";
+    const finalCommand =
+        `VAJRA:${command}\n`;
 
 
-    try {
+    writeQueue =
+        writeQueue
+            .then(async () => {
 
-        const data =
-            new TextEncoder().encode(
-                fullCommand
-            );
+                const encoder =
+                    new TextEncoder();
 
-
-        await queueBLEWrite(
-            data
-        );
-
-
-        console.log(
-            "VAJRA COMMAND SENT:",
-            "VAJRA:" + command
-        );
+                const data =
+                    encoder.encode(
+                        finalCommand
+                    );
 
 
-        return true;
-
-    }
-    catch (error) {
-
-        console.error(
-            "SEND ERROR:",
-            error
-        );
-
-
-        return false;
-
-    }
-
-}
-
-
-// ============================================================
-// ARM
-// ============================================================
-
-if (armButton) {
-
-    armButton.addEventListener(
-        "click",
-        async function () {
-
-            if (
-                !connected
-            ) {
-
-                alert(
-                    "Connect VAJRA first."
+                await vajraRx.writeValueWithResponse(
+                    data
                 );
 
-                return;
 
-            }
+                addLog(
+                    "BLE TX: " +
+                    finalCommand.trim()
+                );
 
+            })
+            .catch(error => {
 
-            if (
-                !armed
-            ) {
+                addLog(
+                    "BLE WRITE ERROR: " +
+                    error.message
+                );
 
-                const success =
-                    await sendCommand(
-                        "ARM"
-                    );
-
-
-                if (
-                    success
-                ) {
-
-                    armed = true;
-
-
-                    armButton.textContent =
-                        "ARMED";
-
-
-                    armButton.classList.add(
-                        "armed"
-                    );
-
-
-                    startJoystick();
-
-
-                    updateConnection();
-
-                }
-
-            }
-            else {
-
-                await stopAll();
-
-            }
-
-        }
-    );
-
+            });
 }
 
 
-// ============================================================
-// STOP ALL
-// ============================================================
+// ==========================================================
+// START / STOP
+// ==========================================================
 
-if (stopButton) {
-
-    stopButton.addEventListener(
+document
+    .getElementById("startBtn")
+    .addEventListener(
         "click",
-        stopAll
+        () => {
+
+            sendCommand("START");
+
+        }
     );
 
-}
-
-
-async function stopAll() {
-
-    armed = false;
-
-
-    stopJoystick();
-
-
-    await sendCommand(
-        "STOP"
-    );
-
-
-    if (armButton) {
-
-        armButton.textContent =
-            "ARM";
-
-
-        armButton.classList.remove(
-            "armed"
-        );
-
-    }
-
-
-    updateConnection();
-
-}
-
-
-// ============================================================
-// INDIVIDUAL MOTOR START
-// ============================================================
 
 document
-    .querySelectorAll(
-        ".motor-start"
-    )
-    .forEach(
-        function (button) {
+    .getElementById("stopBtn")
+    .addEventListener(
+        "click",
+        () => {
 
-            button.addEventListener(
-                "click",
-                async function () {
-
-                    if (
-                        !connected
-                    ) {
-
-                        alert(
-                            "Connect VAJRA first."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const motor =
-                        button.dataset.motor;
-
-
-                    const success =
-                        await sendCommand(
-                            motor +
-                            " START"
-                        );
-
-
-                    if (
-                        !success
-                    )
-                        return;
-
-
-                    const number =
-                        motor.replace(
-                            "M",
-                            ""
-                        );
-
-
-                    const speed =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Speed"
-                        );
-
-
-                    const motorStatus =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Status"
-                        );
-
-
-                    if (speed)
-                        speed.textContent =
-                            "2000 µs";
-
-
-                    if (motorStatus)
-                        motorStatus.textContent =
-                            "ON";
-
-                }
-            );
+            sendCommand("STOP");
 
         }
     );
 
 
-// ============================================================
-// INDIVIDUAL MOTOR STOP
-// ============================================================
+// ==========================================================
+// INDIVIDUAL MOTOR BUTTONS
+// ==========================================================
 
 document
-    .querySelectorAll(
-        ".motor-stop"
-    )
-    .forEach(
-        function (button) {
+    .querySelectorAll(".motor-start")
+    .forEach(button => {
 
-            button.addEventListener(
-                "click",
-                async function () {
+        button.addEventListener(
+            "click",
+            () => {
 
-                    if (
-                        !connected
-                    )
-                        return;
+                const motor =
+                    button.dataset.motor;
 
+                sendCommand(
+                    `${motor} START`
+                );
 
-                    const motor =
-                        button.dataset.motor;
-
-
-                    const success =
-                        await sendCommand(
-                            motor +
-                            " STOP"
-                        );
-
-
-                    if (
-                        !success
-                    )
-                        return;
-
-
-                    const number =
-                        motor.replace(
-                            "M",
-                            ""
-                        );
-
-
-                    const speed =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Speed"
-                        );
-
-
-                    const motorStatus =
-                        document.getElementById(
-                            "m" +
-                            number +
-                            "Status"
-                        );
-
-
-                    if (speed)
-                        speed.textContent =
-                            "900 µs";
-
-
-                    if (motorStatus)
-                        motorStatus.textContent =
-                            "OFF";
-
-                }
-            );
-
-        }
-    );
-
-
-// ============================================================
-// JOYSTICK VALUES
-// ============================================================
-
-let throttle = 0;
-let yaw = 0;
-let pitch = 0;
-let roll = 0;
-
-let joystickTimer = null;
-
-
-// ============================================================
-// CREATE JOYSTICK
-// ============================================================
-
-function createJoystick(
-    area,
-    stick,
-    callback
-) {
-
-    if (
-        !area ||
-        !stick
-    ) {
-
-        return;
-
-    }
-
-
-    let active = false;
-
-
-    area.style.touchAction =
-        "none";
-
-
-    area.addEventListener(
-        "pointerdown",
-        function (event) {
-
-            active = true;
-
-
-            area.setPointerCapture(
-                event.pointerId
-            );
-
-
-            move(event);
-
-        }
-    );
-
-
-    area.addEventListener(
-        "pointermove",
-        function (event) {
-
-            if (
-                !active
-            )
-                return;
-
-
-            move(event);
-
-        }
-    );
-
-
-    function releaseJoystick() {
-
-        active = false;
-
-
-        stick.style.transform =
-            "translate(-50%, -50%)";
-
-
-        callback(
-            0,
-            0
+            }
         );
 
-    }
+    });
 
 
-    area.addEventListener(
-        "pointerup",
-        releaseJoystick
-    );
+document
+    .querySelectorAll(".motor-stop")
+    .forEach(button => {
 
+        button.addEventListener(
+            "click",
+            () => {
 
-    area.addEventListener(
-        "pointercancel",
-        releaseJoystick
-    );
+                const motor =
+                    button.dataset.motor;
 
+                sendCommand(
+                    `${motor} STOP`
+                );
 
-    area.addEventListener(
-        "lostpointercapture",
-        releaseJoystick
-    );
-
-
-    function move(event) {
-
-        const rect =
-            area.getBoundingClientRect();
-
-
-        let x =
-            event.clientX -
-            (
-                rect.left +
-                rect.width / 2
-            );
-
-
-        let y =
-            event.clientY -
-            (
-                rect.top +
-                rect.height / 2
-            );
-
-
-        const radius =
-            Math.min(
-                rect.width,
-                rect.height
-            ) / 2 - 35;
-
-
-        if (
-            radius <= 0
-        )
-            return;
-
-
-        const distance =
-            Math.sqrt(
-                x * x +
-                y * y
-            );
-
-
-        if (
-            distance > radius
-        ) {
-
-            const scale =
-                radius /
-                distance;
-
-
-            x *= scale;
-            y *= scale;
-
-        }
-
-
-        stick.style.transform =
-            "translate(calc(-50% + " +
-            x +
-            "px), calc(-50% + " +
-            y +
-            "px))";
-
-
-        callback(
-            x / radius,
-            y / radius
+            }
         );
 
-    }
-
-}
+    });
 
 
-// ============================================================
-// LEFT JOYSTICK
-// THROTTLE + YAW
-// ============================================================
-
-createJoystick(
-
-    document.getElementById(
-        "leftJoystick"
-    ),
-
-    document.getElementById(
-        "leftStick"
-    ),
-
-    function (x, y) {
-
-        throttle =
-            Math.round(
-                ((-y + 1) / 2) *
-                100
-            );
-
-
-        yaw =
-            Math.round(
-                x * 100
-            );
-
-    }
-
-);
-
-
-// ============================================================
-// RIGHT JOYSTICK
-// PITCH + ROLL
-// ============================================================
-
-createJoystick(
-
-    document.getElementById(
-        "rightJoystick"
-    ),
-
-    document.getElementById(
-        "rightStick"
-    ),
-
-    function (x, y) {
-
-        roll =
-            Math.round(
-                x * 100
-            );
-
-
-        pitch =
-            Math.round(
-                -y * 100
-            );
-
-    }
-
-);
-
-
-// ============================================================
-// JOYSTICK LOOP
-// ============================================================
-
-function startJoystick() {
-
-    if (
-        joystickTimer !== null
-    )
-        return;
-
-
-    joystickTimer =
-        setInterval(
-            function () {
-
-                if (
-                    connected &&
-                    armed &&
-                    rx
-                ) {
-
-                    const command =
-                        "JOY," +
-                        throttle +
-                        "," +
-                        yaw +
-                        "," +
-                        pitch +
-                        "," +
-                        roll;
-
-
-                    sendCommand(
-                        command
-                    );
-
-                }
-
-            },
-            80
-        );
-
-}
-
-
-// ============================================================
-// STOP JOYSTICK LOOP
-// ============================================================
-
-function stopJoystick() {
-
-    if (
-        joystickTimer !== null
-    ) {
-
-        clearInterval(
-            joystickTimer
-        );
-
-
-        joystickTimer = null;
-
-    }
-
-}
-
-
-// ============================================================
+// ==========================================================
 // TELEMETRY
-// ============================================================
+//
+// Expected:
+//
+// TEL,
+// roll,
+// pitch,
+// gx,
+// gy,
+// gz,
+// m1,
+// m2,
+// m3,
+// m4,
+// rollP,
+// rollI,
+// rollD,
+// rollPID,
+// pitchP,
+// pitchI,
+// pitchD,
+// pitchPID
+// ==========================================================
 
 function handleTelemetry(event) {
 
     try {
 
+        const value =
+            event.target.value;
+
+
         const decoder =
             new TextDecoder();
 
-
-        const message =
-            decoder.decode(
-                event.target.value
-            ).trim();
+        const text =
+            decoder.decode(value).trim();
 
 
-        console.log(
-            "TELEMETRY:",
-            message
-        );
-
-
-        if (
-            !message.startsWith(
-                "TEL,"
-            )
-        ) {
+        if (!text.startsWith("TEL,")) {
 
             return;
-
         }
 
 
         const parts =
-            message.split(",");
+            text.split(",");
 
 
-        if (
-            parts.length < 18
-        ) {
+        if (parts.length < 18) {
 
-            console.warn(
-                "Incomplete telemetry:",
-                message
+            addLog(
+                "Invalid telemetry packet: " +
+                text
             );
 
             return;
-
         }
 
 
-        const rollAngle =
-            Number(parts[1]);
+        const roll =
+            parseFloat(parts[1]);
 
-        const pitchAngle =
-            Number(parts[2]);
+        const pitch =
+            parseFloat(parts[2]);
 
+        const gx =
+            parseFloat(parts[3]);
 
-        const gyroX =
-            Number(parts[3]);
+        const gy =
+            parseFloat(parts[4]);
 
-        const gyroY =
-            Number(parts[4]);
-
-        const gyroZ =
-            Number(parts[5]);
-
+        const gz =
+            parseFloat(parts[5]);
 
         const m1 =
-            Number(parts[6]);
+            parseInt(parts[6]);
 
         const m2 =
-            Number(parts[7]);
+            parseInt(parts[7]);
 
         const m3 =
-            Number(parts[8]);
+            parseInt(parts[8]);
 
         const m4 =
-            Number(parts[9]);
-
+            parseInt(parts[9]);
 
         const rollP =
-            Number(parts[10]);
+            parseFloat(parts[10]);
 
         const rollI =
-            Number(parts[11]);
+            parseFloat(parts[11]);
 
         const rollD =
-            Number(parts[12]);
+            parseFloat(parts[12]);
 
         const rollPID =
-            Number(parts[13]);
-
+            parseFloat(parts[13]);
 
         const pitchP =
-            Number(parts[14]);
+            parseFloat(parts[14]);
 
         const pitchI =
-            Number(parts[15]);
+            parseFloat(parts[15]);
 
         const pitchD =
-            Number(parts[16]);
+            parseFloat(parts[16]);
 
         const pitchPID =
-            Number(parts[17]);
+            parseFloat(parts[17]);
 
 
-        updateTelemetryDisplay(
-            rollAngle,
-            pitchAngle,
-            gyroX,
-            gyroY,
-            gyroZ,
+        // ==================================================
+        // ATTITUDE
+        // ==================================================
+
+        setText(
+            "telemetryRoll",
+            formatNumber(roll, 2)
+        );
+
+        setText(
+            "telemetryPitch",
+            formatNumber(pitch, 2)
+        );
+
+
+        // ==================================================
+        // GYRO
+        // ==================================================
+
+        setText(
+            "telemetryGyroX",
+            formatNumber(gx, 1)
+        );
+
+        setText(
+            "telemetryGyroY",
+            formatNumber(gy, 1)
+        );
+
+        setText(
+            "telemetryGyroZ",
+            formatNumber(gz, 1)
+        );
+
+
+        // ==================================================
+        // MOTORS
+        // ==================================================
+
+        setText(
+            "telemetryM1",
+            Number.isFinite(m1) ? m1 : 900
+        );
+
+        setText(
+            "telemetryM2",
+            Number.isFinite(m2) ? m2 : 900
+        );
+
+        setText(
+            "telemetryM3",
+            Number.isFinite(m3) ? m3 : 900
+        );
+
+        setText(
+            "telemetryM4",
+            Number.isFinite(m4) ? m4 : 900
+        );
+
+
+        setText(
+            "motor1Display",
+            `${m1} µs`
+        );
+
+        setText(
+            "motor2Display",
+            `${m2} µs`
+        );
+
+        setText(
+            "motor3Display",
+            `${m3} µs`
+        );
+
+        setText(
+            "motor4Display",
+            `${m4} µs`
+        );
+
+
+        // ==================================================
+        // ROLL PID
+        // ==================================================
+
+        setText(
+            "rollP",
+            formatNumber(rollP, 2)
+        );
+
+        setText(
+            "rollI",
+            formatNumber(rollI, 2)
+        );
+
+        setText(
+            "rollD",
+            formatNumber(rollD, 2)
+        );
+
+        setText(
+            "rollPID",
+            formatNumber(rollPID, 2)
+        );
+
+
+        // ==================================================
+        // PITCH PID
+        // ==================================================
+
+        setText(
+            "pitchP",
+            formatNumber(pitchP, 2)
+        );
+
+        setText(
+            "pitchI",
+            formatNumber(pitchI, 2)
+        );
+
+        setText(
+            "pitchD",
+            formatNumber(pitchD, 2)
+        );
+
+        setText(
+            "pitchPID",
+            formatNumber(pitchPID, 2)
+        );
+
+
+        // Save most recent telemetry
+        window.latestTelemetry = {
+            roll,
+            pitch,
+            gx,
+            gy,
+            gz,
             m1,
             m2,
             m3,
@@ -1453,14 +888,14 @@ function handleTelemetry(event) {
             pitchI,
             pitchD,
             pitchPID
-        );
+        };
 
     }
     catch (error) {
 
-        console.error(
-            "TELEMETRY ERROR:",
-            error
+        addLog(
+            "Telemetry parsing error: " +
+            error.message
         );
 
     }
@@ -1468,197 +903,387 @@ function handleTelemetry(event) {
 }
 
 
-// ============================================================
-// UPDATE TELEMETRY DISPLAY
-// ============================================================
+// ==========================================================
+// SET TEXT HELPER
+// ==========================================================
 
-function updateTelemetryDisplay(
-
-    rollAngle,
-    pitchAngle,
-
-    gyroX,
-    gyroY,
-    gyroZ,
-
-    m1,
-    m2,
-    m3,
-    m4,
-
-    rollP,
-    rollI,
-    rollD,
-    rollPID,
-
-    pitchP,
-    pitchI,
-    pitchD,
-    pitchPID
-
-) {
-
-
-    // --------------------------------------------------------
-    // ATTITUDE
-    // --------------------------------------------------------
-
-    setTelemetry(
-        "telemetryRoll",
-        rollAngle.toFixed(2) +
-        "°"
-    );
-
-
-    setTelemetry(
-        "telemetryPitch",
-        pitchAngle.toFixed(2) +
-        "°"
-    );
-
-
-    // --------------------------------------------------------
-    // GYROSCOPE
-    // --------------------------------------------------------
-
-    setTelemetry(
-        "telemetryGyroX",
-        gyroX.toFixed(1)
-    );
-
-
-    setTelemetry(
-        "telemetryGyroY",
-        gyroY.toFixed(1)
-    );
-
-
-    setTelemetry(
-        "telemetryGyroZ",
-        gyroZ.toFixed(1)
-    );
-
-
-    // --------------------------------------------------------
-    // MOTORS
-    // --------------------------------------------------------
-
-    setTelemetry(
-        "telemetryM1",
-        m1 + " µs"
-    );
-
-
-    setTelemetry(
-        "telemetryM2",
-        m2 + " µs"
-    );
-
-
-    setTelemetry(
-        "telemetryM3",
-        m3 + " µs"
-    );
-
-
-    setTelemetry(
-        "telemetryM4",
-        m4 + " µs"
-    );
-
-
-    // --------------------------------------------------------
-    // ROLL PID
-    // --------------------------------------------------------
-
-    setTelemetry(
-        "rollP",
-        rollP.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "rollI",
-        rollI.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "rollD",
-        rollD.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "rollPID",
-        rollPID.toFixed(2)
-    );
-
-
-    // --------------------------------------------------------
-    // PITCH PID
-    // --------------------------------------------------------
-
-    setTelemetry(
-        "pitchP",
-        pitchP.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "pitchI",
-        pitchI.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "pitchD",
-        pitchD.toFixed(2)
-    );
-
-
-    setTelemetry(
-        "pitchPID",
-        pitchPID.toFixed(2)
-    );
-
-}
-
-
-// ============================================================
-// TELEMETRY HELPER
-// ============================================================
-
-function setTelemetry(
-    id,
-    value
-) {
+function setText(id, value) {
 
     const element =
+        document.getElementById(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+
+function formatNumber(
+    value,
+    decimals
+) {
+
+    if (!Number.isFinite(value)) {
+        return "0.00";
+    }
+
+    return value.toFixed(decimals);
+}
+
+
+// ==========================================================
+// LEFT JOYSTICK
+//
+// X = YAW
+// Y = THROTTLE
+// ==========================================================
+
+function setupJoystick(
+    joystickId,
+    stickId,
+    callback
+) {
+
+    const joystick =
         document.getElementById(
-            id
+            joystickId
+        );
+
+    const stick =
+        document.getElementById(
+            stickId
         );
 
 
-    if (
-        element
+    if (!joystick || !stick) {
+        return;
+    }
+
+
+    let active = false;
+
+
+    function update(
+        clientX,
+        clientY
     ) {
 
-        element.textContent =
-            value;
+        const rect =
+            joystick.getBoundingClientRect();
+
+
+        const centerX =
+            rect.left +
+            rect.width / 2;
+
+        const centerY =
+            rect.top +
+            rect.height / 2;
+
+
+        const maxX =
+            rect.width / 2 -
+            stick.offsetWidth / 2;
+
+        const maxY =
+            rect.height / 2 -
+            stick.offsetHeight / 2;
+
+
+        let dx =
+            clientX -
+            centerX;
+
+        let dy =
+            clientY -
+            centerY;
+
+
+        dx =
+            Math.max(
+                -maxX,
+                Math.min(
+                    maxX,
+                    dx
+                )
+            );
+
+
+        dy =
+            Math.max(
+                -maxY,
+                Math.min(
+                    maxY,
+                    dy
+                )
+            );
+
+
+        stick.style.left =
+            `calc(50% + ${dx}px)`;
+
+        stick.style.top =
+            `calc(50% + ${dy}px)`;
+
+
+        const x =
+            Math.round(
+                (dx / maxX) * 100
+            );
+
+        const y =
+            Math.round(
+                (-dy / maxY) * 100
+            );
+
+
+        callback(
+            Math.max(-100, Math.min(100, x)),
+            Math.max(-100, Math.min(100, y))
+        );
 
     }
+
+
+    function reset() {
+
+        active = false;
+
+        stick.style.left =
+            "50%";
+
+        stick.style.top =
+            "50%";
+
+        callback(0, 0);
+
+    }
+
+
+    joystick.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.preventDefault();
+
+            active = true;
+
+            joystick.setPointerCapture(
+                event.pointerId
+            );
+
+            update(
+                event.clientX,
+                event.clientY
+            );
+        }
+    );
+
+
+    joystick.addEventListener(
+        "pointermove",
+        event => {
+
+            if (!active) {
+                return;
+            }
+
+            update(
+                event.clientX,
+                event.clientY
+            );
+
+        }
+    );
+
+
+    joystick.addEventListener(
+        "pointerup",
+        event => {
+
+            if (!active) {
+                return;
+            }
+
+            try {
+                joystick.releasePointerCapture(
+                    event.pointerId
+                );
+            } catch (_) {}
+
+            reset();
+        }
+    );
+
+
+    joystick.addEventListener(
+        "pointercancel",
+        reset
+    );
+
+
+    joystick.addEventListener(
+        "lostpointercapture",
+        () => {
+
+            if (active) {
+                reset();
+            }
+
+        }
+    );
 
 }
 
 
-// ============================================================
-// INITIAL STATE
-// ============================================================
+// ==========================================================
+// LEFT JOYSTICK
+// X = YAW
+// Y = THROTTLE
+// ==========================================================
 
-updateConnection();
+let throttle = 0;
+let yaw = 0;
+
+setupJoystick(
+    "leftJoystick",
+    "leftStick",
+    (x, y) => {
+
+        yaw = x;
+        throttle = y;
+
+        setText(
+            "throttleValue",
+            throttle
+        );
+
+        setText(
+            "yawValue",
+            yaw
+        );
+
+    }
+);
 
 
-console.log(
-    "VAJRA JavaScript loaded successfully."
+// ==========================================================
+// RIGHT JOYSTICK
+// X = ROLL
+// Y = PITCH
+// ==========================================================
+
+let pitch = 0;
+let roll = 0;
+
+setupJoystick(
+    "rightJoystick",
+    "rightStick",
+    (x, y) => {
+
+        roll = x;
+        pitch = y;
+
+        setText(
+            "pitchValue",
+            pitch
+        );
+
+        setText(
+            "rollValue",
+            roll
+        );
+
+    }
+);
+
+
+// ==========================================================
+// SEND JOYSTICK DATA
+//
+// Sends every 80 ms while a joystick is moved.
+// ==========================================================
+
+let joystickMoving = false;
+
+let lastJoystickSend = 0;
+
+
+setInterval(
+    () => {
+
+        const moving =
+            throttle !== 0 ||
+            yaw !== 0 ||
+            pitch !== 0 ||
+            roll !== 0;
+
+
+        if (!moving) {
+            joystickMoving = false;
+            return;
+        }
+
+
+        const now =
+            Date.now();
+
+
+        if (
+            now -
+            lastJoystickSend <
+            80
+        ) {
+            return;
+        }
+
+
+        lastJoystickSend =
+            now;
+
+
+        joystickMoving = true;
+
+
+        sendCommand(
+            `JOY,${throttle},${yaw},${pitch},${roll}`
+        );
+
+    },
+    20
+);
+
+
+// ==========================================================
+// CLEAR LOGS
+// ==========================================================
+
+document
+    .getElementById("clearLogsBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            logContainer.innerHTML = "";
+
+            addLog(
+                "Logs cleared"
+            );
+
+        }
+    );
+
+
+// ==========================================================
+// INITIAL STATUS
+// ==========================================================
+
+setConnectionStatus(false);
+
+addLog(
+    "VAJRA website initialized"
+);
+
+addLog(
+    "Bluetooth is disconnected"
 );
