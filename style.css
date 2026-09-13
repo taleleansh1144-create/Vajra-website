@@ -1,3 +1,8 @@
+/* =========================================================
+   ANSH'S DRONE VAJRA 🚁⚡
+   COMPLETE STYLE.CSS
+   ========================================================= */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,63 +11,106 @@
 
 :root {
     --bg: #03060c;
+    --bg2: #060c16;
+
     --panel: #0b1220;
-    --panel2: #0f192a;
+    --panel2: #101a2c;
 
     --cyan: #00eaff;
+    --cyan2: #55f4ff;
+
     --blue: #347cff;
+    --purple: #8b5cf6;
+
     --green: #00ff9d;
     --red: #ff3158;
     --yellow: #ffd84d;
 
-    --white: #f5f9ff;
-    --muted: #8290aa;
+    --white: #f4f8ff;
+    --muted: #8390a9;
 
-    --border: rgba(0, 234, 255, 0.15);
+    --border: rgba(0, 234, 255, 0.16);
+    --border-bright: rgba(0, 234, 255, 0.35);
 }
 
-html,
-body {
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+html {
+    width: 100%;
     min-height: 100%;
+    background: var(--bg);
 }
 
 body {
-    background: var(--bg);
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(0, 234, 255, 0.07),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            rgba(91, 67, 255, 0.07),
+            transparent 30%
+        ),
+        var(--bg);
+
     color: var(--white);
 
     font-family:
+        Inter,
         Arial,
         Helvetica,
         sans-serif;
+
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
 }
 
 
-/* =========================
-   LOGIN
-========================= */
+/* =========================================================
+   LOGIN SCREEN
+========================================================= */
 
 .login-screen {
+    width: 100%;
     min-height: 100vh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
-
     position: relative;
+
+    padding: 25px;
 
     overflow: hidden;
 
     background:
         radial-gradient(
-            circle at center,
-            rgba(0, 234, 255, 0.08),
-            transparent 40%
+            circle at 50% 45%,
+            rgba(0, 234, 255, 0.09),
+            transparent 38%
         ),
-        #03060c;
+        #02050a;
 }
 
+
+/* IMPORTANT:
+   Background must never block mouse clicks.
+*/
 
 .grid-background {
     position: absolute;
@@ -73,51 +121,99 @@ body {
 
     background-image:
         linear-gradient(
-            rgba(0, 234, 255, 0.05) 1px,
+            rgba(0, 234, 255, 0.045) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(0, 234, 255, 0.05) 1px,
+            rgba(0, 234, 255, 0.045) 1px,
             transparent 1px
         );
 
-    background-size: 40px 40px;
+    background-size: 42px 42px;
+
+    opacity: 0.9;
 }
 
 
+.grid-background::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 15%,
+            rgba(2, 5, 10, 0.55) 75%,
+            rgba(2, 5, 10, 0.95) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
 .login-card {
-    width: 420px;
+    width: 430px;
     max-width: 100%;
 
-    padding: 42px 35px;
-
     position: relative;
-    z-index: 10;
 
-    border: 1px solid rgba(0, 234, 255, 0.25);
+    z-index: 20;
 
-    border-radius: 24px;
+    padding: 44px 36px;
+
+    text-align: center;
+
+    border: 1px solid rgba(0, 234, 255, 0.28);
+
+    border-radius: 25px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(14, 24, 40, 0.97),
-            rgba(5, 10, 19, 0.98)
+            rgba(13, 22, 37, 0.98),
+            rgba(4, 8, 16, 0.98)
         );
 
     box-shadow:
-        0 0 60px rgba(0, 234, 255, 0.08);
+        0 0 80px rgba(0, 234, 255, 0.07),
+        inset 0 0 35px rgba(0, 234, 255, 0.025);
 
-    text-align: center;
+    backdrop-filter: blur(18px);
 }
 
 
-.drone-logo {
-    width: 82px;
-    height: 82px;
+.login-card::before {
+    content: "";
 
-    margin: auto;
+    position: absolute;
+
+    inset: 1px;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255,255,255,0.025);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   LOGIN LOGO
+========================================================= */
+
+.drone-logo {
+    width: 85px;
+    height: 85px;
+
+    margin: 0 auto;
 
     display: flex;
     align-items: center;
@@ -125,16 +221,25 @@ body {
 
     border-radius: 50%;
 
-    font-size: 38px;
+    font-size: 39px;
 
     border: 1px solid rgba(0, 234, 255, 0.35);
 
-    background: rgba(0, 234, 255, 0.06);
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,234,255,0.14),
+            rgba(0,234,255,0.025)
+        );
 
     box-shadow:
-        0 0 30px rgba(0, 234, 255, 0.12);
+        0 0 35px rgba(0, 234, 255, 0.15);
 }
 
+
+/* =========================================================
+   LOGIN TEXT
+========================================================= */
 
 .brand-title {
     margin-top: 18px;
@@ -148,11 +253,13 @@ body {
     letter-spacing: 8px;
 
     text-shadow:
-        0 0 20px rgba(0, 234, 255, 0.45);
+        0 0 18px rgba(0, 234, 255, 0.45);
 }
 
 
 .brand-subtitle {
+    margin-top: 7px;
+
     color: var(--muted);
 
     font-size: 10px;
@@ -162,11 +269,13 @@ body {
 
 
 .system-status {
-    margin: 25px 0;
+    margin: 26px 0 24px;
 
     color: var(--green);
 
-    font-size: 11px;
+    font-size: 10px;
+
+    font-weight: 700;
 
     letter-spacing: 2px;
 }
@@ -184,21 +293,28 @@ body {
 
     background: var(--green);
 
-    box-shadow: 0 0 12px var(--green);
+    box-shadow:
+        0 0 12px var(--green);
 }
 
+
+/* =========================================================
+   LOGIN INPUTS
+========================================================= */
 
 .login-card label {
     display: block;
 
-    margin-top: 16px;
-    margin-bottom: 7px;
+    margin-top: 17px;
+    margin-bottom: 8px;
 
     text-align: left;
 
     color: var(--muted);
 
-    font-size: 10px;
+    font-size: 9px;
+
+    font-weight: 700;
 
     letter-spacing: 2px;
 }
@@ -213,58 +329,93 @@ body {
 
     color: white;
 
-    background: rgba(0, 0, 0, 0.35);
+    background:
+        rgba(0, 0, 0, 0.38);
 
-    border: 1px solid rgba(0, 234, 255, 0.16);
+    border: 1px solid rgba(0, 234, 255, 0.15);
 
-    border-radius: 10px;
+    border-radius: 11px;
 
     outline: none;
 
-    font-size: 15px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.login-card input::placeholder {
+    color: #57637a;
 }
 
 
 .login-card input:focus {
     border-color: var(--cyan);
 
+    background:
+        rgba(0, 234, 255, 0.025);
+
     box-shadow:
-        0 0 15px rgba(0, 234, 255, 0.12);
+        0 0 18px rgba(0, 234, 255, 0.1);
 }
 
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
 
 #loginBtn {
     width: 100%;
 
-    margin-top: 24px;
+    margin-top: 25px;
 
-    padding: 15px;
+    padding: 15px 17px;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    cursor: pointer;
+    justify-content: space-between;
 
     border: 0;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
-    background: var(--cyan);
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--cyan2)
+        );
 
-    color: #001017;
+    color: #001016;
+
+    font-size: 13px;
 
     font-weight: 900;
 
     letter-spacing: 1.5px;
+
+    cursor: pointer;
+
+    position: relative;
+    z-index: 30;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 #loginBtn:hover {
-    box-shadow:
-        0 0 25px rgba(0, 234, 255, 0.3);
+    transform: translateY(-2px);
 
-    transform: translateY(-1px);
+    box-shadow:
+        0 0 30px rgba(0, 234, 255, 0.3);
+}
+
+
+#loginBtn:active {
+    transform: translateY(0);
 }
 
 
@@ -275,51 +426,79 @@ body {
 
     color: var(--red);
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
 .login-footer {
-    margin-top: 25px;
+    margin-top: 28px;
 
-    color: #56617a;
+    color: #4f5c74;
 
-    font-size: 9px;
+    font-size: 8px;
 
     letter-spacing: 2px;
 }
 
 
-/* =========================
+/* =========================================================
    DASHBOARD
-========================= */
+========================================================= */
 
 .dashboard {
     display: none;
 
     min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(0,234,255,0.035),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 95%,
+            rgba(139,92,246,0.035),
+            transparent 28%
+        );
 }
 
 
-.topbar {
-    min-height: 75px;
+/* =========================================================
+   TOP BAR
+========================================================= */
 
-    padding: 14px 25px;
+.topbar {
+    width: 100%;
+
+    min-height: 76px;
+
+    padding: 13px 25px;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
-    border-bottom: 1px solid rgba(0, 234, 255, 0.1);
-
-    background: #050a12;
+    gap: 20px;
 
     position: sticky;
     top: 0;
 
     z-index: 100;
+
+    background:
+        rgba(3, 7, 14, 0.95);
+
+    border-bottom:
+        1px solid rgba(0, 234, 255, 0.1);
+
+    backdrop-filter: blur(18px);
 }
 
+
+/* =========================================================
+   BRAND IN TOP BAR
+========================================================= */
 
 .logo-area {
     display: flex;
@@ -330,8 +509,8 @@ body {
 
 
 .mini-logo {
-    width: 43px;
-    height: 43px;
+    width: 44px;
+    height: 44px;
 
     display: flex;
     align-items: center;
@@ -339,11 +518,15 @@ body {
 
     border-radius: 11px;
 
-    border: 1px solid rgba(0, 234, 255, 0.22);
+    border: 1px solid rgba(0,234,255,0.22);
 
-    background: rgba(0, 234, 255, 0.07);
+    background:
+        rgba(0,234,255,0.06);
 
     font-size: 21px;
+
+    box-shadow:
+        0 0 18px rgba(0,234,255,0.05);
 }
 
 
@@ -359,6 +542,8 @@ body {
 
 
 .top-subtitle {
+    margin-top: 2px;
+
     color: var(--muted);
 
     font-size: 8px;
@@ -367,8 +552,13 @@ body {
 }
 
 
+/* =========================================================
+   TOP ACTIONS
+========================================================= */
+
 .top-actions {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -378,9 +568,14 @@ body {
 .ble-status {
     padding: 9px 12px;
 
-    border-radius: 20px;
+    display: flex;
+    align-items: center;
 
-    font-size: 10px;
+    border-radius: 18px;
+
+    font-size: 9px;
+
+    font-weight: 700;
 
     letter-spacing: 1px;
 }
@@ -388,11 +583,17 @@ body {
 
 .ble-status.disconnected {
     color: var(--red);
+
+    background:
+        rgba(255,49,88,0.035);
 }
 
 
 .ble-status.connected {
     color: var(--green);
+
+    background:
+        rgba(0,255,157,0.035);
 }
 
 
@@ -402,30 +603,38 @@ body {
     width: 8px;
     height: 8px;
 
-    margin-right: 5px;
+    margin-right: 6px;
 
     border-radius: 50%;
 
     background: var(--red);
 
-    box-shadow: 0 0 10px var(--red);
+    box-shadow:
+        0 0 10px var(--red);
 }
 
 
 .ble-status.connected .ble-dot {
     background: var(--green);
 
-    box-shadow: 0 0 10px var(--green);
+    box-shadow:
+        0 0 10px var(--green);
 }
 
 
 .connect-btn,
 .logout-btn {
-    padding: 9px 14px;
+    padding: 10px 14px;
 
-    border-radius: 8px;
+    border-radius: 9px;
 
     cursor: pointer;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
 }
 
 
@@ -434,14 +643,19 @@ body {
 
     background: var(--cyan);
 
-    color: #001017;
+    color: #001016;
+}
 
-    font-weight: 800;
+
+.connect-btn:hover {
+    box-shadow:
+        0 0 18px rgba(0,234,255,0.25);
 }
 
 
 .logout-btn {
-    border: 1px solid rgba(255,255,255,0.12);
+    border:
+        1px solid rgba(255,255,255,0.1);
 
     background: transparent;
 
@@ -449,22 +663,44 @@ body {
 }
 
 
-/* =========================
+.logout-btn:hover {
+    color: white;
+
+    border-color:
+        rgba(255,255,255,0.2);
+}
+
+
+/* =========================================================
    NAVIGATION
-========================= */
+========================================================= */
 
 .navigation {
+    width: 100%;
+
     display: flex;
 
-    gap: 6px;
+    gap: 5px;
 
-    padding: 12px 25px;
+    padding: 11px 25px;
 
     overflow-x: auto;
 
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background:
+        rgba(4, 8, 15, 0.95);
 
-    background: rgba(4, 8, 14, 0.95);
+    border-bottom:
+        1px solid rgba(255,255,255,0.045);
+}
+
+
+.navigation::-webkit-scrollbar {
+    height: 3px;
+}
+
+
+.navigation::-webkit-scrollbar-thumb {
+    background: rgba(0,234,255,0.25);
 }
 
 
@@ -482,28 +718,51 @@ body {
     cursor: pointer;
 
     white-space: nowrap;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 
-.nav-btn:hover,
+.nav-btn:hover {
+    color: var(--cyan);
+
+    background:
+        rgba(0,234,255,0.04);
+}
+
+
 .nav-btn.active {
     color: var(--cyan);
 
-    background: rgba(0, 234, 255, 0.07);
+    background:
+        rgba(0,234,255,0.07);
 
-    border-color: rgba(0,234,255,0.18);
+    border-color:
+        rgba(0,234,255,0.18);
+
+    box-shadow:
+        0 0 18px rgba(0,234,255,0.025);
 }
 
 
-/* =========================
-   MAIN
-========================= */
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
 .main-content {
     width: 94%;
     max-width: 1400px;
 
-    margin: auto;
+    margin: 0 auto;
 
     padding: 32px 0 60px;
 }
@@ -516,15 +775,39 @@ body {
 
 .page.active-page {
     display: block;
+
+    animation:
+        pageIn 0.22s ease;
 }
 
 
+@keyframes pageIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
 .page-header {
-    margin-bottom: 22px;
+    margin-bottom: 23px;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
 }
 
 
@@ -532,6 +815,8 @@ body {
     color: var(--cyan);
 
     font-size: 9px;
+
+    font-weight: 800;
 
     letter-spacing: 3px;
 }
@@ -541,6 +826,10 @@ body {
     margin-top: 5px;
 
     font-size: clamp(25px, 4vw, 38px);
+
+    line-height: 1.1;
+
+    letter-spacing: 0.5px;
 }
 
 
@@ -552,7 +841,11 @@ body {
 
     color: var(--muted);
 
-    font-size: 11px;
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
 }
 
 
@@ -564,32 +857,43 @@ body {
 
     background: var(--red);
 
-    box-shadow: 0 0 10px var(--red);
+    box-shadow:
+        0 0 10px var(--red);
 }
 
 
 .live-badge {
+    display: inline-block;
+
     padding: 6px 10px;
 
-    color: var(--green);
-
-    border: 1px solid rgba(0,255,157,0.2);
+    border:
+        1px solid rgba(0,255,157,0.18);
 
     border-radius: 20px;
 
-    background: rgba(0,255,157,0.05);
+    background:
+        rgba(0,255,157,0.045);
 
-    font-size: 9px;
+    color: var(--green);
+
+    font-size: 8px;
+
+    font-weight: 800;
 
     letter-spacing: 1px;
+
+    white-space: nowrap;
 }
 
 
-/* =========================
-   BUTTONS
-========================= */
+/* =========================================================
+   START / STOP
+========================================================= */
 
 .main-buttons {
+    width: 100%;
+
     display: grid;
 
     grid-template-columns: 1fr 1fr;
@@ -602,68 +906,110 @@ body {
 
 .start-btn,
 .stop-btn {
-    padding: 15px;
+    min-height: 50px;
 
-    border-radius: 10px;
+    padding: 14px 20px;
+
+    border-radius: 11px;
 
     cursor: pointer;
+
+    font-size: 12px;
 
     font-weight: 900;
 
     letter-spacing: 2px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.start-btn:hover,
+.stop-btn:hover {
+    transform: translateY(-1px);
 }
 
 
 .start-btn {
     border: 0;
 
-    background: var(--green);
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            #35ffb5
+        );
 
-    color: #00130c;
+    color: #00140d;
+
+    box-shadow:
+        0 0 22px rgba(0,255,157,0.08);
 }
 
 
 .stop-btn {
-    border: 1px solid rgba(255,49,88,0.4);
+    border:
+        1px solid rgba(255,49,88,0.35);
 
-    background: rgba(255,49,88,0.07);
+    background:
+        rgba(255,49,88,0.055);
 
     color: white;
+}
+
+
+.stop-btn:hover {
+    box-shadow:
+        0 0 20px rgba(255,49,88,0.08);
 }
 
 
 .small-stop {
     padding: 8px 12px;
 
-    border: 1px solid rgba(255,49,88,0.3);
+    border:
+        1px solid rgba(255,49,88,0.3);
 
     border-radius: 8px;
 
-    background: rgba(255,49,88,0.05);
+    background:
+        rgba(255,49,88,0.05);
 
     color: var(--red);
 
     cursor: pointer;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
 }
 
 
-/* =========================
+/* =========================================================
    PANELS
-========================= */
+========================================================= */
 
 .panel {
     padding: 22px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
-    border-radius: 16px;
+    border-radius: 17px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(13, 22, 37, 0.95),
-            rgba(7, 12, 22, 0.97)
+            rgba(13,22,37,0.95),
+            rgba(6,11,20,0.97)
         );
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.12);
 }
 
 
@@ -671,8 +1017,10 @@ body {
     margin-bottom: 20px;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
 }
 
 
@@ -680,6 +1028,8 @@ body {
     color: var(--cyan);
 
     font-size: 9px;
+
+    font-weight: 700;
 
     letter-spacing: 2px;
 }
@@ -692,14 +1042,14 @@ body {
 }
 
 
-/* =========================
-   CONTROL
-========================= */
+/* =========================================================
+   CONTROL GRID
+========================================================= */
 
 .control-grid {
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
 
     gap: 20px;
 
@@ -707,31 +1057,37 @@ body {
 }
 
 
-/* =========================
+/* =========================================================
    JOYSTICK
-========================= */
+========================================================= */
 
 .joystick {
     width: min(320px, 75vw);
-
     aspect-ratio: 1;
 
-    margin: 25px auto;
+    margin: 27px auto;
 
     position: relative;
 
+    overflow: hidden;
+
     border-radius: 50%;
 
-    border: 1px solid rgba(0,234,255,0.22);
+    border:
+        1px solid rgba(0,234,255,0.28);
 
     background:
         radial-gradient(
             circle,
             rgba(0,234,255,0.08),
-            rgba(0,0,0,0.35)
+            rgba(0,0,0,0.42)
         );
 
-    overflow: hidden;
+    box-shadow:
+        inset 0 0 45px rgba(0,234,255,0.07),
+        0 0 35px rgba(0,234,255,0.05);
+
+    cursor: crosshair;
 
     touch-action: none;
 
@@ -739,15 +1095,35 @@ body {
 }
 
 
+.joystick::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 8px;
+
+    border:
+        1px dashed rgba(0,234,255,0.12);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+/* Rings */
+
 .joystick-circle {
     position: absolute;
 
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    border: 1px solid rgba(0,234,255,0.12);
+    border:
+        1px solid rgba(0,234,255,0.12);
 
     border-radius: 50%;
 
@@ -756,43 +1132,50 @@ body {
 
 
 .circle-one {
-    width: 70%;
-    height: 70%;
+    width: 72%;
+    height: 72%;
 }
 
 
 .circle-two {
-    width: 42%;
-    height: 42%;
+    width: 44%;
+    height: 44%;
 }
 
+
+/* Cross */
 
 .joystick-line {
     position: absolute;
 
-    background: rgba(0,234,255,0.08);
+    background:
+        rgba(0,234,255,0.09);
 
     pointer-events: none;
 }
 
 
 .joystick-line.horizontal {
-    width: 100%;
-    height: 1px;
-
     left: 0;
     top: 50%;
+
+    width: 100%;
+    height: 1px;
 }
 
 
 .joystick-line.vertical {
-    width: 1px;
-    height: 100%;
-
     left: 50%;
     top: 0;
+
+    width: 1px;
+    height: 100%;
 }
 
+
+/* =========================================================
+   JOYSTICK STICK
+========================================================= */
 
 .joystick-stick {
     width: 70px;
@@ -803,48 +1186,88 @@ body {
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border:
+        3px solid rgba(255,255,255,0.85);
+
     border-radius: 50%;
 
-    background: var(--cyan);
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffffff,
+            var(--cyan) 65%,
+            #00bdd2
+        );
 
-    color: #001017;
+    color: #001018;
 
-    border: 3px solid white;
+    font-size: 20px;
 
     box-shadow:
-        0 0 25px rgba(0,234,255,0.5);
+        0 0 28px rgba(0,234,255,0.55);
 
     cursor: grab;
 
     z-index: 20;
 
+    /*
+       CRITICAL:
+       The joystick receives the pointer events,
+       not the stick.
+    */
+
+    pointer-events: none;
+
     touch-action: none;
+
+    user-select: none;
+
+    transition:
+        box-shadow 0.1s ease;
 }
 
+
+.joystick-stick:active {
+    cursor: grabbing;
+
+    box-shadow:
+        0 0 40px rgba(0,234,255,0.8);
+}
+
+
+/* =========================================================
+   JOYSTICK VALUES
+========================================================= */
 
 .joystick-data {
     display: grid;
 
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
 
     gap: 7px;
 }
 
 
 .joystick-data div {
-    padding: 10px;
+    padding: 10px 5px;
 
     text-align: center;
 
-    border-radius: 8px;
+    border-radius: 9px;
 
-    background: rgba(255,255,255,0.025);
+    background:
+        rgba(255,255,255,0.025);
+
+    border:
+        1px solid rgba(255,255,255,0.025);
 }
 
 
@@ -854,6 +1277,8 @@ body {
     color: var(--muted);
 
     font-size: 8px;
+
+    letter-spacing: 1px;
 }
 
 
@@ -863,57 +1288,71 @@ body {
     margin-top: 5px;
 
     color: var(--cyan);
+
+    font-size: 14px;
 }
 
 
-/* =========================
+/* =========================================================
    HORIZON
-========================= */
+========================================================= */
 
 .horizon {
+    width: 100%;
+
     height: 320px;
 
     position: relative;
 
     overflow: hidden;
 
-    border-radius: 13px;
+    border-radius: 14px;
 
-    border: 1px solid rgba(0,234,255,0.12);
+    border:
+        1px solid rgba(0,234,255,0.13);
+
+    background:
+        #111923;
 }
 
+
+/* Sky */
 
 .sky {
     position: absolute;
 
     left: 0;
-    right: 0;
     top: 0;
+    right: 0;
     bottom: 50%;
 
     background:
         linear-gradient(
-            #1f658d,
-            #478fb3
+            #185879,
+            #4b9fc2
         );
 }
 
+
+/* Ground */
 
 .ground {
     position: absolute;
 
     left: 0;
-    right: 0;
     top: 50%;
+    right: 0;
     bottom: 0;
 
     background:
         linear-gradient(
-            #593f2d,
-            #1b120d
+            #5b422f,
+            #1d130e
         );
 }
 
+
+/* Horizon */
 
 .horizon-center {
     position: absolute;
@@ -924,11 +1363,15 @@ body {
 
     height: 2px;
 
-    background: white;
+    background:
+        #ffffff;
 
-    box-shadow: 0 0 8px white;
+    box-shadow:
+        0 0 9px rgba(255,255,255,0.7);
 }
 
+
+/* Aircraft */
 
 .aircraft {
     width: 120px;
@@ -938,9 +1381,12 @@ body {
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     display: flex;
+
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -951,12 +1397,17 @@ body {
 
     border-radius: 5px;
 
-    background: var(--yellow);
+    background:
+        var(--yellow);
 
     box-shadow:
-        0 0 10px rgba(255,216,77,0.7);
+        0 0 12px rgba(255,216,77,0.7);
 }
 
+
+/* =========================================================
+   ATTITUDE VALUES
+========================================================= */
 
 .attitude-data {
     display: grid;
@@ -970,13 +1421,14 @@ body {
 
 
 .attitude-data div {
-    padding: 13px;
+    padding: 14px;
 
     text-align: center;
 
     border-radius: 9px;
 
-    background: rgba(255,255,255,0.025);
+    background:
+        rgba(255,255,255,0.025);
 }
 
 
@@ -986,6 +1438,8 @@ body {
     color: var(--muted);
 
     font-size: 9px;
+
+    letter-spacing: 1.5px;
 }
 
 
@@ -1000,9 +1454,9 @@ body {
 }
 
 
-/* =========================
-   MOTORS
-========================= */
+/* =========================================================
+   MOTOR PANEL
+========================================================= */
 
 .motor-panel {
     margin-top: 20px;
@@ -1012,34 +1466,55 @@ body {
 .motor-grid {
     display: grid;
 
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
 
-    gap: 12px;
+    gap: 13px;
 }
 
 
 .motor-card {
     padding: 17px;
 
-    border: 1px solid rgba(255,255,255,0.06);
+    border:
+        1px solid rgba(255,255,255,0.06);
 
     border-radius: 12px;
 
-    background: rgba(0,0,0,0.16);
+    background:
+        rgba(0,0,0,0.16);
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.motor-card:hover {
+    border-color:
+        rgba(0,234,255,0.16);
+
+    transform:
+        translateY(-1px);
 }
 
 
 .motor-header {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
+
+    gap: 10px;
 }
 
 
 .motor-header strong {
     color: var(--cyan);
 
-    font-size: 21px;
+    font-size: 22px;
+
+    font-weight: 900;
 }
 
 
@@ -1049,11 +1524,15 @@ body {
     font-size: 8px;
 
     text-align: right;
+
+    line-height: 1.3;
 }
 
 
 .motor-value {
     margin: 17px 0;
+
+    color: white;
 
     font-size: 28px;
 
@@ -1065,43 +1544,95 @@ body {
     color: var(--muted);
 
     font-size: 10px;
+
+    font-weight: 500;
 }
 
 
 .motor-card input[type="range"] {
+    display: block;
+
     width: 100%;
 
-    accent-color: var(--cyan);
+    margin: 0;
+
+    accent-color:
+        var(--cyan);
+
+    cursor: pointer;
+}
+
+
+.motor-card input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+
+    border-radius: 5px;
+
+    background:
+        rgba(255,255,255,0.1);
+}
+
+
+.motor-card input[type="range"]::-webkit-slider-thumb {
+    margin-top: -5px;
+
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    background:
+        var(--cyan);
+
+    appearance: none;
+
+    box-shadow:
+        0 0 10px rgba(0,234,255,0.4);
 }
 
 
 .motor-start {
     width: 100%;
 
-    margin-top: 13px;
+    margin-top: 14px;
 
     padding: 10px;
 
-    border: 1px solid rgba(0,234,255,0.18);
+    border:
+        1px solid rgba(0,234,255,0.18);
 
     border-radius: 8px;
 
-    background: rgba(0,234,255,0.05);
+    background:
+        rgba(0,234,255,0.04);
 
     color: var(--cyan);
 
     cursor: pointer;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
 }
 
 
-/* =========================
+.motor-start:hover {
+    background:
+        rgba(0,234,255,0.08);
+}
+
+
+/* =========================================================
    TELEMETRY
-========================= */
+========================================================= */
 
 .telemetry-grid {
     display: grid;
 
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns:
+        repeat(5, minmax(0,1fr));
 
     gap: 12px;
 
@@ -1112,11 +1643,16 @@ body {
 .telemetry-card {
     padding: 20px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
-    border-radius: 12px;
+    border-radius: 13px;
 
-    background: var(--panel);
+    background:
+        var(--panel);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.1);
 }
 
 
@@ -1125,7 +1661,9 @@ body {
 
     font-size: 9px;
 
-    letter-spacing: 1px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
 }
 
 
@@ -1137,8 +1675,14 @@ body {
     color: var(--cyan);
 
     font-size: 23px;
+
+    font-weight: 900;
 }
 
+
+/* =========================================================
+   PID
+========================================================= */
 
 .pid-grid {
     display: grid;
@@ -1150,11 +1694,12 @@ body {
 
 
 .pid-card {
-    padding: 18px;
+    padding: 19px;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
-    background: rgba(255,255,255,0.025);
+    background:
+        rgba(255,255,255,0.025);
 }
 
 
@@ -1162,13 +1707,19 @@ body {
     margin-bottom: 12px;
 
     color: var(--cyan);
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
 }
 
 
 .pid-card p {
-    margin: 7px 0;
+    margin: 8px 0;
 
     color: var(--muted);
+
+    font-size: 12px;
 }
 
 
@@ -1179,26 +1730,29 @@ body {
 }
 
 
-/* =========================
+/* =========================================================
    SETTINGS
-========================= */
+========================================================= */
 
 .settings-panel {
+    width: 100%;
+
     max-width: 900px;
 }
 
 
 .setting-row {
-    padding: 18px 0;
+    padding: 19px 0;
 
     display: flex;
 
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     gap: 20px;
 
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom:
+        1px solid rgba(255,255,255,0.05);
 }
 
 
@@ -1209,6 +1763,10 @@ body {
 
 .setting-row strong {
     display: block;
+
+    color: white;
+
+    font-size: 13px;
 }
 
 
@@ -1219,46 +1777,79 @@ body {
 
     color: var(--muted);
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
 .setting-row > b {
     color: var(--cyan);
 
+    font-size: 11px;
+
     text-align: right;
+
+    white-space: nowrap;
 }
 
 
-/* =========================
-   LOGS
-========================= */
+/* =========================================================
+   LOG WINDOW
+========================================================= */
 
 .log-window {
+    width: 100%;
+
     min-height: 450px;
+
+    max-height: 600px;
 
     padding: 20px;
 
-    border: 1px solid rgba(0,234,255,0.12);
+    overflow: auto;
 
-    border-radius: 12px;
+    border:
+        1px solid rgba(0,234,255,0.12);
 
-    background: #020509;
+    border-radius: 13px;
 
-    font-family: monospace;
+    background:
+        #020509;
+
+    color: #aab5c9;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
 
     font-size: 12px;
+}
 
-    color: #abb5ca;
 
-    overflow: auto;
+.log-window::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.log-window::-webkit-scrollbar-track {
+    background: #05080d;
+}
+
+
+.log-window::-webkit-scrollbar-thumb {
+    background: rgba(0,234,255,0.18);
+
+    border-radius: 10px;
 }
 
 
 .log-entry {
-    padding: 7px 0;
+    padding: 8px 0;
 
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+    border-bottom:
+        1px solid rgba(255,255,255,0.03);
+
+    line-height: 1.5;
 }
 
 
@@ -1269,67 +1860,89 @@ body {
 }
 
 
-/* =========================
+/* =========================================================
    ABOUT
-========================= */
+========================================================= */
 
 .about-card {
+    width: 100%;
+
     max-width: 900px;
 
     padding: 45px;
 
     text-align: center;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 18px;
 
-    background: var(--panel);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,22,37,0.95),
+            rgba(6,11,20,0.97)
+        );
 }
 
 
 .about-icon {
-    font-size: 55px;
+    font-size: 58px;
+
+    margin-bottom: 10px;
+
+    filter:
+        drop-shadow(
+            0 0 14px rgba(0,234,255,0.25)
+        );
 }
 
 
 .about-card h2 {
-    margin-top: 15px;
-
     color: var(--cyan);
 
     font-size: 28px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
 }
 
 
 .about-card p {
-    max-width: 650px;
+    width: 100%;
+    max-width: 680px;
 
-    margin: 18px auto;
+    margin: 18px auto 0;
 
     color: var(--muted);
 
-    line-height: 1.7;
+    font-size: 13px;
+
+    line-height: 1.8;
 }
 
 
 .about-grid {
     display: grid;
 
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
 
     gap: 10px;
 
-    margin-top: 25px;
+    margin-top: 28px;
 }
 
 
 .about-grid div {
-    padding: 15px;
+    padding: 16px;
 
     border-radius: 10px;
 
-    background: rgba(255,255,255,0.025);
+    background:
+        rgba(255,255,255,0.025);
 }
 
 
@@ -1337,6 +1950,8 @@ body {
     display: block;
 
     color: var(--cyan);
+
+    font-size: 13px;
 }
 
 
@@ -1347,54 +1962,75 @@ body {
 
     color: var(--muted);
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
 .version {
     margin-top: 30px;
 
-    color: #56617a;
+    color: #536078;
 
-    font-size: 9px;
+    font-size: 8px;
 
     letter-spacing: 2px;
 }
 
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
     .control-grid {
         grid-template-columns: 1fr;
     }
 
     .motor-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
     }
 
     .telemetry-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
     }
 
 }
 
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
 
     .topbar {
         padding: 12px 15px;
+    }
+
+    .top-actions {
+        gap: 5px;
     }
 
     .ble-status {
         display: none;
     }
 
+    .navigation {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
     .main-content {
         width: 94%;
+
+        padding-top: 25px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+    }
+
+    .main-buttons {
+        grid-template-columns: 1fr;
     }
 
     .motor-grid {
@@ -1402,7 +2038,8 @@ body {
     }
 
     .telemetry-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
     }
 
     .pid-grid {
@@ -1410,21 +2047,45 @@ body {
     }
 
     .about-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
     }
 
     .joystick-data {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
     }
 
-    .main-buttons {
-        grid-template-columns: 1fr;
+    .login-card {
+        padding: 36px 25px;
+    }
+
+    .brand-title {
+        font-size: 40px;
+
+        letter-spacing: 6px;
     }
 
 }
 
 
-@media (max-width: 420px) {
+@media (max-width: 440px) {
+
+    .topbar {
+        flex-wrap: wrap;
+    }
+
+    .connect-btn,
+    .logout-btn {
+        padding:
+            8px 10px;
+
+        font-size: 9px;
+    }
+
+    .page-header {
+        flex-direction: column;
+    }
 
     .telemetry-grid {
         grid-template-columns: 1fr;
@@ -1434,8 +2095,45 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .about-card {
+        padding: 30px 20px;
+    }
+
     .brand-title {
-        font-size: 38px;
+        font-size: 35px;
     }
 
 }
+
+
+/* =========================================================
+   SAFETY / POINTER FIX
+========================================================= */
+
+/*
+   These elements must not create invisible layers
+   over the login controls or joystick.
+*/
+
+.grid-background,
+.joystick-circle,
+.joystick-line,
+.joystick::before,
+.login-card::before {
+    pointer-events: none;
+}
+
+
+/*
+   Joystick stick visually moves with the cursor,
+   while pointer events are handled by #joystick.
+*/
+
+.joystick-stick {
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   END OF VAJRA CSS
+========================================================= */
