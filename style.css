@@ -1,6 +1,6 @@
 /* =========================================================
    ANSH'S DRONE VAJRA 🚁⚡
-   COMPLETE STYLE.CSS
+   COMPLETE CSS
    ========================================================= */
 
 * {
@@ -10,6 +10,7 @@
 }
 
 :root {
+
     --bg: #03060c;
     --bg2: #060c16;
 
@@ -19,18 +20,14 @@
     --cyan: #00eaff;
     --cyan2: #55f4ff;
 
-    --blue: #347cff;
-    --purple: #8b5cf6;
-
     --green: #00ff9d;
     --red: #ff3158;
     --yellow: #ffd84d;
 
     --white: #f4f8ff;
-    --muted: #8390a9;
+    --muted: #8290a9;
 
-    --border: rgba(0, 234, 255, 0.16);
-    --border-bright: rgba(0, 234, 255, 0.35);
+    --border: rgba(0,234,255,0.16);
 }
 
 
@@ -38,27 +35,25 @@
    GLOBAL
 ========================================================= */
 
-html {
+html,
+body {
     width: 100%;
     min-height: 100%;
-    background: var(--bg);
 }
 
 body {
-    width: 100%;
-    min-height: 100vh;
 
-    margin: 0;
+    min-height: 100vh;
 
     background:
         radial-gradient(
             circle at 10% 10%,
-            rgba(0, 234, 255, 0.07),
+            rgba(0,234,255,0.07),
             transparent 28%
         ),
         radial-gradient(
             circle at 90% 90%,
-            rgba(91, 67, 255, 0.07),
+            rgba(90,50,255,0.07),
             transparent 30%
         ),
         var(--bg);
@@ -66,7 +61,6 @@ body {
     color: var(--white);
 
     font-family:
-        Inter,
         Arial,
         Helvetica,
         sans-serif;
@@ -81,18 +75,20 @@ input {
 
 
 /* =========================================================
-   LOGIN SCREEN
+   LOGIN
 ========================================================= */
 
 .login-screen {
+
     width: 100%;
     min-height: 100vh;
 
+    position: relative;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
-
-    position: relative;
 
     padding: 25px;
 
@@ -100,19 +96,16 @@ input {
 
     background:
         radial-gradient(
-            circle at 50% 45%,
-            rgba(0, 234, 255, 0.09),
-            transparent 38%
+            circle at center,
+            rgba(0,234,255,0.08),
+            transparent 40%
         ),
         #02050a;
 }
 
 
-/* IMPORTANT:
-   Background must never block mouse clicks.
-*/
-
 .grid-background {
+
     position: absolute;
 
     inset: 0;
@@ -121,37 +114,35 @@ input {
 
     background-image:
         linear-gradient(
-            rgba(0, 234, 255, 0.045) 1px,
+            rgba(0,234,255,0.045) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(0, 234, 255, 0.045) 1px,
+            rgba(0,234,255,0.045) 1px,
             transparent 1px
         );
 
     background-size: 42px 42px;
-
-    opacity: 0.9;
 }
 
 
 .grid-background::after {
+
     content: "";
 
     position: absolute;
 
     inset: 0;
 
+    pointer-events: none;
+
     background:
         radial-gradient(
-            circle at center,
-            transparent 15%,
-            rgba(2, 5, 10, 0.55) 75%,
-            rgba(2, 5, 10, 0.95) 100%
+            circle,
+            transparent 10%,
+            rgba(2,5,10,0.75) 85%
         );
-
-    pointer-events: none;
 }
 
 
@@ -160,48 +151,48 @@ input {
 ========================================================= */
 
 .login-card {
+
     width: 430px;
     max-width: 100%;
 
     position: relative;
-
     z-index: 20;
 
     padding: 44px 36px;
 
     text-align: center;
 
-    border: 1px solid rgba(0, 234, 255, 0.28);
+    border:
+        1px solid rgba(0,234,255,0.28);
 
     border-radius: 25px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(13, 22, 37, 0.98),
-            rgba(4, 8, 16, 0.98)
+            rgba(13,22,37,0.98),
+            rgba(4,8,16,0.98)
         );
 
     box-shadow:
-        0 0 80px rgba(0, 234, 255, 0.07),
-        inset 0 0 35px rgba(0, 234, 255, 0.025);
-
-    backdrop-filter: blur(18px);
+        0 0 80px rgba(0,234,255,0.07);
 }
 
 
 .login-card::before {
+
     content: "";
 
     position: absolute;
 
     inset: 1px;
 
-    border-radius: 24px;
-
-    border: 1px solid rgba(255,255,255,0.025);
-
     pointer-events: none;
+
+    border:
+        1px solid rgba(255,255,255,0.02);
+
+    border-radius: 24px;
 }
 
 
@@ -210,38 +201,38 @@ input {
 ========================================================= */
 
 .drone-logo {
+
     width: 85px;
     height: 85px;
 
-    margin: 0 auto;
+    margin: auto;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
-    font-size: 39px;
-
-    border: 1px solid rgba(0, 234, 255, 0.35);
+    border:
+        1px solid rgba(0,234,255,0.35);
 
     background:
         radial-gradient(
             circle,
-            rgba(0,234,255,0.14),
+            rgba(0,234,255,0.15),
             rgba(0,234,255,0.025)
         );
 
     box-shadow:
-        0 0 35px rgba(0, 234, 255, 0.15);
+        0 0 35px rgba(0,234,255,0.15);
+
+    font-size: 39px;
 }
 
 
-/* =========================================================
-   LOGIN TEXT
-========================================================= */
+.login-card h1 {
 
-.brand-title {
     margin-top: 18px;
 
     color: var(--cyan);
@@ -253,11 +244,12 @@ input {
     letter-spacing: 8px;
 
     text-shadow:
-        0 0 18px rgba(0, 234, 255, 0.45);
+        0 0 18px rgba(0,234,255,0.45);
 }
 
 
-.brand-subtitle {
+.login-subtitle {
+
     margin-top: 7px;
 
     color: var(--muted);
@@ -269,7 +261,9 @@ input {
 
 
 .system-status {
-    margin: 26px 0 24px;
+
+    margin:
+        26px 0 24px;
 
     color: var(--green);
 
@@ -282,6 +276,7 @@ input {
 
 
 .system-status span {
+
     display: inline-block;
 
     width: 8px;
@@ -299,10 +294,11 @@ input {
 
 
 /* =========================================================
-   LOGIN INPUTS
+   LOGIN FORM
 ========================================================= */
 
 .login-card label {
+
     display: block;
 
     margin-top: 17px;
@@ -321,27 +317,26 @@ input {
 
 
 .login-card input {
-    display: block;
 
     width: 100%;
+
+    display: block;
 
     padding: 14px 15px;
 
     color: white;
 
     background:
-        rgba(0, 0, 0, 0.38);
+        rgba(0,0,0,0.38);
 
-    border: 1px solid rgba(0, 234, 255, 0.15);
+    border:
+        1px solid rgba(0,234,255,0.15);
 
     border-radius: 11px;
 
     outline: none;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+    font-size: 15px;
 }
 
 
@@ -351,13 +346,11 @@ input {
 
 
 .login-card input:focus {
+
     border-color: var(--cyan);
 
-    background:
-        rgba(0, 234, 255, 0.025);
-
     box-shadow:
-        0 0 18px rgba(0, 234, 255, 0.1);
+        0 0 18px rgba(0,234,255,0.1);
 }
 
 
@@ -366,6 +359,7 @@ input {
 ========================================================= */
 
 #loginBtn {
+
     width: 100%;
 
     margin-top: 25px;
@@ -373,10 +367,15 @@ input {
     padding: 15px 17px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
-    border: 0;
+    position: relative;
+
+    z-index: 30;
+
+    border: none;
 
     border-radius: 11px;
 
@@ -396,30 +395,21 @@ input {
     letter-spacing: 1.5px;
 
     cursor: pointer;
-
-    position: relative;
-    z-index: 30;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
 
 #loginBtn:hover {
-    transform: translateY(-2px);
 
     box-shadow:
-        0 0 30px rgba(0, 234, 255, 0.3);
-}
+        0 0 30px rgba(0,234,255,0.3);
 
-
-#loginBtn:active {
-    transform: translateY(0);
+    transform:
+        translateY(-2px);
 }
 
 
 #loginMessage {
+
     min-height: 20px;
 
     margin-top: 12px;
@@ -431,6 +421,7 @@ input {
 
 
 .login-footer {
+
     margin-top: 28px;
 
     color: #4f5c74;
@@ -446,21 +437,10 @@ input {
 ========================================================= */
 
 .dashboard {
+
     display: none;
 
     min-height: 100vh;
-
-    background:
-        radial-gradient(
-            circle at 10% 5%,
-            rgba(0,234,255,0.035),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 90% 95%,
-            rgba(139,92,246,0.035),
-            transparent 28%
-        );
 }
 
 
@@ -469,39 +449,41 @@ input {
 ========================================================= */
 
 .topbar {
+
     width: 100%;
 
     min-height: 76px;
 
-    padding: 13px 25px;
+    padding:
+        13px 25px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
     gap: 20px;
 
     position: sticky;
+
     top: 0;
 
     z-index: 100;
 
     background:
-        rgba(3, 7, 14, 0.95);
+        rgba(3,7,14,0.96);
 
     border-bottom:
-        1px solid rgba(0, 234, 255, 0.1);
+        1px solid rgba(0,234,255,0.1);
 
     backdrop-filter: blur(18px);
 }
 
 
-/* =========================================================
-   BRAND IN TOP BAR
-========================================================= */
-
 .logo-area {
+
     display: flex;
+
     align-items: center;
 
     gap: 11px;
@@ -509,28 +491,29 @@ input {
 
 
 .mini-logo {
+
     width: 44px;
     height: 44px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 11px;
 
-    border: 1px solid rgba(0,234,255,0.22);
+    border:
+        1px solid rgba(0,234,255,0.22);
 
     background:
         rgba(0,234,255,0.06);
 
     font-size: 21px;
-
-    box-shadow:
-        0 0 18px rgba(0,234,255,0.05);
 }
 
 
 .top-title {
+
     color: var(--cyan);
 
     font-size: 20px;
@@ -542,6 +525,7 @@ input {
 
 
 .top-subtitle {
+
     margin-top: 2px;
 
     color: var(--muted);
@@ -557,6 +541,7 @@ input {
 ========================================================= */
 
 .top-actions {
+
     display: flex;
 
     align-items: center;
@@ -566,10 +551,12 @@ input {
 
 
 .ble-status {
-    padding: 9px 12px;
 
     display: flex;
+
     align-items: center;
+
+    padding: 9px 12px;
 
     border-radius: 18px;
 
@@ -582,6 +569,7 @@ input {
 
 
 .ble-status.disconnected {
+
     color: var(--red);
 
     background:
@@ -590,6 +578,7 @@ input {
 
 
 .ble-status.connected {
+
     color: var(--green);
 
     background:
@@ -598,10 +587,11 @@ input {
 
 
 .ble-dot {
-    display: inline-block;
 
     width: 8px;
     height: 8px;
+
+    display: inline-block;
 
     margin-right: 6px;
 
@@ -615,6 +605,7 @@ input {
 
 
 .ble-status.connected .ble-dot {
+
     background: var(--green);
 
     box-shadow:
@@ -624,7 +615,9 @@ input {
 
 .connect-btn,
 .logout-btn {
-    padding: 10px 14px;
+
+    padding:
+        10px 14px;
 
     border-radius: 9px;
 
@@ -633,12 +626,11 @@ input {
     font-size: 10px;
 
     font-weight: 800;
-
-    letter-spacing: 0.5px;
 }
 
 
 .connect-btn {
+
     border: 0;
 
     background: var(--cyan);
@@ -647,13 +639,8 @@ input {
 }
 
 
-.connect-btn:hover {
-    box-shadow:
-        0 0 18px rgba(0,234,255,0.25);
-}
-
-
 .logout-btn {
+
     border:
         1px solid rgba(255,255,255,0.1);
 
@@ -663,51 +650,36 @@ input {
 }
 
 
-.logout-btn:hover {
-    color: white;
-
-    border-color:
-        rgba(255,255,255,0.2);
-}
-
-
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
 .navigation {
-    width: 100%;
 
     display: flex;
 
     gap: 5px;
 
-    padding: 11px 25px;
+    padding:
+        11px 25px;
 
     overflow-x: auto;
 
     background:
-        rgba(4, 8, 15, 0.95);
+        rgba(4,8,15,0.95);
 
     border-bottom:
         1px solid rgba(255,255,255,0.045);
 }
 
 
-.navigation::-webkit-scrollbar {
-    height: 3px;
-}
-
-
-.navigation::-webkit-scrollbar-thumb {
-    background: rgba(0,234,255,0.25);
-}
-
-
 .nav-btn {
-    padding: 10px 17px;
 
-    border: 1px solid transparent;
+    padding:
+        10px 17px;
+
+    border:
+        1px solid transparent;
 
     border-radius: 8px;
 
@@ -722,25 +694,12 @@ input {
     font-size: 10px;
 
     font-weight: 700;
-
-    letter-spacing: 0.7px;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
 }
 
 
-.nav-btn:hover {
-    color: var(--cyan);
-
-    background:
-        rgba(0,234,255,0.04);
-}
-
-
+.nav-btn:hover,
 .nav-btn.active {
+
     color: var(--cyan);
 
     background:
@@ -748,23 +707,22 @@ input {
 
     border-color:
         rgba(0,234,255,0.18);
-
-    box-shadow:
-        0 0 18px rgba(0,234,255,0.025);
 }
 
 
 /* =========================================================
-   MAIN CONTENT
+   MAIN
 ========================================================= */
 
 .main-content {
+
     width: 94%;
     max-width: 1400px;
 
-    margin: 0 auto;
+    margin: auto;
 
-    padding: 32px 0 60px;
+    padding:
+        32px 0 60px;
 }
 
 
@@ -774,6 +732,7 @@ input {
 
 
 .page.active-page {
+
     display: block;
 
     animation:
@@ -796,14 +755,12 @@ input {
 }
 
 
-/* =========================================================
-   PAGE HEADER
-========================================================= */
-
 .page-header {
+
     margin-bottom: 23px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -812,6 +769,7 @@ input {
 
 
 .section-label {
+
     color: var(--cyan);
 
     font-size: 9px;
@@ -823,18 +781,18 @@ input {
 
 
 .page-header h1 {
+
     margin-top: 5px;
 
-    font-size: clamp(25px, 4vw, 38px);
-
-    line-height: 1.1;
-
-    letter-spacing: 0.5px;
+    font-size:
+        clamp(25px,4vw,38px);
 }
 
 
 .armed-status {
+
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -850,6 +808,7 @@ input {
 
 
 .armed-status span {
+
     width: 9px;
     height: 9px;
 
@@ -863,9 +822,11 @@ input {
 
 
 .live-badge {
+
     display: inline-block;
 
-    padding: 6px 10px;
+    padding:
+        6px 10px;
 
     border:
         1px solid rgba(0,255,157,0.18);
@@ -882,17 +843,14 @@ input {
     font-weight: 800;
 
     letter-spacing: 1px;
-
-    white-space: nowrap;
 }
 
 
 /* =========================================================
-   START / STOP
+   START STOP
 ========================================================= */
 
 .main-buttons {
-    width: 100%;
 
     display: grid;
 
@@ -906,6 +864,7 @@ input {
 
 .start-btn,
 .stop-btn {
+
     min-height: 50px;
 
     padding: 14px 20px;
@@ -919,20 +878,11 @@ input {
     font-weight: 900;
 
     letter-spacing: 2px;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-.start-btn:hover,
-.stop-btn:hover {
-    transform: translateY(-1px);
 }
 
 
 .start-btn {
+
     border: 0;
 
     background:
@@ -943,13 +893,11 @@ input {
         );
 
     color: #00140d;
-
-    box-shadow:
-        0 0 22px rgba(0,255,157,0.08);
 }
 
 
 .stop-btn {
+
     border:
         1px solid rgba(255,49,88,0.35);
 
@@ -960,14 +908,10 @@ input {
 }
 
 
-.stop-btn:hover {
-    box-shadow:
-        0 0 20px rgba(255,49,88,0.08);
-}
-
-
 .small-stop {
-    padding: 8px 12px;
+
+    padding:
+        8px 12px;
 
     border:
         1px solid rgba(255,49,88,0.3);
@@ -984,16 +928,15 @@ input {
     font-size: 9px;
 
     font-weight: 800;
-
-    letter-spacing: 0.7px;
 }
 
 
 /* =========================================================
-   PANELS
+   PANEL
 ========================================================= */
 
 .panel {
+
     padding: 22px;
 
     border:
@@ -1007,16 +950,15 @@ input {
             rgba(13,22,37,0.95),
             rgba(6,11,20,0.97)
         );
-
-    box-shadow:
-        0 18px 50px rgba(0,0,0,0.12);
 }
 
 
 .panel-title {
+
     margin-bottom: 20px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -1025,6 +967,7 @@ input {
 
 
 .panel-title span {
+
     color: var(--cyan);
 
     font-size: 9px;
@@ -1036,6 +979,7 @@ input {
 
 
 .panel-title h2 {
+
     margin-top: 5px;
 
     font-size: 19px;
@@ -1043,17 +987,57 @@ input {
 
 
 /* =========================================================
-   CONTROL GRID
+   DUAL JOYSTICKS
 ========================================================= */
 
-.control-grid {
-    display: grid;
+.dual-joystick-panel {
 
-    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-
-    gap: 20px;
+    width: 100%;
 
     margin-bottom: 20px;
+}
+
+
+.dual-joysticks {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 30px;
+}
+
+
+.joystick-unit {
+
+    padding: 15px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+
+    border-radius: 15px;
+
+    background:
+        rgba(0,0,0,0.12);
+}
+
+
+.joystick-name {
+
+    margin-bottom: 10px;
+
+    color: var(--cyan);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
 }
 
 
@@ -1062,10 +1046,13 @@ input {
 ========================================================= */
 
 .joystick {
-    width: min(320px, 75vw);
+
+    width: min(290px,70vw);
+
     aspect-ratio: 1;
 
-    margin: 27px auto;
+    margin:
+        20px auto;
 
     position: relative;
 
@@ -1079,8 +1066,8 @@ input {
     background:
         radial-gradient(
             circle,
-            rgba(0,234,255,0.08),
-            rgba(0,0,0,0.42)
+            rgba(0,234,255,0.09),
+            rgba(0,0,0,0.44)
         );
 
     box-shadow:
@@ -1092,10 +1079,13 @@ input {
     touch-action: none;
 
     user-select: none;
+
+    -webkit-user-select: none;
 }
 
 
 .joystick::before {
+
     content: "";
 
     position: absolute;
@@ -1111,16 +1101,15 @@ input {
 }
 
 
-/* Rings */
-
 .joystick-circle {
+
     position: absolute;
 
     left: 50%;
     top: 50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(-50%,-50%);
 
     border:
         1px solid rgba(0,234,255,0.12);
@@ -1132,20 +1121,21 @@ input {
 
 
 .circle-one {
+
     width: 72%;
     height: 72%;
 }
 
 
 .circle-two {
+
     width: 44%;
     height: 44%;
 }
 
 
-/* Cross */
-
 .joystick-line {
+
     position: absolute;
 
     background:
@@ -1156,6 +1146,7 @@ input {
 
 
 .joystick-line.horizontal {
+
     left: 0;
     top: 50%;
 
@@ -1165,6 +1156,7 @@ input {
 
 
 .joystick-line.vertical {
+
     left: 50%;
     top: 0;
 
@@ -1178,8 +1170,9 @@ input {
 ========================================================= */
 
 .joystick-stick {
-    width: 70px;
-    height: 70px;
+
+    width: 68px;
+    height: 68px;
 
     position: absolute;
 
@@ -1187,21 +1180,22 @@ input {
     top: 50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(-50%,-50%);
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border:
-        3px solid rgba(255,255,255,0.85);
+        3px solid rgba(255,255,255,0.9);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle at 35% 30%,
-            #ffffff,
+            white,
             var(--cyan) 65%,
             #00bdd2
         );
@@ -1213,14 +1207,12 @@ input {
     box-shadow:
         0 0 28px rgba(0,234,255,0.55);
 
-    cursor: grab;
-
     z-index: 20;
 
     /*
-       CRITICAL:
-       The joystick receives the pointer events,
-       not the stick.
+       IMPORTANT:
+       Pointer events are handled by
+       the joystick underneath.
     */
 
     pointer-events: none;
@@ -1228,17 +1220,6 @@ input {
     touch-action: none;
 
     user-select: none;
-
-    transition:
-        box-shadow 0.1s ease;
-}
-
-
-.joystick-stick:active {
-    cursor: grabbing;
-
-    box-shadow:
-        0 0 40px rgba(0,234,255,0.8);
 }
 
 
@@ -1246,32 +1227,37 @@ input {
    JOYSTICK VALUES
 ========================================================= */
 
-.joystick-data {
+.joystick-values {
+
+    max-width: 290px;
+
+    margin: auto;
+
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0,1fr));
+        1fr 1fr;
 
-    gap: 7px;
+    gap: 8px;
 }
 
 
-.joystick-data div {
-    padding: 10px 5px;
+.joystick-values div {
 
-    text-align: center;
+    padding: 11px;
+
+    border:
+        1px solid rgba(255,255,255,0.025);
 
     border-radius: 9px;
 
     background:
         rgba(255,255,255,0.025);
-
-    border:
-        1px solid rgba(255,255,255,0.025);
 }
 
 
-.joystick-data span {
+.joystick-values span {
+
     display: block;
 
     color: var(--muted);
@@ -1282,14 +1268,30 @@ input {
 }
 
 
-.joystick-data strong {
+.joystick-values strong {
+
     display: block;
 
     margin-top: 5px;
 
     color: var(--cyan);
 
-    font-size: 14px;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   CONTROL GRID
+========================================================= */
+
+.control-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
 }
 
 
@@ -1298,7 +1300,6 @@ input {
 ========================================================= */
 
 .horizon {
-    width: 100%;
 
     height: 320px;
 
@@ -1310,21 +1311,15 @@ input {
 
     border:
         1px solid rgba(0,234,255,0.13);
-
-    background:
-        #111923;
 }
 
 
-/* Sky */
-
 .sky {
+
     position: absolute;
 
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 50%;
+    inset:
+        0 0 50% 0;
 
     background:
         linear-gradient(
@@ -1334,15 +1329,12 @@ input {
 }
 
 
-/* Ground */
-
 .ground {
+
     position: absolute;
 
-    left: 0;
-    top: 50%;
-    right: 0;
-    bottom: 0;
+    inset:
+        50% 0 0 0;
 
     background:
         linear-gradient(
@@ -1352,28 +1344,26 @@ input {
 }
 
 
-/* Horizon */
-
 .horizon-center {
+
     position: absolute;
 
     left: 0;
     right: 0;
+
     top: 50%;
 
     height: 2px;
 
-    background:
-        #ffffff;
+    background: white;
 
     box-shadow:
         0 0 9px rgba(255,255,255,0.7);
 }
 
 
-/* Aircraft */
-
 .aircraft {
+
     width: 120px;
 
     position: absolute;
@@ -1382,16 +1372,16 @@ input {
     top: 50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(-50%,-50%);
 
     display: flex;
 
-    align-items: center;
     justify-content: space-between;
 }
 
 
 .aircraft i {
+
     width: 45px;
     height: 4px;
 
@@ -1405,14 +1395,12 @@ input {
 }
 
 
-/* =========================================================
-   ATTITUDE VALUES
-========================================================= */
-
 .attitude-data {
+
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap: 10px;
 
@@ -1421,6 +1409,7 @@ input {
 
 
 .attitude-data div {
+
     padding: 14px;
 
     text-align: center;
@@ -1433,6 +1422,7 @@ input {
 
 
 .attitude-data span {
+
     display: block;
 
     color: var(--muted);
@@ -1444,6 +1434,7 @@ input {
 
 
 .attitude-data strong {
+
     display: block;
 
     margin-top: 5px;
@@ -1455,26 +1446,23 @@ input {
 
 
 /* =========================================================
-   MOTOR PANEL
+   MOTOR CONTROL
 ========================================================= */
 
-.motor-panel {
-    margin-top: 20px;
-}
-
-
 .motor-grid {
+
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0,1fr));
+        repeat(2,minmax(0,1fr));
 
-    gap: 13px;
+    gap: 12px;
 }
 
 
 .motor-card {
-    padding: 17px;
+
+    padding: 15px;
 
     border:
         1px solid rgba(255,255,255,0.06);
@@ -1483,26 +1471,15 @@ input {
 
     background:
         rgba(0,0,0,0.16);
-
-    transition:
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.motor-card:hover {
-    border-color:
-        rgba(0,234,255,0.16);
-
-    transform:
-        translateY(-1px);
 }
 
 
 .motor-header {
+
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
     gap: 10px;
@@ -1510,51 +1487,45 @@ input {
 
 
 .motor-header strong {
+
     color: var(--cyan);
 
     font-size: 22px;
-
-    font-weight: 900;
 }
 
 
 .motor-header span {
+
     color: var(--muted);
 
     font-size: 8px;
 
     text-align: right;
-
-    line-height: 1.3;
 }
 
 
 .motor-value {
-    margin: 17px 0;
 
-    color: white;
+    margin:
+        17px 0;
 
-    font-size: 28px;
+    font-size: 27px;
 
     font-weight: 900;
 }
 
 
 .motor-value small {
+
     color: var(--muted);
 
     font-size: 10px;
-
-    font-weight: 500;
 }
 
 
 .motor-card input[type="range"] {
-    display: block;
 
     width: 100%;
-
-    margin: 0;
 
     accent-color:
         var(--cyan);
@@ -1563,38 +1534,11 @@ input {
 }
 
 
-.motor-card input[type="range"]::-webkit-slider-runnable-track {
-    height: 4px;
-
-    border-radius: 5px;
-
-    background:
-        rgba(255,255,255,0.1);
-}
-
-
-.motor-card input[type="range"]::-webkit-slider-thumb {
-    margin-top: -5px;
-
-    width: 14px;
-    height: 14px;
-
-    border-radius: 50%;
-
-    background:
-        var(--cyan);
-
-    appearance: none;
-
-    box-shadow:
-        0 0 10px rgba(0,234,255,0.4);
-}
-
-
 .motor-start {
+
     width: 100%;
 
-    margin-top: 14px;
+    margin-top: 13px;
 
     padding: 10px;
 
@@ -1613,14 +1557,6 @@ input {
     font-size: 9px;
 
     font-weight: 800;
-
-    letter-spacing: 1px;
-}
-
-
-.motor-start:hover {
-    background:
-        rgba(0,234,255,0.08);
 }
 
 
@@ -1629,10 +1565,11 @@ input {
 ========================================================= */
 
 .telemetry-grid {
+
     display: grid;
 
     grid-template-columns:
-        repeat(5, minmax(0,1fr));
+        repeat(5,minmax(0,1fr));
 
     gap: 12px;
 
@@ -1641,6 +1578,7 @@ input {
 
 
 .telemetry-card {
+
     padding: 20px;
 
     border:
@@ -1650,13 +1588,11 @@ input {
 
     background:
         var(--panel);
-
-    box-shadow:
-        0 10px 25px rgba(0,0,0,0.1);
 }
 
 
 .telemetry-card span {
+
     color: var(--muted);
 
     font-size: 9px;
@@ -1668,6 +1604,7 @@ input {
 
 
 .telemetry-card strong {
+
     display: block;
 
     margin-top: 10px;
@@ -1675,25 +1612,22 @@ input {
     color: var(--cyan);
 
     font-size: 23px;
-
-    font-weight: 900;
 }
 
 
-/* =========================================================
-   PID
-========================================================= */
-
 .pid-grid {
+
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap: 15px;
 }
 
 
 .pid-card {
+
     padding: 19px;
 
     border-radius: 11px;
@@ -1704,17 +1638,17 @@ input {
 
 
 .pid-card h3 {
+
     margin-bottom: 12px;
 
     color: var(--cyan);
 
     font-size: 13px;
-
-    letter-spacing: 1px;
 }
 
 
 .pid-card p {
+
     margin: 8px 0;
 
     color: var(--muted);
@@ -1724,6 +1658,7 @@ input {
 
 
 .pid-card p strong {
+
     float: right;
 
     color: white;
@@ -1735,6 +1670,7 @@ input {
 ========================================================= */
 
 .settings-panel {
+
     width: 100%;
 
     max-width: 900px;
@@ -1742,11 +1678,13 @@ input {
 
 
 .setting-row {
+
     padding: 19px 0;
 
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
@@ -1762,15 +1700,15 @@ input {
 
 
 .setting-row strong {
-    display: block;
 
-    color: white;
+    display: block;
 
     font-size: 13px;
 }
 
 
 .setting-row span {
+
     display: block;
 
     margin-top: 5px;
@@ -1782,6 +1720,7 @@ input {
 
 
 .setting-row > b {
+
     color: var(--cyan);
 
     font-size: 11px;
@@ -1793,10 +1732,11 @@ input {
 
 
 /* =========================================================
-   LOG WINDOW
+   LOGS
 ========================================================= */
 
 .log-window {
+
     width: 100%;
 
     min-height: 450px;
@@ -1826,24 +1766,8 @@ input {
 }
 
 
-.log-window::-webkit-scrollbar {
-    width: 7px;
-}
-
-
-.log-window::-webkit-scrollbar-track {
-    background: #05080d;
-}
-
-
-.log-window::-webkit-scrollbar-thumb {
-    background: rgba(0,234,255,0.18);
-
-    border-radius: 10px;
-}
-
-
 .log-entry {
+
     padding: 8px 0;
 
     border-bottom:
@@ -1854,6 +1778,7 @@ input {
 
 
 .log-entry span {
+
     color: var(--cyan);
 
     margin-right: 7px;
@@ -1865,6 +1790,7 @@ input {
 ========================================================= */
 
 .about-card {
+
     width: 100%;
 
     max-width: 900px;
@@ -1888,33 +1814,29 @@ input {
 
 
 .about-icon {
+
     font-size: 58px;
 
     margin-bottom: 10px;
-
-    filter:
-        drop-shadow(
-            0 0 14px rgba(0,234,255,0.25)
-        );
 }
 
 
 .about-card h2 {
+
     color: var(--cyan);
 
     font-size: 28px;
-
-    font-weight: 900;
 
     letter-spacing: 1.5px;
 }
 
 
 .about-card p {
-    width: 100%;
+
     max-width: 680px;
 
-    margin: 18px auto 0;
+    margin:
+        18px auto 0;
 
     color: var(--muted);
 
@@ -1925,10 +1847,11 @@ input {
 
 
 .about-grid {
+
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0,1fr));
+        repeat(4,minmax(0,1fr));
 
     gap: 10px;
 
@@ -1937,6 +1860,7 @@ input {
 
 
 .about-grid div {
+
     padding: 16px;
 
     border-radius: 10px;
@@ -1947,6 +1871,7 @@ input {
 
 
 .about-grid strong {
+
     display: block;
 
     color: var(--cyan);
@@ -1956,6 +1881,7 @@ input {
 
 
 .about-grid span {
+
     display: block;
 
     margin-top: 5px;
@@ -1967,6 +1893,7 @@ input {
 
 
 .version {
+
     margin-top: 30px;
 
     color: #536078;
@@ -1978,23 +1905,50 @@ input {
 
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
 ========================================================= */
 
 @media (max-width: 1100px) {
 
     .control-grid {
+
         grid-template-columns: 1fr;
+
     }
 
-    .motor-grid {
-        grid-template-columns:
-            repeat(2, minmax(0,1fr));
-    }
 
     .telemetry-grid {
+
         grid-template-columns:
-            repeat(3, minmax(0,1fr));
+            repeat(3,minmax(0,1fr));
+
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .dual-joysticks {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .motor-grid {
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+
+    .about-grid {
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
     }
 
 }
@@ -2003,67 +1957,70 @@ input {
 @media (max-width: 700px) {
 
     .topbar {
-        padding: 12px 15px;
+
+        padding:
+            12px 15px;
     }
 
-    .top-actions {
-        gap: 5px;
-    }
 
     .ble-status {
+
         display: none;
     }
 
+
     .navigation {
+
         padding-left: 15px;
         padding-right: 15px;
     }
 
+
     .main-content {
+
         width: 94%;
 
         padding-top: 25px;
     }
 
-    .page-header {
-        align-items: flex-start;
-    }
 
     .main-buttons {
+
         grid-template-columns: 1fr;
     }
+
 
     .motor-grid {
+
         grid-template-columns: 1fr;
     }
+
 
     .telemetry-grid {
+
         grid-template-columns:
-            repeat(2, minmax(0,1fr));
+            repeat(2,minmax(0,1fr));
+
     }
 
+
     .pid-grid {
+
         grid-template-columns: 1fr;
     }
 
+
     .about-grid {
+
         grid-template-columns:
-            repeat(2, minmax(0,1fr));
+            repeat(2,minmax(0,1fr));
     }
 
-    .joystick-data {
-        grid-template-columns:
-            repeat(2, minmax(0,1fr));
-    }
 
     .login-card {
-        padding: 36px 25px;
-    }
 
-    .brand-title {
-        font-size: 40px;
-
-        letter-spacing: 6px;
+        padding:
+            36px 25px;
     }
 
 }
@@ -2072,68 +2029,59 @@ input {
 @media (max-width: 440px) {
 
     .topbar {
+
         flex-wrap: wrap;
     }
 
-    .connect-btn,
-    .logout-btn {
-        padding:
-            8px 10px;
-
-        font-size: 9px;
-    }
 
     .page-header {
+
         flex-direction: column;
+
+        align-items: flex-start;
     }
+
 
     .telemetry-grid {
+
         grid-template-columns: 1fr;
     }
+
 
     .about-grid {
+
         grid-template-columns: 1fr;
     }
 
+
     .about-card {
-        padding: 30px 20px;
+
+        padding:
+            30px 20px;
     }
+
 
     .brand-title {
-        font-size: 35px;
+
+        font-size: 38px;
+
+        letter-spacing: 6px;
     }
 
 }
 
 
 /* =========================================================
-   SAFETY / POINTER FIX
+   POINTER SAFETY
 ========================================================= */
-
-/*
-   These elements must not create invisible layers
-   over the login controls or joystick.
-*/
 
 .grid-background,
+.grid-background::after,
+.login-card::before,
+.joystick::before,
 .joystick-circle,
 .joystick-line,
-.joystick::before,
-.login-card::before {
-    pointer-events: none;
-}
-
-
-/*
-   Joystick stick visually moves with the cursor,
-   while pointer events are handled by #joystick.
-*/
-
 .joystick-stick {
+
     pointer-events: none;
 }
-
-
-/* =========================================================
-   END OF VAJRA CSS
-========================================================= */
